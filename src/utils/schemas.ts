@@ -58,7 +58,6 @@ export const VariantResult = z.object({
   id: z.string(),
   title: z.string(),
   availableForSale: z.boolean(),
-  quantityAvailable: z.number().int(),
   price: MoneyV2Result,
 });
 

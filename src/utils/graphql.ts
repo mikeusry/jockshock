@@ -66,7 +66,6 @@ fragment productFragment on Product {
       id
       title
       availableForSale
-      quantityAvailable
       price {
         amount
         currencyCode

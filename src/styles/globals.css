@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap');
+
+:root {
+  --tactical-black: #0D0D0D;
+  --athletic-safety-yellow: #FFE500;
+  --clinical-silver: #C0C0C0;
+  --performance-white: #FAFAFA;
+  --caution-orange: #FF6B00;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  background: var(--performance-white);
+  color: var(--tactical-black);
+}
+
+h1, h2, h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.08em;
+}
+
+h1 {
+  font-size: clamp(48px, 8vw, 96px);
+  line-height: 0.9;
+}
+
+h2 {
+  font-size: clamp(36px, 6vw, 64px);
+  line-height: 1;
+}
+
+h3 {
+  font-size: clamp(24px, 4vw, 36px);
+  line-height: 1.1;
+}
+
+/* CTA Buttons - CRITICAL */
+.cta-primary,
+.cta-secondary {
+  background: var(--athletic-safety-yellow);
+  color: var(--tactical-black);
+  border: none;
+  padding: 16px 32px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 16px;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: transform 0.2s;
+  text-transform: uppercase;
+  border-radius: 0;
+}
+
+.cta-primary:hover,
+.cta-secondary:hover {
+  transform: scale(1.05);
+}
+
+.cta-secondary {
+  background: transparent;
+  border: 2px solid var(--athletic-safety-yellow);
+  color: var(--tactical-black);
+}
+
+/* Section Spacing */
+section {
+  padding: 80px 5%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  section {
+    padding: 60px 5%;
+  }
+
+  h1 {
+    font-size: 48px;
+  }
+
+  h2 {
+    font-size: 36px;
+  }
+}
