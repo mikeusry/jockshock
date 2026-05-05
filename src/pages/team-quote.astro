@@ -1,0 +1,385 @@
+---
+import '../styles/globals.css';
+
+const title = "Team & Program Quote | JockShock";
+const description = "Outfitting a full program? Request a JockShock team quote — bulk pricing, custom team packs, and program partnerships for coaches, athletic directors, and equipment managers.";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title}</title>
+  <meta name="description" content={description}>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-content">
+      <a href="/" class="logo-link">
+        <img src="/JockShock_Logo.png" alt="JockShock" class="header-logo">
+      </a>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="page-inner">
+      <a href="/" class="back-link">← Back to JockShock</a>
+      <h1 class="page-headline">TEAM & PROGRAM QUOTE</h1>
+      <p class="page-lede">
+        Tell us about your program. We'll come back within one business day with bulk pricing,
+        sample bottles, and a fit-for-your-team plan. No obligation — just a real human reading every request.
+      </p>
+
+      <form id="team-quote-form" class="quote-form" novalidate>
+        <div class="row">
+          <label class="field">
+            <span class="label">Your name <em>*</em></span>
+            <input type="text" name="contact_name" required autocomplete="name" />
+          </label>
+          <label class="field">
+            <span class="label">Role <em>*</em></span>
+            <select name="contact_role" required>
+              <option value="">Select…</option>
+              <option value="head_coach">Head Coach</option>
+              <option value="assistant_coach">Assistant Coach</option>
+              <option value="athletic_director">Athletic Director</option>
+              <option value="equipment_manager">Equipment Manager</option>
+              <option value="strength_coach">Strength & Conditioning Coach</option>
+              <option value="parent_organizer">Team Parent / Organizer</option>
+              <option value="gym_owner">Gym Owner</option>
+              <option value="other">Other</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="row">
+          <label class="field">
+            <span class="label">Email <em>*</em></span>
+            <input type="email" name="contact_email" required autocomplete="email" />
+          </label>
+          <label class="field">
+            <span class="label">Phone</span>
+            <input type="tel" name="contact_phone" autocomplete="tel" />
+          </label>
+        </div>
+
+        <div class="row">
+          <label class="field">
+            <span class="label">Program / Team / Gym name <em>*</em></span>
+            <input type="text" name="program_name" required autocomplete="organization" />
+          </label>
+          <label class="field">
+            <span class="label">Sport / Activity <em>*</em></span>
+            <input type="text" name="program_sport" required placeholder="e.g. Football, Wrestling, CrossFit" />
+          </label>
+        </div>
+
+        <div class="row">
+          <label class="field">
+            <span class="label">City, State <em>*</em></span>
+            <input type="text" name="program_location" required autocomplete="address-level2" />
+          </label>
+          <label class="field">
+            <span class="label">Approx. number of athletes <em>*</em></span>
+            <select name="athlete_count" required>
+              <option value="">Select…</option>
+              <option value="1-15">1 – 15</option>
+              <option value="16-40">16 – 40</option>
+              <option value="41-100">41 – 100</option>
+              <option value="100+">100+</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="row">
+          <label class="field full">
+            <span class="label">Anything we should know?</span>
+            <textarea name="notes" rows="4" placeholder="Goals, season timing, current product you're using, budget range, where you heard about us…"></textarea>
+          </label>
+        </div>
+
+        <input type="hidden" name="utm_source" id="utm_source" />
+        <input type="hidden" name="utm_medium" id="utm_medium" />
+        <input type="hidden" name="utm_campaign" id="utm_campaign" />
+        <input type="hidden" name="referrer" id="referrer" />
+
+        <div class="actions">
+          <button type="submit" class="cta-primary">SEND QUOTE REQUEST</button>
+          <p class="actions-note">We reply within 1 business day. Your info goes to mike@southlandorganics.com — no list, no spam.</p>
+        </div>
+      </form>
+
+      <div id="success" class="success" hidden>
+        <h2>Got it — thanks.</h2>
+        <p>Mike or someone on the Southland Organics team will be in touch within one business day with a tailored quote. Check your email (and your spam folder, just in case).</p>
+        <a href="/" class="cta-primary">← Back to JockShock</a>
+      </div>
+
+      <div id="error" class="error" hidden>
+        <h2>Something went wrong.</h2>
+        <p>We couldn't deliver your quote request. Please email <a href="mailto:mike@southlandorganics.com">mike@southlandorganics.com</a> directly with the details.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2025 JockShock. A Southland Organics brand. Clinical-strength gear protection for serious athletes.</p>
+  </footer>
+
+<script>
+  const form = document.getElementById('team-quote-form') as HTMLFormElement;
+  const success = document.getElementById('success')!;
+  const errorBox = document.getElementById('error')!;
+
+  // Stamp UTMs and referrer from current URL/session storage so the quote
+  // request carries attribution context (athlete vanity URLs land here too).
+  const params = new URLSearchParams(window.location.search);
+  const persistedUtm = (key: string) =>
+    params.get(key) || sessionStorage.getItem(`utm_${key.replace('utm_', '')}`) || '';
+
+  (document.getElementById('utm_source') as HTMLInputElement).value = persistedUtm('utm_source');
+  (document.getElementById('utm_medium') as HTMLInputElement).value = persistedUtm('utm_medium');
+  (document.getElementById('utm_campaign') as HTMLInputElement).value = persistedUtm('utm_campaign');
+  (document.getElementById('referrer') as HTMLInputElement).value = document.referrer || '';
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const submitBtn = form.querySelector('button[type=submit]') as HTMLButtonElement;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'SENDING…';
+
+    const data = Object.fromEntries(new FormData(form).entries());
+
+    try {
+      const res = await fetch('/api/team-quote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+      form.hidden = true;
+      success.hidden = false;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (err) {
+      console.error('team-quote submit failed', err);
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'SEND QUOTE REQUEST';
+      errorBox.hidden = false;
+    }
+  });
+</script>
+
+<style>
+  body {
+    background: var(--performance-white);
+  }
+
+  .site-header {
+    background: var(--tactical-black);
+    padding: 20px 5%;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+
+  .header-content {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .logo-link {
+    display: inline-block;
+  }
+
+  .header-logo {
+    height: 40px;
+    width: auto;
+    filter: drop-shadow(0 0 1px var(--athletic-safety-yellow));
+  }
+
+  .page {
+    padding: 60px 5% 80px;
+    background: var(--performance-white);
+    min-height: 80vh;
+  }
+
+  .page-inner {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .back-link {
+    display: inline-block;
+    color: var(--tactical-black);
+    text-decoration: none;
+    font-weight: 700;
+    margin-bottom: 24px;
+    font-size: 14px;
+  }
+
+  .back-link:hover {
+    text-decoration: underline;
+  }
+
+  .page-headline {
+    font-size: 48px;
+    line-height: 1.05;
+    margin-bottom: 16px;
+    color: var(--tactical-black);
+  }
+
+  .page-lede {
+    font-size: 18px;
+    color: #444;
+    margin-bottom: 40px;
+    max-width: 60ch;
+  }
+
+  .quote-form {
+    background: white;
+    padding: 32px;
+    border-radius: 8px;
+    border: 1px solid #e5e5e5;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .field.full {
+    grid-column: 1 / -1;
+  }
+
+  .label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--tactical-black);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .label em {
+    color: var(--caution-orange);
+    font-style: normal;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  select,
+  textarea {
+    font: inherit;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: white;
+    width: 100%;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: 2px solid var(--athletic-safety-yellow);
+    outline-offset: 1px;
+    border-color: var(--athletic-safety-yellow);
+  }
+
+  .actions {
+    margin-top: 24px;
+    text-align: center;
+  }
+
+  .cta-primary {
+    background: var(--athletic-safety-yellow);
+    color: var(--tactical-black);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 0.06em;
+    padding: 16px 32px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 700;
+  }
+
+  .cta-primary:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(255, 229, 0, 0.5);
+  }
+
+  .cta-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .actions-note {
+    font-size: 12px;
+    color: #777;
+    margin-top: 12px;
+  }
+
+  .success,
+  .error {
+    background: white;
+    padding: 40px;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid #e5e5e5;
+  }
+
+  .success h2 {
+    margin-bottom: 16px;
+    font-size: 36px;
+  }
+
+  .success p,
+  .error p {
+    margin-bottom: 24px;
+    color: #444;
+  }
+
+  .error h2 {
+    color: var(--caution-orange);
+    margin-bottom: 16px;
+  }
+
+  .site-footer {
+    background: var(--tactical-black);
+    color: var(--clinical-silver);
+    text-align: center;
+    padding: 24px 5%;
+    font-size: 13px;
+  }
+
+  @media (max-width: 600px) {
+    .row {
+      grid-template-columns: 1fr;
+    }
+
+    .page-headline {
+      font-size: 36px;
+    }
+  }
+</style>
+</body>
+</html>

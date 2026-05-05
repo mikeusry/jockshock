@@ -24,6 +24,43 @@ test.describe('JockShock cart flow', () => {
     expect(await enabledBuyButtons.count()).toBeGreaterThanOrEqual(3);
   });
 
+  test('hero badges are FTC-defensible (no D1 Approved, no 24HR claim)', async ({ page }) => {
+    await page.goto('/');
+    const badges = page.locator('.trust-badges');
+    await expect(badges).toContainText('Built by D1 Athletes');
+    await expect(badges).not.toContainText('D1 Approved');
+    await expect(badges).not.toContainText('24HR');
+  });
+
+  test('Team Pack card surfaces a team-quote link to /team-quote', async ({ page }) => {
+    await page.goto('/');
+    const teamCard = page.locator('.pricing-card').filter({ hasText: 'TEAM PACK' });
+    const quoteLink = teamCard.getByRole('link', { name: /team quote/i });
+    await expect(quoteLink).toBeVisible();
+    await expect(quoteLink).toHaveAttribute('href', '/team-quote');
+  });
+
+  test('/team-quote page renders form with required fields', async ({ page }) => {
+    await page.goto('/team-quote');
+    await expect(page.getByRole('heading', { name: /team & program quote/i })).toBeVisible();
+    await expect(page.locator('input[name="contact_name"]')).toBeVisible();
+    await expect(page.locator('input[name="contact_email"]')).toBeVisible();
+    await expect(page.locator('input[name="program_name"]')).toBeVisible();
+    await expect(page.locator('input[name="program_sport"]')).toBeVisible();
+    await expect(page.locator('select[name="athlete_count"]')).toBeVisible();
+    await expect(page.getByRole('button', { name: /send quote request/i })).toBeVisible();
+  });
+
+  test('/team-quote rejects invalid POST with 400', async ({ request }) => {
+    const res = await request.post('/api/team-quote', {
+      data: { contact_email: 'not-an-email' },
+      headers: { 'Content-Type': 'application/json' },
+    });
+    expect(res.status()).toBe(400);
+    const body = await res.json();
+    expect(body.error).toBe('validation');
+  });
+
   test('clicking Athlete Pack ADD TO CART opens drawer with the right item', async ({ page }) => {
     await page.goto('/');
 

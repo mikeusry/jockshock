@@ -87,8 +87,8 @@ const problemImage = 'https://res.cloudinary.com/southland-organics/image/upload
       </div>
       <h2 class="hero-headline">CLINICAL STRENGTH<br>GEAR PROTECTION</h2>
       <div class="trust-badges">
-        <span class="badge-icon-item">🏆 D1 Approved</span>
-        <span class="badge-icon-item">⚡ 24HR Protection</span>
+        <span class="badge-icon-item">🏆 Built by D1 Athletes</span>
+        <span class="badge-icon-item">🧪 EPA-Registered Formula</span>
       </div>
       <JockShockBuyButton client:load variantId={starterId} label="GET JOCKSHOCK — $24.99" classList="cta-primary hero-cta" />
       <p class="shipping-note">Free shipping on 3+ bottles</p>
@@ -183,6 +183,10 @@ const problemImage = 'https://res.cloudinary.com/southland-organics/image/upload
         <p class="description">6 Bottles</p>
         <p class="savings">Save 33% + FREE SHIPPING</p>
         <JockShockBuyButton client:load variantId={teamId} />
+        <p class="team-quote-prompt">
+          Outfitting a full program?
+          <a href="/team-quote" class="team-quote-link">Get a team quote →</a>
+        </p>
       </div>
     </div>
     </div>
@@ -616,6 +620,26 @@ const problemImage = 'https://res.cloudinary.com/southland-organics/image/upload
     color: var(--athletic-safety-yellow);
     font-weight: 700;
     margin-bottom: 24px;
+  }
+
+  .team-quote-prompt {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #2a2a2a;
+    font-size: 13px;
+    color: var(--clinical-silver);
+  }
+
+  .team-quote-link {
+    color: var(--athletic-safety-yellow);
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-block;
+    margin-left: 4px;
+  }
+
+  .team-quote-link:hover {
+    text-decoration: underline;
   }
 
   /* Guarantee Section */
