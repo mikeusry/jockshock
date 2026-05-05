@@ -1,8 +1,49 @@
 ---
 import '../styles/globals.css';
+import CartDrawer from '../components/CartDrawer.svelte';
+import CartIcon from '../components/CartIcon.svelte';
+import JockShockBuyButton from '../components/JockShockBuyButton.svelte';
+import { getProductByHandle } from '../utils/shopify';
 
 const title = "JockShock | Clinical Strength Gear Protection";
 const description = "Shock the Stink. Own Your Game. Clinical-strength odor elimination for athletic equipment.";
+
+// Try to fetch the JockShock product. If it doesn't exist yet (Shopify product
+// not created), the buttons fall back to "COMING SOON" and the hero shows the
+// placeholder bottle.
+const headers = Astro.request.headers;
+const ip = headers.get("x-vercel-forwarded-for") || Astro.clientAddress;
+
+let product: Awaited<ReturnType<typeof getProductByHandle>> | null = null;
+try {
+  product = await getProductByHandle({ handle: 'jockshock', buyerIP: ip });
+} catch {
+  product = null;
+}
+
+// Resolve a variant by its bottle-count. Matches title containing "1 Bottle",
+// "3 Bottles", "6 Bottles" — case-insensitive. Returns null when no match so
+// the corresponding button shows COMING SOON rather than silently selling the
+// wrong pack.
+function variantIdFor(count: 1 | 3 | 6): string | null {
+  if (!product?.variants?.nodes?.length) return null;
+  const re = new RegExp(`\\b${count}\\s*bottle`, 'i');
+  const matched = product.variants.nodes.find(
+    (v) => re.test(v.title) && v.availableForSale
+  );
+  return matched?.id ?? null;
+}
+
+const starterId = variantIdFor(1);
+const athleteId = variantIdFor(3);
+const teamId = variantIdFor(6);
+
+const heroImage = product?.featuredImage?.url
+  ?? 'https://res.cloudinary.com/southland-organics/image/upload/JockShock/beckham4.jpg';
+const heroImageAlt = product?.featuredImage?.altText ?? 'JockShock bottle';
+
+const bgImage = 'https://res.cloudinary.com/southland-organics/image/upload/JockShock/beckham2_t9b1zk.jpg';
+const problemImage = 'https://res.cloudinary.com/southland-organics/image/upload/JockShock/beckham1.jpg';
 ---
 
 <!DOCTYPE html>
@@ -16,6 +57,8 @@ const description = "Shock the Stink. Own Your Game. Clinical-strength odor elim
 </head>
 <body>
 
+  <CartDrawer client:idle />
+
   <!-- Launch Banner -->
   <div class="launch-banner">
     🚨 LAUNCH WEEK: First 500 Orders Get Free Team Sticker Pack 🚨
@@ -27,12 +70,17 @@ const description = "Shock the Stink. Own Your Game. Clinical-strength odor elim
       <div class="logo">
         <img src="/JockShock_Logo.png" alt="JockShock" class="header-logo">
       </div>
-      <button class="cta-primary">GET JOCKSHOCK — $24.99</button>
+      <div class="header-actions">
+        <JockShockBuyButton client:load variantId={starterId} label="GET JOCKSHOCK — $24.99" />
+        <div class="cart-icon-wrap">
+          <CartIcon client:load />
+        </div>
+      </div>
     </div>
   </header>
 
   <!-- Hero Section -->
-  <section class="hero">
+  <section class="hero" style={`background-image: linear-gradient(135deg, rgba(13, 13, 13, 0.95) 0%, rgba(26, 26, 26, 0.75) 100%), url('${bgImage}');`}>
     <div class="hero-content">
       <div class="logo-with-tag">
         <img src="/JockShock_Logo_Tag.png" alt="JockShock - Shock the Stink. Own Your Game." class="hero-logo">
@@ -42,23 +90,27 @@ const description = "Shock the Stink. Own Your Game. Clinical-strength odor elim
         <span class="badge-icon-item">🏆 D1 Approved</span>
         <span class="badge-icon-item">⚡ 24HR Protection</span>
       </div>
-      <button class="cta-primary hero-cta">GET JOCKSHOCK — $24.99</button>
+      <JockShockBuyButton client:load variantId={starterId} label="GET JOCKSHOCK — $24.99" classList="cta-primary hero-cta" />
       <p class="shipping-note">Free shipping on 3+ bottles</p>
       <p class="urgency-text">⚡ Only 47 bottles left at launch price</p>
     </div>
     <div class="hero-image">
-      <div class="product-placeholder">
-        <div class="product-mockup">
-          <div class="bottle-shape"></div>
-          <p style="color: var(--athletic-safety-yellow); font-weight: 900; margin-top: 20px;">JOCKSHOCK</p>
-          <p style="color: var(--clinical-silver); font-size: 14px;">8oz Spray</p>
+      {product?.featuredImage ? (
+        <img src={heroImage} alt={heroImageAlt} class="hero-product-image" />
+      ) : (
+        <div class="product-placeholder">
+          <div class="product-mockup">
+            <div class="bottle-shape"></div>
+            <p style="color: var(--athletic-safety-yellow); font-weight: 900; margin-top: 20px;">JOCKSHOCK</p>
+            <p style="color: var(--clinical-silver); font-size: 14px;">8oz Spray</p>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   </section>
 
   <!-- Problem Agitation Section -->
-  <section class="problem-section">
+  <section class="problem-section" style={`background-image: linear-gradient(rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.92)), url('${problemImage}');`}>
     <div class="problem-grid">
       <div class="problem-card">
         <div class="problem-icon">🦨</div>
@@ -99,7 +151,7 @@ const description = "Shock the Stink. Own Your Game. Clinical-strength odor elim
         <p>24-hour protection locked in</p>
       </div>
     </div>
-    <button class="cta-secondary">PROTECT YOUR GEAR NOW</button>
+    <JockShockBuyButton client:load variantId={athleteId} label="PROTECT YOUR GEAR NOW" classList="cta-secondary" />
     <div class="social-proof-bar">
       <p>⭐ Join 500+ Athletes Who've Shocked Their Stink</p>
     </div>
@@ -114,7 +166,7 @@ const description = "Shock the Stink. Own Your Game. Clinical-strength odor elim
         <h3>STARTER</h3>
         <p class="price">$24.99</p>
         <p class="description">1 Bottle</p>
-        <button class="cta-primary">ADD TO CART</button>
+        <JockShockBuyButton client:load variantId={starterId} />
       </div>
       <div class="pricing-card featured">
         <span class="badge">MOST POPULAR</span>
@@ -123,14 +175,14 @@ const description = "Shock the Stink. Own Your Game. Clinical-strength odor elim
         <p class="description">3 Bottles</p>
         <p class="savings-big">SAVE $15</p>
         <p class="savings">Save 20% + FREE SHIPPING</p>
-        <button class="cta-primary">ADD TO CART</button>
+        <JockShockBuyButton client:load variantId={athleteId} />
       </div>
       <div class="pricing-card">
         <h3>TEAM PACK</h3>
         <p class="price"><s style="color: var(--clinical-silver);">$149.94</s> $99.99</p>
         <p class="description">6 Bottles</p>
         <p class="savings">Save 33% + FREE SHIPPING</p>
-        <button class="cta-primary">ADD TO CART</button>
+        <JockShockBuyButton client:load variantId={teamId} />
       </div>
     </div>
     </div>
@@ -195,6 +247,16 @@ const description = "Shock the Stink. Own Your Game. Clinical-strength odor elim
     align-items: center;
   }
 
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .cart-icon-wrap {
+    color: var(--athletic-safety-yellow);
+  }
+
   .logo {
     color: var(--athletic-safety-yellow);
   }
@@ -212,9 +274,9 @@ const description = "Shock the Stink. Own Your Game. Clinical-strength odor elim
     gap: 60px;
     align-items: center;
     min-height: 90vh;
-    background:
-      linear-gradient(135deg, rgba(13, 13, 13, 0.95) 0%, rgba(26, 26, 26, 0.75) 100%),
-      url('https://res.cloudinary.com/southland-organics/image/upload/JockShock/beckham2_t9b1zk.jpg') center/cover no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
     background-attachment: fixed;
     color: white;
     padding: 80px 5%;
@@ -245,6 +307,9 @@ const description = "Shock the Stink. Own Your Game. Clinical-strength odor elim
   .hero-image {
     position: relative;
     z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .hero-logo {
@@ -252,6 +317,13 @@ const description = "Shock the Stink. Own Your Game. Clinical-strength odor elim
     width: 500px;
     height: auto;
     filter: invert(1); /* Makes black logo white */
+  }
+
+  .hero-product-image {
+    max-width: 100%;
+    width: 500px;
+    height: auto;
+    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.5));
   }
 
   .hero-headline {
@@ -297,12 +369,6 @@ const description = "Shock the Stink. Own Your Game. Clinical-strength odor elim
     font-size: 14px;
     color: var(--caution-orange);
     font-weight: 700;
-  }
-
-  .hero-image {
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 
   .product-placeholder {
@@ -354,7 +420,10 @@ const description = "Shock the Stink. Own Your Game. Clinical-strength odor elim
 
   /* Problem Section */
   .problem-section {
-    background: white;
+    background-color: white;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     text-align: center;
   }
 
@@ -622,6 +691,7 @@ const description = "Shock the Stink. Own Your Game. Clinical-strength odor elim
       grid-template-columns: 1fr;
       min-height: auto;
       padding: 60px 5%;
+      background-attachment: scroll;
     }
 
     .hero-image {
@@ -654,6 +724,10 @@ const description = "Shock the Stink. Own Your Game. Clinical-strength odor elim
     }
 
     .hero-logo {
+      width: 300px;
+    }
+
+    .hero-product-image {
       width: 300px;
     }
 
