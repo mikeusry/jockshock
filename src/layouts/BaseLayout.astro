@@ -13,6 +13,16 @@ const defaultDesc =
   "A lightweight and minimalit Astro starter theme using Shopify with Svelte, Tailwind, and TypeScript.";
 
 const { title, description = defaultDesc } = Astro.props as Props;
+
+// point.dog pixel config — JockShock events land in the Southland CDP table.
+// Per legal-entity decision (project_jockshock_legal_entity), JockShock is a
+// brand inside Southland Organics and rolls up to Southland P&L. Using
+// brandId=southland keeps JockShock traffic in the same CDP namespace as the
+// rest of Southland; JockShock-specific slicing happens via page/URL tagging
+// at event time, not at the pixel level.
+const pixelBrandId = import.meta.env.PUBLIC_PIXEL_BRAND_ID || "southland";
+const pixelEndpoint =
+  import.meta.env.PUBLIC_PIXEL_ENDPOINT || "https://pixel.southlandorganics.com/collect";
 ---
 
 <html lang="en">
@@ -23,6 +33,19 @@ const { title, description = defaultDesc } = Astro.props as Props;
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
+
+    <!-- point.dog Pixel -->
+    <script is:inline define:vars={{ pixelBrandId, pixelEndpoint }}>
+      window.pdPixelConfig = {
+        brandId: pixelBrandId,
+        endpoint: pixelEndpoint,
+        // Tag every event from this site as JockShock so we can slice in CDP
+        // even though we share the Southland brand_id namespace.
+        defaultProperties: { sub_brand: "jockshock" },
+      };
+    </script>
+    <script is:inline src="https://cdn.point.dog/pixel/pd-pixel.min.js" async></script>
+
     <style is:global>
       @import "../styles/global.css";
     </style>
