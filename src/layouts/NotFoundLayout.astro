@@ -8,21 +8,113 @@ export interface Props {
 
 Astro.response.status = 404;
 
-const defaultTitle = "Page not found";
+const defaultTitle = "Page not found — JockShock";
+const defaultMessage = "We couldn't find the page you were looking for.";
 
-const { title = defaultTitle, message = defaultTitle } = Astro.props as Props;
+const { title = defaultTitle, message = defaultMessage } = Astro.props as Props;
 ---
 
-<BaseLayout title={title}>
-  <div class="container grid justify-center py-44 text-center">
-    <span class="text-6xl font-bold text-emerald-900">404</span>
-    <h1 class="mt-4 text-xl">{message}</h1>
-    <a
-      href="/"
-      class="mt-6 font-semibold text-emerald-900 hover:text-emerald-700"
-    >
-      Go back home
-      <span aria-hidden="true"> &rarr;</span>
-    </a>
-  </div>
+<BaseLayout title={title} description={defaultMessage}>
+  <section class="not-found">
+    <div class="not-found-inner">
+      <p class="eyebrow">404</p>
+      <h1>{message}</h1>
+      <p class="lead">
+        Maybe the link rotted, maybe we moved it, maybe the gear funk got it.
+        Either way — let's get you back to where you were going.
+      </p>
+      <div class="cta-row">
+        <a href="/" class="cta-primary">Back to home</a>
+        <a href="/products/jockshock/" class="cta-secondary">Shop JockShock</a>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
+
+<style>
+  .not-found {
+    background: #0a0a0a;
+    color: #f3f4f6;
+    padding: 120px 5%;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  }
+  .not-found-inner {
+    max-width: 600px;
+    text-align: center;
+  }
+  .eyebrow {
+    color: #facc15;
+    font-size: clamp(4rem, 10vw, 7rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.05em;
+    margin: 0 0 24px;
+  }
+  .not-found h1 {
+    color: #fff;
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin: 0 0 16px;
+    line-height: 1.2;
+  }
+  .lead {
+    color: #9ca3af;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    margin: 0 0 32px;
+  }
+  .cta-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .cta-primary {
+    display: inline-block;
+    background: #facc15;
+    color: #0a0a0a;
+    padding: 16px 32px;
+    text-decoration: none;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.875rem;
+    border-radius: 4px;
+    transition: transform 0.1s ease, box-shadow 0.15s ease;
+  }
+  .cta-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(250, 204, 21, 0.35);
+  }
+  .cta-secondary {
+    display: inline-block;
+    color: #fff;
+    padding: 16px 24px;
+    text-decoration: none;
+    font-weight: 700;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    font-size: 0.875rem;
+    transition: border-color 0.15s ease;
+  }
+  .cta-secondary:hover {
+    border-color: #facc15;
+  }
+</style>
+
+<script>
+  // Track the 404 in the pixel so we can monitor for broken-link patterns
+  // (paid creative pointing to dead URLs, deleted product pages, etc.).
+  if (typeof window !== "undefined" && (window as any).pdPixel) {
+    (window as any).pdPixel.track("page_not_found", {
+      sub_brand: "jockshock",
+      requested_path: window.location.pathname,
+      referrer: document.referrer || null,
+    });
+  }
+</script>
