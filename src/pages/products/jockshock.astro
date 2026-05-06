@@ -1,0 +1,560 @@
+---
+/**
+ * JockShock dedicated PDP — overrides the generic [...handle].astro for the
+ * jockshock handle so we get brand-voiced copy, variant selection, and
+ * Aaron-voice creative. The generic PDP stays in place as a fallback for any
+ * future Shopify product, but jockshock is the only product the site exists
+ * to sell as of May 2026.
+ *
+ * Voice: Aaron's voice (per brand-brief.md). Default JockShock persona.
+ * No unsubstantiated claims — see Claims Register in the brand brief.
+ */
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getProductByHandle } from "../../utils/shopify";
+import { setCache } from "../../utils/cache";
+import JockShockPDP from "../../components/JockShockPDP.svelte";
+
+const HANDLE = "jockshock";
+const headers = Astro.request.headers;
+const ip = headers.get("x-vercel-forwarded-for") || Astro.clientAddress;
+const product = await getProductByHandle({ handle: HANDLE, buyerIP: ip });
+
+if (!product) {
+  Astro.response.status = 500;
+}
+
+setCache.short(Astro);
+
+// Map Shopify variants → our SKU/image data so we control presentation.
+// SKUs were set in Shopify by the 2026-05-06 wiring session; verified via
+// shopify_variant_id on Nexus product rows.
+const VARIANT_DETAILS: Record<
+  string,
+  {
+    sku: string;
+    bottleCount: number;
+    label: string;
+    sublabel: string;
+    image: string;
+    perBottlePrice: string;
+    isFeatured?: boolean;
+    savingsLabel?: string;
+  }
+> = {
+  "JOCKSHOCK-32oz": {
+    sku: "JOCKSHOCK-32oz",
+    bottleCount: 1,
+    label: "Single",
+    sublabel: "1 × 32oz",
+    image:
+      "https://res.cloudinary.com/southland-organics/image/upload/c_fit,w_1200,q_auto,f_auto/JockShock/jockshock-32oz-single-2026.png",
+    perBottlePrice: "$24.99 per bottle",
+  },
+  "JOCKSHOCK-3x32oz-Pack": {
+    sku: "JOCKSHOCK-3x32oz-Pack",
+    bottleCount: 3,
+    label: "Athlete Pack",
+    sublabel: "3 × 32oz",
+    image:
+      "https://res.cloudinary.com/southland-organics/image/upload/c_fit,w_1200,q_auto,f_auto/JockShock/jockshock-3pack-athlete-2026.png",
+    perBottlePrice: "$20.00 per bottle",
+    isFeatured: true,
+    savingsLabel: "Save $15",
+  },
+  "JOCKSHOCK-6x32oz-Pack": {
+    sku: "JOCKSHOCK-6x32oz-Pack",
+    bottleCount: 6,
+    label: "Team Pack",
+    sublabel: "6 × 32oz",
+    image:
+      "https://res.cloudinary.com/southland-organics/image/upload/c_fit,w_1200,q_auto,f_auto/JockShock/jockshock-6pack-team-2026.png",
+    perBottlePrice: "$16.67 per bottle",
+    savingsLabel: "Save $50",
+  },
+};
+
+// Build the variants array for the Svelte component.
+// Order: Single → Athlete (featured) → Team, regardless of Shopify ordering.
+const variantOrder = [
+  "JOCKSHOCK-32oz",
+  "JOCKSHOCK-3x32oz-Pack",
+  "JOCKSHOCK-6x32oz-Pack",
+];
+
+const variants = product
+  ? variantOrder
+      .map((sku) => {
+        const shopifyVariant = product.variants.nodes.find((v) => v.sku === sku);
+        const details = VARIANT_DETAILS[sku];
+        if (!shopifyVariant || !details) return null;
+        return {
+          ...details,
+          id: shopifyVariant.id,
+          price: shopifyVariant.price,
+          available: shopifyVariant.availableForSale,
+        };
+      })
+      .filter((v): v is NonNullable<typeof v> => v !== null)
+  : [];
+
+const title = "JockShock — Pro-Grade Equipment Deodorizer";
+const description =
+  "Pro-grade equipment deodorizer for serious athletes. Built for gear, not for the kitchen. EPA-registered HOCl chemistry. 32oz matte-black bottle.";
+---
+
+<BaseLayout title={title} description={description}>
+  {!product || variants.length === 0 ? (
+    <section class="error">
+      <div class="error-inner">
+        <h1>We're sold out at the moment.</h1>
+        <p>Drop your email and we'll let you know when we restock.</p>
+      </div>
+    </section>
+  ) : (
+    <article class="pdp">
+      {/* Hero */}
+      <section class="hero">
+        <JockShockPDP client:load variants={variants} initialSku="JOCKSHOCK-3x32oz-Pack" />
+      </section>
+
+      {/* The mechanism — what HOCl is, why it's different */}
+      <section class="mechanism">
+        <div class="mechanism-inner">
+          <h2 class="mechanism-headline">Built for gear. Not for the kitchen.</h2>
+          <p class="mechanism-subhead">
+            JockShock runs on hypochlorous acid — the same chemistry your immune
+            system makes to kill bacteria. EPA-registered. No fragrance. No
+            masking. The funk doesn't get covered up. It gets killed.
+          </p>
+          <div class="mechanism-grid">
+            <div class="mechanism-card">
+              <h3>Mechanism, not perfume</h3>
+              <p>
+                Most "gear sprays" are scented air freshener. They mask for an
+                hour, then the smell comes back worse. JockShock attacks the
+                bacteria producing the smell, so the smell goes away.
+              </p>
+            </div>
+            <div class="mechanism-card">
+              <h3>Engineered for athletic materials</h3>
+              <p>
+                Foam, leather, mesh, padding, plastic — the actual stuff your
+                pads, helmet, gloves, and cleats are made of. Won't damage gear.
+                Won't stain uniforms. Won't fade colors.
+              </p>
+            </div>
+            <div class="mechanism-card">
+              <h3>Pro-grade, locker-room ready</h3>
+              <p>
+                Matte-black 32oz bottle. Ratchet-pistol trigger. Built so you
+                can leave it on the bench in front of your team without
+                apologizing for it.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* The routine — the load-bearing usage pattern */}
+      <section class="routine">
+        <div class="routine-inner">
+          <h2 class="routine-headline">The 60-second post-practice routine</h2>
+          <p class="routine-subhead">
+            JockShock works best when it's a routine — not a rescue mission.
+            Spray your gear after every practice and every game. The bottle
+            stays in your bag, the funk never sets in, and a single bottle
+            lasts most of a season.
+          </p>
+          <ol class="routine-steps">
+            <li>
+              <span class="routine-num">1</span>
+              <div>
+                <h3>Spray</h3>
+                <p>Six inches off the gear. Hit the inside of pads, the inside of helmet, gloves, and the inside of the bag itself.</p>
+              </div>
+            </li>
+            <li>
+              <span class="routine-num">2</span>
+              <div>
+                <h3>Air</h3>
+                <p>Open the bag. Hang the gear if you can. Two minutes is enough.</p>
+              </div>
+            </li>
+            <li>
+              <span class="routine-num">3</span>
+              <div>
+                <h3>Done</h3>
+                <p>Pack it back in. The next time you open the bag, it doesn't smell like a dumpster.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      {/* Founders / authentic credential — the D1 framing */}
+      <section class="credential">
+        <div class="credential-inner">
+          <p class="credential-eyebrow">Built by D1 athletes</p>
+          <h2 class="credential-headline">
+            Made because we got tired of the gear stink and tired of products
+            that don't fix it.
+          </h2>
+          <p class="credential-body">
+            JockShock is built by athletes who've lived in gear bags. We knew
+            what was on the shelf wasn't working — bleach destroys pads,
+            household sprays just mask, and the "team locker-room" sprays read
+            like cleaning products. So we built the spray we wanted in our own
+            bags. EPA-registered. Made in the USA.
+          </p>
+        </div>
+      </section>
+
+      {/* Coach / team — Carmen's path */}
+      <section class="teams-cta">
+        <div class="teams-cta-inner">
+          <p class="teams-eyebrow">Coaching a team or running a facility?</p>
+          <h2 class="teams-headline">
+            We do volume pricing for programs.
+          </h2>
+          <p class="teams-body">
+            12 athletes or 200, hockey rink or wrestling room — get a quote on
+            program-wide JockShock. Includes a sanitation protocol PDF you can
+            hand to assistants and athletic trainers.
+          </p>
+          <a href="/teams/" class="teams-link">Get a team quote →</a>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section class="faq">
+        <div class="faq-inner">
+          <h2 class="faq-headline">Real questions, straight answers</h2>
+          <div class="faq-grid">
+            <details>
+              <summary>Will it damage my pads or stain a uniform?</summary>
+              <p>
+                No. JockShock is engineered for athletic materials — foam,
+                leather, mesh, padding, plastic. No bleach, no abrasives, no
+                fragrance. Spray it on, let it air, you're done.
+              </p>
+            </details>
+            <details>
+              <summary>How is this different from Lysol or Febreze?</summary>
+              <p>
+                Lysol and Febreze are designed for surfaces in your home and
+                fabric in your closet. They mask smell with fragrance. JockShock
+                uses HOCl chemistry to kill the bacteria that cause the smell —
+                so the smell actually goes away instead of getting covered up.
+              </p>
+            </details>
+            <details>
+              <summary>How long does a 32oz bottle last?</summary>
+              <p>
+                If you spray after every practice and every game, a single
+                32oz bottle covers about 6–10 weeks of heavy use. Casual use
+                stretches it longer. Most serious athletes go through 3–6
+                bottles a year.
+              </p>
+            </details>
+            <details>
+              <summary>Is it safe on skin contact — mouthguards, headgear?</summary>
+              <p>
+                Yes. HOCl is the same family of chemistry used in wound-care
+                saline sprays — the molecule your own immune system produces.
+                It's safe on skin contact at use concentration. We still
+                recommend air-drying gear before re-use.
+              </p>
+            </details>
+            <details>
+              <summary>Where's it made?</summary>
+              <p>
+                Made in the USA. EPA-registered. Manufactured under a ZeroPoint
+                Technology subregistration.
+              </p>
+            </details>
+            <details>
+              <summary>What's your return policy?</summary>
+              <p>
+                Try it for 30 days. If it doesn't work for you, email us and
+                we'll refund the bottle — keep what's left.
+              </p>
+            </details>
+          </div>
+        </div>
+      </section>
+    </article>
+  )}
+</BaseLayout>
+
+<style>
+  /* === Brand variables (matches brand-brief.md) === */
+  .pdp {
+    --jockshock-black: #0a0a0a;
+    --jockshock-yellow: #facc15;
+    --jockshock-yellow-dim: rgba(250, 204, 21, 0.15);
+    --jockshock-text-on-black: #f3f4f6;
+    --jockshock-muted: #9ca3af;
+    background: var(--jockshock-black);
+    color: var(--jockshock-text-on-black);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  }
+
+  .pdp h1, .pdp h2, .pdp h3 {
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  .error {
+    background: var(--jockshock-black, #0a0a0a);
+    color: #fff;
+    padding: 120px 5%;
+    text-align: center;
+    min-height: 60vh;
+  }
+  .error h1 { font-size: 32px; margin-bottom: 16px; }
+
+  /* === Hero (the buy zone) — Svelte component handles internals === */
+  .hero {
+    background: var(--jockshock-black);
+    padding: 0;
+  }
+
+  /* === Mechanism === */
+  .mechanism {
+    background: var(--jockshock-black);
+    padding: 100px 5%;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .mechanism-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .mechanism-headline {
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: #fff;
+    margin-bottom: 16px;
+  }
+  .mechanism-subhead {
+    font-size: 1.15rem;
+    color: var(--jockshock-muted);
+    max-width: 720px;
+    margin-bottom: 64px;
+    line-height: 1.6;
+  }
+  .mechanism-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 32px;
+  }
+  .mechanism-card {
+    padding: 32px;
+    background: #141414;
+    border-left: 3px solid var(--jockshock-yellow);
+  }
+  .mechanism-card h3 {
+    color: var(--jockshock-yellow);
+    font-size: 1.25rem;
+    margin-bottom: 12px;
+  }
+  .mechanism-card p {
+    color: var(--jockshock-text-on-black);
+    line-height: 1.6;
+    font-size: 0.95rem;
+  }
+
+  /* === Routine === */
+  .routine {
+    background: #050505;
+    padding: 100px 5%;
+  }
+  .routine-inner {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .routine-headline {
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: #fff;
+    margin-bottom: 16px;
+  }
+  .routine-subhead {
+    font-size: 1.15rem;
+    color: var(--jockshock-muted);
+    margin-bottom: 56px;
+    line-height: 1.6;
+  }
+  .routine-steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .routine-steps li {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+  }
+  .routine-num {
+    flex: 0 0 56px;
+    height: 56px;
+    background: var(--jockshock-yellow);
+    color: var(--jockshock-black);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 900;
+  }
+  .routine-steps h3 {
+    color: #fff;
+    font-size: 1.25rem;
+    margin-bottom: 8px;
+  }
+  .routine-steps p {
+    color: var(--jockshock-muted);
+    line-height: 1.6;
+  }
+
+  /* === Credential === */
+  .credential {
+    background: var(--jockshock-black);
+    padding: 100px 5%;
+    text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .credential-inner {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .credential-eyebrow {
+    color: var(--jockshock-yellow);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 700;
+    font-size: 0.875rem;
+    margin-bottom: 24px;
+  }
+  .credential-headline {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    color: #fff;
+    line-height: 1.3;
+    margin-bottom: 24px;
+  }
+  .credential-body {
+    color: var(--jockshock-muted);
+    line-height: 1.7;
+    font-size: 1.05rem;
+  }
+
+  /* === Teams CTA === */
+  .teams-cta {
+    background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+    padding: 80px 5%;
+    border-top: 2px solid var(--jockshock-yellow);
+    border-bottom: 2px solid var(--jockshock-yellow);
+  }
+  .teams-cta-inner {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .teams-eyebrow {
+    color: var(--jockshock-yellow);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 700;
+    font-size: 0.875rem;
+    margin-bottom: 16px;
+  }
+  .teams-headline {
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    color: #fff;
+    margin-bottom: 16px;
+  }
+  .teams-body {
+    color: var(--jockshock-muted);
+    line-height: 1.6;
+    margin-bottom: 32px;
+    font-size: 1.05rem;
+  }
+  .teams-link {
+    display: inline-block;
+    background: var(--jockshock-yellow);
+    color: var(--jockshock-black);
+    padding: 16px 36px;
+    text-decoration: none;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-size: 0.95rem;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .teams-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(250, 204, 21, 0.3);
+  }
+
+  /* === FAQ === */
+  .faq {
+    background: #050505;
+    padding: 100px 5%;
+  }
+  .faq-inner {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .faq-headline {
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    color: #fff;
+    margin-bottom: 48px;
+    text-align: center;
+  }
+  .faq-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .faq details {
+    background: #141414;
+    border-left: 3px solid transparent;
+    transition: border-color 0.15s ease;
+  }
+  .faq details[open] {
+    border-left-color: var(--jockshock-yellow);
+  }
+  .faq summary {
+    padding: 24px 32px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: #fff;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after {
+    content: "+";
+    color: var(--jockshock-yellow);
+    font-size: 1.5rem;
+    font-weight: 400;
+    transition: transform 0.2s ease;
+  }
+  .faq details[open] summary::after {
+    content: "−";
+  }
+  .faq details p {
+    padding: 0 32px 24px;
+    color: var(--jockshock-muted);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 768px) {
+    .mechanism, .routine, .credential, .teams-cta, .faq {
+      padding: 64px 5%;
+    }
+  }
+</style>

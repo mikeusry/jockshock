@@ -65,6 +65,7 @@ fragment productFragment on Product {
     nodes {
       id
       title
+      sku
       availableForSale
       price {
         amount

@@ -57,7 +57,9 @@ export const CartResult = z
 export const VariantResult = z.object({
   id: z.string(),
   title: z.string(),
+  sku: z.string().nullable().optional(),
   availableForSale: z.boolean(),
+  quantityAvailable: z.number().int().nullable().optional(),
   price: MoneyV2Result,
 });
 

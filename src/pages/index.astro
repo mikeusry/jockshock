@@ -1,684 +1,535 @@
 ---
-import '../styles/globals.css';
+/**
+ * JockShock homepage. Aaron voice (per brand-brief.md). No unsubstantiated
+ * claims. CTAs route to /products/jockshock for the actual buy path. Uses
+ * BaseLayout so the point.dog pixel + cart drawer fire on this page.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
 
-const title = "JockShock | Clinical Strength Gear Protection";
-const description = "Shock the Stink. Own Your Game. Clinical-strength odor elimination for athletic equipment.";
+const title = "JockShock — Pro-Grade Equipment Deodorizer for Serious Athletes";
+const description =
+  "Pro-grade gear deodorizer. EPA-registered HOCl chemistry. Built for athletic gear, not for the kitchen. 32oz matte-black bottle, made in USA.";
+
+const HERO_BG =
+  "https://res.cloudinary.com/southland-organics/image/upload/JockShock/beckham2_t9b1zk.jpg";
+const HERO_BOTTLE =
+  "https://res.cloudinary.com/southland-organics/image/upload/c_fit,w_900,q_auto,f_auto/JockShock/jockshock-32oz-single-2026.png";
 ---
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{title}</title>
-  <meta name="description" content={description}>
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-</head>
-<body>
-
-  <!-- Launch Banner -->
-  <div class="launch-banner">
-    🚨 LAUNCH WEEK: First 500 Orders Get Free Team Sticker Pack 🚨
-  </div>
-
-  <!-- Header -->
-  <header class="site-header">
-    <div class="header-content">
-      <div class="logo">
-        <img src="/JockShock_Logo.png" alt="JockShock" class="header-logo">
-      </div>
-      <button class="cta-primary">GET JOCKSHOCK — $24.99</button>
-    </div>
-  </header>
-
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="hero-content">
-      <div class="logo-with-tag">
-        <img src="/JockShock_Logo_Tag.png" alt="JockShock - Shock the Stink. Own Your Game." class="hero-logo">
-      </div>
-      <h2 class="hero-headline">CLINICAL STRENGTH<br>GEAR PROTECTION</h2>
-      <div class="trust-badges">
-        <span class="badge-icon-item">🏆 D1 Approved</span>
-        <span class="badge-icon-item">⚡ 24HR Protection</span>
-      </div>
-      <button class="cta-primary hero-cta">GET JOCKSHOCK — $24.99</button>
-      <p class="shipping-note">Free shipping on 3+ bottles</p>
-      <p class="urgency-text">⚡ Only 47 bottles left at launch price</p>
-    </div>
-    <div class="hero-image">
-      <div class="product-placeholder">
-        <div class="product-mockup">
-          <div class="bottle-shape"></div>
-          <p style="color: var(--athletic-safety-yellow); font-weight: 900; margin-top: 20px;">JOCKSHOCK</p>
-          <p style="color: var(--clinical-silver); font-size: 14px;">8oz Spray</p>
+<BaseLayout title={title} description={description}>
+  <div class="js-home">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-bg" style={`background-image: url('${HERO_BG}')`}></div>
+      <div class="hero-overlay"></div>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Performance Protection for Serious Athletes</p>
+          <h1 class="hero-headline">
+            Built for the locker room.<br />Not for the laundry room.
+          </h1>
+          <p class="hero-sub">
+            JockShock is a pro-grade equipment deodorizer engineered for the
+            gear athletes actually use. Hypochlorous acid chemistry. EPA-registered.
+            No fragrance, no masking — just gear that doesn't reek when you open
+            the bag.
+          </p>
+          <div class="hero-cta-row">
+            <a href="/products/jockshock/" class="cta-primary">Get JockShock</a>
+            <a href="#how" class="cta-secondary">How it works</a>
+          </div>
+          <ul class="hero-trust">
+            <li>EPA-registered</li>
+            <li>Built by D1 athletes</li>
+            <li>Made in USA</li>
+          </ul>
+        </div>
+        <div class="hero-product">
+          <img src={HERO_BOTTLE} alt="JockShock 32oz pro-grade equipment deodorizer" />
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Problem Agitation Section -->
-  <section class="problem-section">
-    <div class="problem-grid">
-      <div class="problem-card">
-        <div class="problem-icon">🦨</div>
-        <h3>GEAR STINK</h3>
-        <p>Bacteria multiplies 2x every 20 minutes</p>
-      </div>
-      <div class="problem-card">
-        <div class="problem-icon">💸</div>
-        <h3>LOST INVESTMENT</h3>
-        <p>$500+ gear ruined by odor</p>
-      </div>
-      <div class="problem-card">
-        <div class="problem-icon">😰</div>
-        <h3>CONFIDENCE KILLER</h3>
-        <p>73% of athletes worry about gear smell</p>
-      </div>
-    </div>
-    <p class="transition-text">One Spray Changes Everything</p>
-  </section>
+    <!-- THE MECHANISM -->
+    <section class="mechanism" id="how">
+      <div class="mechanism-inner">
+        <p class="section-eyebrow">The mechanism</p>
+        <h2 class="section-headline">
+          Hypochlorous acid. The same chemistry your immune system makes.
+        </h2>
+        <p class="section-sub">
+          Most "gear sprays" mask smell with fragrance. JockShock kills the
+          bacteria producing the smell. HOCl is the molecule your own white
+          blood cells use to fight infection — fast-acting, gear-safe, and
+          residue-free at use concentration. EPA-registered as an antimicrobial.
+        </p>
 
-  <!-- How It Works Section -->
-  <section class="how-it-works">
-    <h2>3 STEPS TO FRESH GEAR</h2>
-    <div class="steps">
-      <div class="step">
-        <div class="step-number">1</div>
-        <h3>SPRAY</h3>
-        <p>6-8 inches from gear</p>
+        <div class="mech-grid">
+          <div class="mech-card">
+            <h3>Kills the source</h3>
+            <p>
+              Targets the odor-causing bacteria in pads, helmets, gloves, mats,
+              cleats, mouthguards. Not perfume.
+            </p>
+          </div>
+          <div class="mech-card">
+            <h3>Gear-safe materials</h3>
+            <p>
+              Engineered for foam, leather, mesh, padding, plastic — what your
+              athletic equipment is actually made of. Won't damage gear.
+            </p>
+          </div>
+          <div class="mech-card">
+            <h3>Skin-safe contact</h3>
+            <p>
+              Same chemistry family as wound-care saline sprays. Safe on
+              mouthguards, headgear, contact-area gear at use concentration.
+            </p>
+          </div>
+        </div>
       </div>
-      <div class="step">
-        <div class="step-number">2</div>
-        <h3>SHOCK</h3>
-        <p>Bacteria eliminated on contact</p>
-      </div>
-      <div class="step">
-        <div class="step-number">3</div>
-        <h3>PLAY</h3>
-        <p>24-hour protection locked in</p>
-      </div>
-    </div>
-    <button class="cta-secondary">PROTECT YOUR GEAR NOW</button>
-    <div class="social-proof-bar">
-      <p>⭐ Join 500+ Athletes Who've Shocked Their Stink</p>
-    </div>
-  </section>
+    </section>
 
-  <!-- Pricing Section -->
-  <section class="pricing">
-    <div class="pricing-inner">
-      <h2 style="text-align: center; margin-bottom: 60px;">CHOOSE YOUR PROTECTION</h2>
-      <div class="pricing-cards">
-      <div class="pricing-card">
-        <h3>STARTER</h3>
-        <p class="price">$24.99</p>
-        <p class="description">1 Bottle</p>
-        <button class="cta-primary">ADD TO CART</button>
+    <!-- ROUTINE -->
+    <section class="routine">
+      <div class="routine-inner">
+        <p class="section-eyebrow">The routine</p>
+        <h2 class="section-headline">
+          Spray after every practice. The funk never sets in.
+        </h2>
+        <p class="section-sub">
+          JockShock works best as a routine — not a rescue mission. 60 seconds
+          after practice keeps your gear, your bag, and your car from turning
+          into a hockey-bag horror show.
+        </p>
+        <ol class="steps">
+          <li>
+            <span class="step-num">1</span>
+            <h3>Spray</h3>
+            <p>Inside the pads. Inside the helmet. Inside the bag.</p>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <h3>Air</h3>
+            <p>Two minutes. Hang it if you can.</p>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <h3>Done</h3>
+            <p>Pack it away. Tomorrow's practice doesn't smell like yesterday's.</p>
+          </li>
+        </ol>
       </div>
-      <div class="pricing-card featured">
-        <span class="badge">MOST POPULAR</span>
-        <h3>ATHLETE PACK</h3>
-        <p class="price"><s style="color: var(--clinical-silver);">$74.97</s> $59.99</p>
-        <p class="description">3 Bottles</p>
-        <p class="savings-big">SAVE $15</p>
-        <p class="savings">Save 20% + FREE SHIPPING</p>
-        <button class="cta-primary">ADD TO CART</button>
-      </div>
-      <div class="pricing-card">
-        <h3>TEAM PACK</h3>
-        <p class="price"><s style="color: var(--clinical-silver);">$149.94</s> $99.99</p>
-        <p class="description">6 Bottles</p>
-        <p class="savings">Save 33% + FREE SHIPPING</p>
-        <button class="cta-primary">ADD TO CART</button>
-      </div>
-    </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Guarantee Section -->
-  <section class="guarantee">
-    <h2>30-DAY MONEY BACK GUARANTEE</h2>
-    <p class="guarantee-text">Love it or your money back. No questions, no returns needed.</p>
-    <div class="guarantee-badges">
-      <div class="badge-item">
-        <div class="badge-icon">✓</div>
-        <p>Money Back Guarantee</p>
-      </div>
-      <div class="badge-item">
-        <div class="badge-icon">🇺🇸</div>
-        <p>Made in USA</p>
-      </div>
-      <div class="badge-item">
-        <div class="badge-icon">✓</div>
-        <p>EPA Registered</p>
-      </div>
-    </div>
-  </section>
+    <!-- PRODUCT TIERS / CTA -->
+    <section class="tiers">
+      <div class="tiers-inner">
+        <p class="section-eyebrow">Get yours</p>
+        <h2 class="section-headline">One bottle. Three packs. No subscription required.</h2>
 
-  <!-- Footer -->
-  <footer class="site-footer">
-    <div class="trust-footer-bar">
-      <span>🔒 Secure Checkout</span>
-      <span>🇺🇸 Made in USA</span>
-      <span>✓ EPA Registered</span>
-    </div>
-    <p>&copy; 2025 JockShock. All rights reserved.</p>
-    <p>Clinical-strength gear protection for serious athletes.</p>
-  </footer>
+        <div class="tier-grid">
+          <a href="/products/jockshock/?variant=single" class="tier">
+            <div class="tier-label">Single</div>
+            <div class="tier-detail">1 × 32oz</div>
+            <div class="tier-price">$24.99</div>
+            <div class="tier-bottom">Get it →</div>
+          </a>
+          <a href="/products/jockshock/?variant=athlete" class="tier featured">
+            <span class="tier-badge">Most Popular</span>
+            <div class="tier-label">Athlete Pack</div>
+            <div class="tier-detail">3 × 32oz</div>
+            <div class="tier-price">$59.99</div>
+            <div class="tier-savings">Save $15</div>
+            <div class="tier-bottom">Get it →</div>
+          </a>
+          <a href="/products/jockshock/?variant=team" class="tier">
+            <div class="tier-label">Team Pack</div>
+            <div class="tier-detail">6 × 32oz</div>
+            <div class="tier-price">$99.99</div>
+            <div class="tier-savings">Save $50</div>
+            <div class="tier-bottom">Get it →</div>
+          </a>
+        </div>
+
+        <div class="teams-pivot">
+          <p>
+            <strong>Coaching a team or running a facility?</strong>
+            We do volume pricing for programs.
+            <a href="/teams/">Get a team quote →</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CREDENTIAL -->
+    <section class="credential">
+      <div class="credential-inner">
+        <p class="section-eyebrow">Built by athletes</p>
+        <h2 class="section-headline">
+          We made the spray we wanted in our own bags.
+        </h2>
+        <p class="credential-body">
+          JockShock is built by D1 athletes who got tired of the gear stink and
+          tired of products that don't fix it. Bleach destroys pads. Household
+          sprays just mask. The "cleaning aisle" deodorizers read like cleaning
+          aisle deodorizers. So we built something different — pro-grade, made
+          for gear, made in the USA.
+        </p>
+      </div>
+    </section>
+
+    <!-- 30-DAY GUARANTEE -->
+    <section class="guarantee">
+      <div class="guarantee-inner">
+        <h2>30-day money-back guarantee.</h2>
+        <p>
+          Try a bottle. If it doesn't work for you, we'll refund it — keep
+          what's left.
+        </p>
+        <a href="/products/jockshock/" class="cta-primary">Get JockShock</a>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
 
 <style>
-  /* Launch Banner */
-  .launch-banner {
-    background: var(--athletic-safety-yellow);
-    color: var(--tactical-black);
-    text-align: center;
-    padding: 12px;
-    font-weight: 700;
-    font-size: 14px;
+  .js-home {
+    --jockshock-black: #0a0a0a;
+    --jockshock-yellow: #facc15;
+    --jockshock-text: #f3f4f6;
+    --jockshock-muted: #9ca3af;
+    background: var(--jockshock-black);
+    color: var(--jockshock-text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  }
+  .js-home h1, .js-home h2, .js-home h3 {
+    font-weight: 800;
+    letter-spacing: -0.02em;
   }
 
-  /* Header */
-  .site-header {
-    background: var(--tactical-black);
-    padding: 20px 5%;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+  /* === HERO === */
+  .hero {
+    position: relative;
+    min-height: 88vh;
+    overflow: hidden;
+    color: #fff;
   }
-
-  .header-content {
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 0;
+  }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(10, 10, 10, 0.96) 0%, rgba(10, 10, 10, 0.6) 100%);
+    z-index: 1;
+  }
+  .hero-grid {
+    position: relative;
+    z-index: 2;
     max-width: 1400px;
     margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .logo {
-    color: var(--athletic-safety-yellow);
-  }
-
-  .header-logo {
-    height: 40px;
-    width: auto;
-    filter: drop-shadow(0 0 1px var(--athletic-safety-yellow));
-  }
-
-  /* Hero Section */
-  .hero {
+    padding: 100px 5% 80px;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 64px;
     align-items: center;
-    min-height: 90vh;
-    background:
-      linear-gradient(135deg, rgba(13, 13, 13, 0.95) 0%, rgba(26, 26, 26, 0.75) 100%),
-      url('https://res.cloudinary.com/southland-organics/image/upload/JockShock/beckham2_t9b1zk.jpg') center/cover no-repeat;
-    background-attachment: fixed;
-    color: white;
-    padding: 80px 5%;
-    position: relative;
+    min-height: 88vh;
   }
-
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(ellipse at center, transparent 0%, rgba(13, 13, 13, 0.4) 100%);
-    pointer-events: none;
+  .hero-copy { max-width: 640px; }
+  .eyebrow {
+    color: var(--jockshock-yellow);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-weight: 700;
+    font-size: 0.8125rem;
+    margin-bottom: 24px;
   }
-
-  .hero-content {
-    max-width: 600px;
-    position: relative;
-    z-index: 1;
+  .hero-headline {
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: 1.05;
+    color: #fff;
+    margin: 0 0 24px;
   }
-
-  .logo-with-tag {
+  .hero-sub {
+    font-size: 1.125rem;
+    line-height: 1.55;
+    color: #d1d5db;
     margin-bottom: 32px;
   }
-
-  .hero-image {
-    position: relative;
-    z-index: 1;
-  }
-
-  .hero-logo {
-    max-width: 100%;
-    width: 500px;
-    height: auto;
-    filter: invert(1); /* Makes black logo white */
-  }
-
-  .hero-headline {
-    margin-bottom: 24px;
-    color: white;
-  }
-
-  .trust-badges {
+  .hero-cta-row {
     display: flex;
-    gap: 24px;
+    gap: 16px;
     margin-bottom: 32px;
     flex-wrap: wrap;
   }
-
-  .badge-icon-item {
-    font-size: 16px;
-    color: var(--athletic-safety-yellow);
-    font-weight: 700;
-    background: rgba(255, 229, 0, 0.15);
-    padding: 8px 16px;
+  .cta-primary {
+    display: inline-block;
+    background: var(--jockshock-yellow);
+    color: var(--jockshock-black);
+    padding: 18px 36px;
+    text-decoration: none;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.9375rem;
+    transition: transform 0.1s ease, box-shadow 0.15s ease;
     border-radius: 4px;
-    border: 1px solid var(--athletic-safety-yellow);
   }
-
-  .hero-cta {
-    font-size: 18px;
-    padding: 20px 40px;
-    box-shadow: 0 4px 12px rgba(255, 229, 0, 0.3);
+  .cta-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(250, 204, 21, 0.35);
   }
-
-  .hero-cta:hover {
-    box-shadow: 0 6px 20px rgba(255, 229, 0, 0.5);
-  }
-
-  .shipping-note {
-    margin-top: 12px;
-    font-size: 14px;
-    color: var(--clinical-silver);
-  }
-
-  .urgency-text {
-    margin-top: 8px;
-    font-size: 14px;
-    color: var(--caution-orange);
+  .cta-secondary {
+    display: inline-block;
+    color: #fff;
+    padding: 18px 24px;
+    text-decoration: none;
     font-weight: 700;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    transition: border-color 0.15s ease;
   }
-
-  .hero-image {
+  .cta-secondary:hover { border-color: var(--jockshock-yellow); }
+  .hero-trust {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 16px 24px;
+    flex-wrap: wrap;
+    color: #d1d5db;
+    font-size: 0.875rem;
+  }
+  .hero-trust li {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .hero-trust li::before {
+    content: "✓";
+    color: var(--jockshock-yellow);
+    font-weight: 800;
+  }
+  .hero-product {
     display: flex;
     justify-content: center;
     align-items: center;
   }
-
-  .product-placeholder {
-    background: rgba(255, 229, 0, 0.1);
-    border: 2px dashed var(--athletic-safety-yellow);
-    border-radius: 8px;
-    padding: 60px;
-    text-align: center;
+  .hero-product img {
+    max-width: 100%;
+    height: auto;
+    max-height: 600px;
+    filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.7));
   }
 
-  .product-mockup {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .bottle-shape {
-    width: 120px;
-    height: 280px;
-    background: linear-gradient(180deg, var(--athletic-safety-yellow) 0%, #ffd000 100%);
-    border-radius: 20px 20px 40px 40px;
-    position: relative;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.3), inset -4px 0 12px rgba(255,255,255,0.4);
-    transform: rotate(15deg);
-  }
-
-  .bottle-shape::before {
-    content: '';
-    position: absolute;
-    top: -20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 40px;
-    height: 30px;
-    background: var(--tactical-black);
-    border-radius: 4px 4px 0 0;
-  }
-
-  .bottle-shape::after {
-    content: '';
-    position: absolute;
-    top: 30%;
-    right: -4px;
-    width: 3px;
-    height: 40%;
-    background: rgba(255, 255, 255, 0.6);
-    border-radius: 2px;
-  }
-
-  /* Problem Section */
-  .problem-section {
-    background: white;
-    text-align: center;
-  }
-
-  .problem-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 40px;
-    margin-bottom: 60px;
-  }
-
-  .problem-card {
-    padding: 40px;
-    background: var(--tactical-black);
-    color: white;
-    border-left: 4px solid var(--athletic-safety-yellow);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  .problem-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(255, 229, 0, 0.2);
-  }
-
-  .problem-icon {
-    font-size: 48px;
-    margin-bottom: 16px;
-  }
-
-  .problem-card h3 {
-    color: var(--athletic-safety-yellow);
-    margin-bottom: 16px;
-  }
-
-  .transition-text {
-    font-size: 32px;
+  /* === SECTIONS === */
+  .section-eyebrow {
+    color: var(--jockshock-yellow);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
     font-weight: 700;
-    color: var(--tactical-black);
-    margin-top: 40px;
-  }
-
-  /* How It Works */
-  .how-it-works {
-    background: var(--performance-white);
-    text-align: center;
-  }
-
-  .how-it-works h2 {
-    margin-bottom: 60px;
-  }
-
-  .steps {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 60px;
-    margin-bottom: 60px;
-  }
-
-  .step {
-    text-align: center;
-  }
-
-  .step-number {
-    width: 80px;
-    height: 80px;
-    background: var(--athletic-safety-yellow);
-    color: var(--tactical-black);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 48px;
-    font-weight: 900;
-    margin: 0 auto 24px;
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-  }
-
-  .step h3 {
+    font-size: 0.8125rem;
     margin-bottom: 12px;
   }
-
-  .social-proof-bar {
-    margin-top: 40px;
-    text-align: center;
-    padding: 20px;
-    background: rgba(255, 229, 0, 0.1);
-    border-radius: 8px;
+  .section-headline {
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: #fff;
+    margin: 0 0 16px;
+    line-height: 1.15;
+  }
+  .section-sub {
+    font-size: 1.125rem;
+    color: var(--jockshock-muted);
+    line-height: 1.6;
+    margin-bottom: 56px;
+    max-width: 720px;
   }
 
-  .social-proof-bar p {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--tactical-black);
-  }
-
-  /* Pricing Section */
-  .pricing {
-    background: var(--tactical-black);
-    color: white;
-    max-width: 100%;
-    padding-left: 0;
-    padding-right: 0;
-    padding-top: 0;
-  }
-
-  .pricing-inner {
-    position: relative;
-    top: -25px;
-    background: var(--tactical-black);
-    padding: 60px 5% 80px;
-    max-width: 1400px;
-    margin: 0 auto;
-    border-radius: 8px;
-    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.3);
-  }
-
-  .pricing h2 {
-    color: white;
-  }
-
-  .pricing-cards {
+  /* === MECHANISM === */
+  .mechanism { padding: 100px 5%; background: var(--jockshock-black); }
+  .mechanism-inner { max-width: 1200px; margin: 0 auto; }
+  .mech-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 40px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 32px;
   }
-
-  .pricing-card {
-    background: #1a1a1a;
-    padding: 40px;
-    text-align: center;
-    position: relative;
-    border: 2px solid transparent;
-    transition: transform 0.3s;
+  .mech-card {
+    background: #141414;
+    padding: 32px;
+    border-left: 3px solid var(--jockshock-yellow);
   }
-
-  .pricing-card:hover {
-    transform: translateY(-8px);
+  .mech-card h3 {
+    color: var(--jockshock-yellow);
+    font-size: 1.25rem;
+    margin: 0 0 12px;
   }
+  .mech-card p { color: var(--jockshock-text); line-height: 1.6; font-size: 0.95rem; margin: 0; }
 
-  .pricing-card.featured {
-    border: 3px solid var(--athletic-safety-yellow);
-    transform: scale(1.05);
-    background: #2a2a2a;
-    box-shadow: 0 0 30px rgba(255, 229, 0, 0.3);
-  }
-
-  .badge {
-    position: absolute;
-    top: -15px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--athletic-safety-yellow);
-    color: var(--tactical-black);
-    padding: 6px 20px;
-    font-size: 14px;
-    font-weight: 900;
-    letter-spacing: 0.05em;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-  }
-
-  .pricing-card h3 {
-    color: var(--athletic-safety-yellow);
-    margin-bottom: 24px;
-  }
-
-  .price {
-    font-size: 48px;
-    font-weight: 900;
-    margin-bottom: 16px;
-    color: white;
-  }
-
-  .description {
-    margin-bottom: 16px;
-    color: var(--clinical-silver);
-  }
-
-  .savings-big {
-    color: var(--caution-orange);
-    font-weight: 900;
-    font-size: 20px;
-    margin-bottom: 8px;
-  }
-
-  .savings {
-    color: var(--athletic-safety-yellow);
-    font-weight: 700;
-    margin-bottom: 24px;
-  }
-
-  /* Guarantee Section */
-  .guarantee {
-    background: white;
-    text-align: center;
-  }
-
-  .guarantee h2 {
-    margin-bottom: 24px;
-  }
-
-  .guarantee-text {
-    font-size: 18px;
-    margin-bottom: 60px;
-    color: var(--tactical-black);
-  }
-
-  .guarantee-badges {
+  /* === ROUTINE === */
+  .routine { padding: 100px 5%; background: #050505; }
+  .routine-inner { max-width: 900px; margin: 0 auto; }
+  .steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 40px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 32px;
   }
-
-  .badge-item {
+  .steps li {
+    background: #141414;
+    padding: 32px;
     text-align: center;
   }
-
-  .badge-icon {
-    width: 80px;
-    height: 80px;
-    background: var(--athletic-safety-yellow);
-    color: var(--tactical-black);
+  .steps h3 {
+    color: #fff;
+    font-size: 1.25rem;
+    margin: 0 0 8px;
+  }
+  .steps p { color: var(--jockshock-muted); margin: 0; font-size: 0.95rem; }
+  .step-num {
+    display: inline-flex;
+    width: 56px;
+    height: 56px;
+    background: var(--jockshock-yellow);
+    color: var(--jockshock-black);
     border-radius: 50%;
-    display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 40px;
-    margin: 0 auto 16px;
+    font-weight: 900;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
   }
 
-  /* Footer */
-  .site-footer {
-    background: var(--tactical-black);
-    color: var(--clinical-silver);
-    text-align: center;
-    padding: 40px 5%;
+  /* === TIERS === */
+  .tiers { padding: 100px 5%; background: var(--jockshock-black); border-top: 1px solid rgba(255,255,255,0.06); }
+  .tiers-inner { max-width: 1200px; margin: 0 auto; text-align: center; }
+  .tiers-inner .section-sub { margin-left: auto; margin-right: auto; }
+  .tier-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    margin-top: 16px;
   }
-
-  .trust-footer-bar {
+  .tier {
+    background: #141414;
+    padding: 40px 32px;
+    text-decoration: none;
+    color: var(--jockshock-text);
+    border: 2px solid transparent;
+    border-radius: 4px;
+    transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    position: relative;
+    text-align: left;
     display: flex;
-    justify-content: center;
-    gap: 40px;
-    margin-bottom: 24px;
-    padding: 16px;
-    border-top: 1px solid var(--clinical-silver);
-    border-bottom: 1px solid var(--clinical-silver);
+    flex-direction: column;
+    gap: 4px;
+  }
+  .tier:hover {
+    border-color: var(--jockshock-yellow);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+  }
+  .tier.featured {
+    border-color: var(--jockshock-yellow);
+    background: #1a1a1a;
+    box-shadow: 0 0 0 1px var(--jockshock-yellow);
+  }
+  .tier-badge {
+    position: absolute;
+    top: -12px;
+    right: 24px;
+    background: var(--jockshock-yellow);
+    color: var(--jockshock-black);
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 0.6875rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .tier-label {
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 800;
+    font-size: 1rem;
+  }
+  .tier-detail { color: var(--jockshock-muted); font-size: 0.875rem; }
+  .tier-price { color: #fff; font-size: 2rem; font-weight: 900; margin-top: 8px; }
+  .tier-savings { color: var(--jockshock-yellow); font-weight: 700; font-size: 0.8125rem; }
+  .tier-bottom {
+    margin-top: 16px;
+    color: var(--jockshock-yellow);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.8125rem;
   }
 
-  .trust-footer-bar span {
-    color: var(--athletic-safety-yellow);
-    font-weight: 600;
-    font-size: 14px;
+  .teams-pivot {
+    margin-top: 56px;
+    padding: 24px;
+    background: #141414;
+    border-left: 3px solid var(--jockshock-yellow);
+    text-align: left;
+  }
+  .teams-pivot p { margin: 0; color: var(--jockshock-text); }
+  .teams-pivot strong { color: #fff; }
+  .teams-pivot a {
+    color: var(--jockshock-yellow);
+    text-decoration: none;
+    font-weight: 700;
+  }
+  .teams-pivot a:hover { text-decoration: underline; }
+
+  /* === CREDENTIAL === */
+  .credential { padding: 100px 5%; background: #050505; }
+  .credential-inner { max-width: 800px; margin: 0 auto; text-align: center; }
+  .credential-body {
+    color: var(--jockshock-muted);
+    line-height: 1.7;
+    font-size: 1.05rem;
   }
 
-  .site-footer p {
-    margin: 8px 0;
+  /* === GUARANTEE === */
+  .guarantee {
+    padding: 100px 5%;
+    background: var(--jockshock-black);
+    border-top: 2px solid var(--jockshock-yellow);
+    border-bottom: 2px solid var(--jockshock-yellow);
+    text-align: center;
+  }
+  .guarantee-inner { max-width: 600px; margin: 0 auto; }
+  .guarantee h2 {
+    color: #fff;
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    margin-bottom: 16px;
+  }
+  .guarantee p {
+    color: var(--jockshock-muted);
+    margin-bottom: 32px;
+    font-size: 1.05rem;
+    line-height: 1.6;
   }
 
-  /* Mobile Responsive */
-  @media (max-width: 768px) {
-    .hero {
+  /* === RESPONSIVE === */
+  @media (max-width: 900px) {
+    .hero-grid {
       grid-template-columns: 1fr;
+      gap: 32px;
+      padding: 64px 5% 56px;
       min-height: auto;
-      padding: 60px 5%;
     }
-
-    .hero-image {
-      order: -1;
-    }
-
-    .product-placeholder {
-      padding: 40px;
-    }
-
-    .header-content {
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .pricing-cards,
-    .steps,
-    .problem-grid,
-    .guarantee-badges {
-      grid-template-columns: 1fr;
-    }
-
-    .pricing-card.featured {
-      transform: scale(1);
-    }
-
-    .trust-badges {
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .hero-logo {
-      width: 300px;
-    }
-
-    .header-logo {
-      height: 30px;
-    }
-
-    .trust-footer-bar {
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .badge-icon-item {
-      font-size: 14px;
-      padding: 6px 12px;
-    }
-
-    .urgency-text {
-      font-size: 12px;
-    }
-
-    .social-proof-bar p {
-      font-size: 16px;
+    .hero-product img { max-height: 400px; }
+    .mechanism, .routine, .tiers, .credential, .guarantee {
+      padding: 64px 5%;
     }
   }
 </style>
-</body>
-</html>

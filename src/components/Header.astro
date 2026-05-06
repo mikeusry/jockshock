@@ -4,18 +4,24 @@ import CartIcon from "./CartIcon.svelte";
 ---
 
 <header class="sticky top-0 z-40">
-  <div class="border-b bg-white/70 py-3 backdrop-blur-2xl">
-    <nav class="container grid grid-cols-3 items-center">
-      <a href="/">
-        <span class="sr-only">Logo</span>
+  <div class="border-b border-white/10 bg-[#0a0a0a]/95 py-3 backdrop-blur-2xl">
+    <nav class="container flex items-center justify-between">
+      <a href="/" aria-label="JockShock home">
         <Logo />
       </a>
-      <h1
-        class="flex justify-center text-sm font-semibold text-gray-900 sm:text-xl"
-      >
-        Astro 🧑‍🚀 Shopify
-      </h1>
-      <div class="justify-self-end">
+      <div class="flex items-center gap-4">
+        <a
+          href="/products/jockshock/"
+          class="hidden text-xs font-bold uppercase tracking-widest text-white hover:text-[#facc15] sm:inline"
+        >
+          Shop
+        </a>
+        <a
+          href="/teams/"
+          class="hidden text-xs font-bold uppercase tracking-widest text-white hover:text-[#facc15] sm:inline"
+        >
+          Teams
+        </a>
         <CartIcon client:load />
       </div>
     </nav>
