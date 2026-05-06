@@ -119,7 +119,7 @@
     </button>
 
     <ul class="trust-row">
-      <li>EPA-registered</li>
+      <li>ZeroPoint Technology</li>
       <li>Made in USA</li>
       <li>30-day money-back</li>
     </ul>
