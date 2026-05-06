@@ -7,12 +7,29 @@ import AnnouncementBar from "../components/AnnouncementBar.astro";
 export interface Props {
   title: string;
   description?: string;
+  /** Absolute or root-relative URL to the social-share image. Defaults to the
+   *  JockShock single-bottle hero on Cloudinary. */
+  ogImage?: string;
+  /** Override the og:type. Default 'website'; set to 'product' on PDP. */
+  ogType?: "website" | "product";
 }
 
-const defaultDesc =
-  "A lightweight and minimalit Astro starter theme using Shopify with Svelte, Tailwind, and TypeScript.";
+const SITE_URL = "https://jockshock.com";
+const DEFAULT_DESC =
+  "Pro-grade equipment deodorizer for serious athletes. Built for gear, not for the kitchen. Powered by ZeroPoint Technology.";
+const DEFAULT_OG_IMAGE =
+  "https://res.cloudinary.com/southland-organics/image/upload/c_fit,w_1200,h_630,b_rgb:0a0a0a,q_auto,f_jpg/JockShock/jockshock-32oz-single-2026.png";
 
-const { title, description = defaultDesc } = Astro.props as Props;
+const {
+  title,
+  description = DEFAULT_DESC,
+  ogImage = DEFAULT_OG_IMAGE,
+  ogType = "website",
+} = Astro.props as Props;
+
+// Canonical URL — strip query string, normalize trailing slash.
+const canonicalPath = Astro.url.pathname;
+const canonicalUrl = `${SITE_URL}${canonicalPath}`;
 
 // point.dog pixel config — JockShock events land in the Southland CDP table.
 // Per legal-entity decision (project_jockshock_legal_entity), JockShock is a
@@ -28,11 +45,32 @@ const pixelEndpoint =
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalUrl} />
+
     <title>{title}</title>
     <meta name="description" content={description} />
+
+    <!-- Open Graph (Facebook, LinkedIn, iMessage, Slack, generic crawlers) -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="JockShock" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="JockShock — pro-grade equipment deodorizer" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content="JockShock — pro-grade equipment deodorizer" />
 
     <!-- point.dog Pixel -->
     <script is:inline define:vars={{ pixelBrandId, pixelEndpoint }}>

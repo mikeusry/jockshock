@@ -100,9 +100,13 @@ const variants = product
 const title = "JockShock — Pro-Grade Equipment Deodorizer";
 const description =
   "Pro-grade equipment deodorizer for serious athletes. Built for gear, not for the kitchen. ZeroPoint Technology. 32oz matte-black bottle.";
+
+// PDP shares the 3-pack as the social-share image (the featured variant)
+const ogImage =
+  "https://res.cloudinary.com/southland-organics/image/upload/c_fit,w_1200,h_630,b_rgb:0a0a0a,q_auto,f_jpg/JockShock/jockshock-3pack-athlete-2026.png";
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} ogImage={ogImage} ogType="product">
   {!product || variants.length === 0 ? (
     <section class="error">
       <div class="error-inner">

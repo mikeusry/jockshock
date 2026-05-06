@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Block API routes from being crawled — they're functional endpoints, not content
+Disallow: /api/
+
+Sitemap: https://jockshock.com/sitemap.xml
