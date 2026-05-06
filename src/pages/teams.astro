@@ -105,6 +105,15 @@ const description =
         <p class="section-eyebrow">Request a quote</p>
         <h2 class="section-headline">Tell us about your program. We'll get back within one business day.</h2>
 
+        <div class="quote-success" data-success hidden>
+          <h3>Got it. We'll be in touch.</h3>
+          <p>
+            Mike or someone from the team will email you within one business
+            day with a quote tailored to your roster size and sport. If you
+            need to chat sooner, reach out directly: <a href="mailto:mike@southlandorganics.com">mike@southlandorganics.com</a>.
+          </p>
+        </div>
+
         <form class="quote-form" method="POST" action="/api/teams-intake" data-quote-form>
           <div class="form-row">
             <label>
@@ -222,24 +231,62 @@ const description =
     });
   }
 
-  // Form submit — the API route doesn't exist yet, so for now we capture the
-  // intent in the pixel + show a friendly message and let the browser POST.
-  // A follow-up wires the actual /api/teams-intake handler.
+  // Form submit: POST JSON to /api/teams-intake, render thank-you on success.
   const form = document.querySelector<HTMLFormElement>("[data-quote-form]");
-  form?.addEventListener("submit", (e) => {
-    if (typeof window !== "undefined" && (window as any).pdPixel) {
-      const fd = new FormData(form);
+  const successPanel = document.querySelector<HTMLElement>("[data-success]");
+  const submitBtn = form?.querySelector<HTMLButtonElement>(".cta-submit");
+
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!form || !submitBtn) return;
+
+    submitBtn.disabled = true;
+    const originalLabel = submitBtn.textContent;
+    submitBtn.textContent = "Sending…";
+
+    const fd = new FormData(form);
+    const payload = Object.fromEntries(fd.entries());
+
+    // Pixel — fire BEFORE the network call so the click is captured even if
+    // the API is slow or fails.
+    if ((window as any).pdPixel) {
       (window as any).pdPixel.track("teams_quote_submitted", {
         sub_brand: "jockshock",
         persona: "carmen",
-        sport: fd.get("sport"),
-        roster_size: fd.get("roster_size"),
-        timeline: fd.get("timeline"),
-        role: fd.get("role"),
+        sport: payload.sport,
+        roster_size: payload.roster_size,
+        timeline: payload.timeline,
+        role: payload.role,
       });
     }
-    // Until /api/teams-intake exists, fall through to the browser default
-    // (which will 404). Owner: Mike. Tracked in punchlist.
+
+    try {
+      const r = await fetch("/api/teams-intake", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!r.ok) throw new Error(`Server returned ${r.status}`);
+      // Swap form for thank-you panel
+      form.hidden = true;
+      if (successPanel) {
+        successPanel.hidden = false;
+        successPanel.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    } catch (err) {
+      console.error("[teams-intake] submit failed", err);
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalLabel;
+      // Inline error so the user knows to try again or email directly.
+      let errorEl = form.querySelector<HTMLElement>(".form-error");
+      if (!errorEl) {
+        errorEl = document.createElement("p");
+        errorEl.className = "form-error";
+        submitBtn.insertAdjacentElement("afterend", errorEl);
+      }
+      errorEl.textContent =
+        "Something went wrong sending that. Email mike@southlandorganics.com directly and we'll handle it.";
+    }
   });
 </script>
 
@@ -424,6 +471,39 @@ const description =
     text-align: center;
     margin: 16px 0 0;
   }
+  .form-error {
+    color: #fca5a5;
+    background: rgba(239, 68, 68, 0.1);
+    border-left: 3px solid #ef4444;
+    padding: 12px 16px;
+    margin: 16px 0 0;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+  .quote-success {
+    background: #141414;
+    padding: 40px;
+    border-left: 3px solid var(--jockshock-yellow);
+    border-radius: 4px;
+    margin-top: 16px;
+  }
+  .quote-success h3 {
+    color: var(--jockshock-yellow);
+    font-size: 1.5rem;
+    margin: 0 0 16px;
+  }
+  .quote-success p {
+    color: var(--jockshock-text);
+    line-height: 1.7;
+    font-size: 1rem;
+    margin: 0;
+  }
+  .quote-success a {
+    color: var(--jockshock-yellow);
+    text-decoration: none;
+    font-weight: 700;
+  }
+  .quote-success a:hover { text-decoration: underline; }
 
   @media (max-width: 768px) {
     .hero, .what, .who, .quote { padding: 64px 5%; }
