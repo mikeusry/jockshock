@@ -30,6 +30,16 @@ function setCookie(name: string, value: string, days: number): void {
   document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/${domainAttr}; SameSite=Lax`;
 }
 
+function getCookie(name: string): string | null {
+  if (typeof document === "undefined") return null;
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) {
+    return decodeURIComponent(parts.pop()!.split(";").shift() || "");
+  }
+  return null;
+}
+
 export function setPersona(persona: JockShockPersona): void {
   setCookie(COOKIE_NAME, persona, COOKIE_DAYS);
   setCookie(SEGMENT_COOKIE, "sports", COOKIE_DAYS);
@@ -41,5 +51,17 @@ export function setPersona(persona: JockShockPersona): void {
       sub_brand: "jockshock",
       source: "lander",
     });
+  }
+}
+
+/**
+ * Stamp a default persona only if none is set. Used on surfaces where the
+ * brand should default to a persona (Aaron on homepage / PDP) without
+ * overwriting a positive Pam/Carmen stamp from a prior visit.
+ */
+export function setPersonaIfMissing(persona: JockShockPersona): void {
+  const existing = getCookie(COOKIE_NAME);
+  if (!existing) {
+    setPersona(persona);
   }
 }

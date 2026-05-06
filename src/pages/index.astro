@@ -152,12 +152,21 @@ const HERO_BOTTLE =
           </a>
         </div>
 
-        <div class="teams-pivot">
-          <p>
-            <strong>Coaching a team or running a facility?</strong>
-            We do volume pricing for programs.
-            <a href="/teams/">Get a team quote →</a>
-          </p>
+        <div class="pivots">
+          <div class="pivot">
+            <p>
+              <strong>Sports parent?</strong>
+              You opened the trunk and gagged. Here's how to fix it.
+              <a href="/parents/">For parents →</a>
+            </p>
+          </div>
+          <div class="pivot">
+            <p>
+              <strong>Coaching a team or running a facility?</strong>
+              Volume pricing for programs.
+              <a href="/teams/">Get a team quote →</a>
+            </p>
+          </div>
         </div>
       </div>
     </section>
@@ -192,6 +201,14 @@ const HERO_BOTTLE =
     </section>
   </div>
 </BaseLayout>
+
+<script>
+  // Aaron is the JockShock default — if no other signal stamped a persona,
+  // stamp Aaron. Existing cookie wins (don't overwrite a Pam/Carmen visitor
+  // who clicked back to the homepage).
+  import { setPersonaIfMissing } from "../utils/persona-stamp";
+  setPersonaIfMissing("aaron");
+</script>
 
 <style>
   .js-home {
@@ -473,21 +490,28 @@ const HERO_BOTTLE =
     font-size: 0.8125rem;
   }
 
-  .teams-pivot {
+  .pivots {
     margin-top: 56px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    text-align: left;
+  }
+  .pivot {
     padding: 24px;
     background: #141414;
     border-left: 3px solid var(--jockshock-yellow);
-    text-align: left;
   }
-  .teams-pivot p { margin: 0; color: var(--jockshock-text); }
-  .teams-pivot strong { color: #fff; }
-  .teams-pivot a {
+  .pivot p { margin: 0; color: var(--jockshock-text); }
+  .pivot strong { color: #fff; display: block; margin-bottom: 4px; }
+  .pivot a {
     color: var(--jockshock-yellow);
     text-decoration: none;
     font-weight: 700;
+    display: inline-block;
+    margin-top: 8px;
   }
-  .teams-pivot a:hover { text-decoration: underline; }
+  .pivot a:hover { text-decoration: underline; }
 
   /* === CREDENTIAL === */
   .credential { padding: 100px 5%; background: #050505; }

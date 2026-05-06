@@ -1,0 +1,690 @@
+---
+/**
+ * /parents — Pam's lander.
+ *
+ * Pam buys for an Aaron. She doesn't need a separate PDP — she funnels into
+ * the same /products/jockshock page Aaron uses. This lander does the *voice
+ * translation*: parent-emotional framing of the same product, then hands her
+ * over with persona=pam stamped so Klaviyo and future paid retargeting can
+ * segment her differently.
+ *
+ * Voice rule (from brand-brief.md): Aaron's voice is the brand voice. Pam
+ * translates downward — same product, framed for an adult buyer solving a
+ * household problem. No locker-room slang. No performance-edge framing.
+ *
+ * Cold-paid hook is the "trunk-open" moment per pam-the-parent.md persona
+ * spec — the universal "opened the SUV and recoiled" trigger.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const title = "JockShock for Sports Parents — Stop the Gear Smell at the Source";
+const description =
+  "Pro-grade equipment deodorizer for the parent who runs the gear. Engineered for athletic gear, safe for skin contact, no harsh chemicals. EPA-registered HOCl chemistry.";
+
+// Hero image — same single bottle, but on a less locker-room context (warmer tone)
+const HERO_BOTTLE =
+  "https://res.cloudinary.com/southland-organics/image/upload/c_fit,w_900,q_auto,f_auto/JockShock/jockshock-32oz-single-2026.png";
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="js-parents">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">For sports parents</p>
+          <h1 class="hero-headline">
+            You opened the trunk and gagged.<br />Again.
+          </h1>
+          <p class="hero-sub">
+            Hockey bag in the back of the SUV. Lacrosse pads in the laundry
+            room. Wrestling singlet in the dryer that now smells like the
+            singlet. Febreze didn't fix it. Lysol didn't fix it. Bleach
+            destroyed the pads.
+          </p>
+          <p class="hero-promise">
+            JockShock kills the bacteria that make gear smell — using the same
+            chemistry your immune system makes. EPA-registered. Safe on skin
+            contact. Made for the gear, not for the kitchen.
+          </p>
+          <div class="hero-cta-row">
+            <a href="/products/jockshock/" class="cta-primary">Get JockShock — $24.99</a>
+            <a href="#how" class="cta-secondary">How it works</a>
+          </div>
+          <ul class="hero-trust">
+            <li>EPA-registered</li>
+            <li>Safe on skin contact</li>
+            <li>No harsh chemicals</li>
+            <li>Made in USA</li>
+          </ul>
+        </div>
+        <div class="hero-product">
+          <img src={HERO_BOTTLE} alt="JockShock 32oz pro-grade equipment deodorizer" />
+        </div>
+      </div>
+    </section>
+
+    <!-- THE THINGS YOU'VE ALREADY TRIED -->
+    <section class="tried">
+      <div class="tried-inner">
+        <p class="section-eyebrow">If you've already tried…</p>
+        <h2 class="section-headline">…you're not crazy. Most "gear sprays" don't actually fix the problem.</h2>
+        <div class="tried-grid">
+          <div class="tried-card">
+            <h3>Febreze / Lysol</h3>
+            <p>
+              These are designed for fabric in your closet and surfaces in
+              your home. They mask smell with fragrance for an hour. Then
+              the smell comes back, often worse, because the bacteria
+              underneath are still alive and multiplying.
+            </p>
+          </div>
+          <div class="tried-card">
+            <h3>Bleach or vinegar</h3>
+            <p>
+              Bleach destroys foam padding and fades fabric. Vinegar smells
+              worse than the gear. Both are too harsh for $300 helmets and
+              $400 pads — and neither one is engineered for athletic
+              materials.
+            </p>
+          </div>
+          <div class="tried-card">
+            <h3>Throwing it in the wash</h3>
+            <p>
+              Most athletic gear is built specifically not to be machine
+              washed — pads warp, foam degrades, leather cracks. The pieces
+              that actually carry the funk (helmets, gloves, mouthguards,
+              cleats) can't go in at all.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS — translated for Pam -->
+    <section class="how" id="how">
+      <div class="how-inner">
+        <p class="section-eyebrow">How it works</p>
+        <h2 class="section-headline">
+          Hypochlorous acid. The same molecule your immune system makes.
+        </h2>
+        <p class="section-sub">
+          JockShock is built around HOCl — the active ingredient in wound-care
+          saline sprays you'd use on a scrape. Your white blood cells produce
+          it naturally to kill bacteria. It's safe on skin contact, it doesn't
+          stain or damage gear, and it kills the bacteria producing the smell
+          instead of covering them up.
+        </p>
+
+        <div class="how-grid">
+          <div class="how-card">
+            <h3>Safe for him</h3>
+            <p>
+              Same chemistry family as the saline spray a pediatrician uses
+              on a cut. Safe for mouthguards, headgear, and any gear that
+              touches skin. Fragrance-free.
+            </p>
+          </div>
+          <div class="how-card">
+            <h3>Safe for the gear</h3>
+            <p>
+              Engineered for the materials athletic equipment is actually
+              made of: foam, leather, mesh, padding, plastic. No bleach.
+              No staining. No fading.
+            </p>
+          </div>
+          <div class="how-card">
+            <h3>Actually kills the source</h3>
+            <p>
+              Not a fragrance, not a mask. Targets the bacteria that produce
+              the smell. EPA-registered as an antimicrobial.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- THE HAND-IT-BACK ROUTINE -->
+    <section class="hand-back">
+      <div class="hand-back-inner">
+        <p class="section-eyebrow">The 60-second routine</p>
+        <h2 class="section-headline">
+          Set it up once. Hand the routine to him. Stop being the gear manager.
+        </h2>
+        <p class="section-sub">
+          The hardest part isn't getting the smell out — it's getting your
+          kid to take care of it without you nagging. JockShock works best
+          as a built-in habit: spray after every practice, air for two
+          minutes, repeat. Six weeks in, it's automatic.
+        </p>
+        <ol class="steps">
+          <li>
+            <span class="step-num">1</span>
+            <h3>Set up the spot</h3>
+            <p>Bottle lives in the gear bag or the mudroom. He sees it every time he comes home.</p>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <h3>Show him once</h3>
+            <p>Inside the pads. Inside the helmet. Inside the bag. 30 seconds.</p>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <h3>Stop doing it for him</h3>
+            <p>The smell going away when he does it (and coming back when he doesn't) closes the feedback loop faster than nagging.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- TIERS / CTA -->
+    <section class="tiers">
+      <div class="tiers-inner">
+        <p class="section-eyebrow">Get yours</p>
+        <h2 class="section-headline">Most parents start with the 3-pack.</h2>
+        <p class="section-sub center">
+          One bottle for the gear bag, one for the laundry room, one for the
+          car. A 3-pack lasts most of a season at trained-use cadence.
+        </p>
+
+        <div class="tier-grid">
+          <a href="/products/jockshock/" class="tier">
+            <div class="tier-label">Single</div>
+            <div class="tier-detail">1 × 32oz</div>
+            <div class="tier-price">$24.99</div>
+            <div class="tier-bottom">Get it →</div>
+          </a>
+          <a href="/products/jockshock/" class="tier featured">
+            <span class="tier-badge">Most Parents Pick This</span>
+            <div class="tier-label">Athlete Pack</div>
+            <div class="tier-detail">3 × 32oz</div>
+            <div class="tier-price">$59.99</div>
+            <div class="tier-savings">Save $15</div>
+            <div class="tier-bottom">Get it →</div>
+          </a>
+          <a href="/products/jockshock/" class="tier">
+            <div class="tier-label">Team Pack</div>
+            <div class="tier-detail">6 × 32oz</div>
+            <div class="tier-price">$99.99</div>
+            <div class="tier-savings">Save $50</div>
+            <div class="tier-bottom">Get it →</div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ — Pam's questions -->
+    <section class="faq">
+      <div class="faq-inner">
+        <h2 class="section-headline center">Real parent questions, straight answers</h2>
+        <div class="faq-grid">
+          <details>
+            <summary>Is this safe for my kid?</summary>
+            <p>
+              Yes. The active ingredient (HOCl) is in the same chemistry
+              family as the saline wound-care sprays a pediatrician uses
+              on cuts and scrapes. It's the same molecule your kid's own
+              white blood cells produce to fight infection. Safe on skin
+              contact at use concentration, safe on mouthguards and
+              headgear.
+            </p>
+          </details>
+          <details>
+            <summary>Will it damage his gear or stain his uniform?</summary>
+            <p>
+              No. JockShock is engineered for the materials athletic gear
+              is made of — foam, leather, mesh, padding, plastic. No
+              bleach, no abrasives, no fragrance. We don't recommend
+              spraying directly on white uniforms while wet for hours,
+              but normal use on gear and equipment is gear-safe.
+            </p>
+          </details>
+          <details>
+            <summary>Will my kid actually use it?</summary>
+            <p>
+              Once it's a routine, yes. The product works fast — gear
+              smells better immediately and stays better between practices.
+              Most kids form the habit within a few weeks because they can
+              tell when they did it and when they didn't. We send a short
+              email series after your first order with the exact framing
+              that works.
+            </p>
+          </details>
+          <details>
+            <summary>How long does a 32oz bottle last?</summary>
+            <p>
+              At trained-use cadence (after every practice and game), a
+              single 32oz bottle covers about 6–10 weeks of heavy use.
+              That's why most parents start with the 3-pack — one for the
+              gear bag, one for the laundry room, one for the car.
+            </p>
+          </details>
+          <details>
+            <summary>Does this work on the smell in the car?</summary>
+            <p>
+              Indirectly — yes. JockShock kills the bacteria producing the
+              smell on the gear. No bacteria, no smell migrating into the
+              car. We don't recommend spraying it on car upholstery, but
+              treating the gear it carries is what fixes the car problem.
+            </p>
+          </details>
+          <details>
+            <summary>What's your return policy?</summary>
+            <p>
+              30 days, no questions, keep what's left. If JockShock doesn't
+              work for you, email us and we'll refund the bottle.
+            </p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="final-cta">
+      <div class="final-cta-inner">
+        <h2>Stop covering it up.</h2>
+        <p>Try a 3-pack for a season. If it doesn't work, we refund it.</p>
+        <a href="/products/jockshock/" class="cta-primary">Get JockShock</a>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<script>
+  // Stamp persona=pam on landing — positive signal, per persona-gap memory.
+  // Pam doesn't default; she has to be positively identified, and the URL
+  // /parents IS that signal.
+  import { setPersona } from "../utils/persona-stamp";
+  setPersona("pam");
+
+  // Pixel event for the lander itself
+  if (typeof window !== "undefined" && (window as any).pdPixel) {
+    (window as any).pdPixel.track("parents_lander_view", {
+      sub_brand: "jockshock",
+      persona: "pam",
+    });
+  }
+</script>
+
+<style>
+  .js-parents {
+    --jockshock-black: #0a0a0a;
+    --jockshock-yellow: #facc15;
+    --jockshock-yellow-warm: #fbbf24;
+    --jockshock-cream: #fffbeb;
+    --jockshock-text: #f3f4f6;
+    --jockshock-muted: #9ca3af;
+    background: var(--jockshock-black);
+    color: var(--jockshock-text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  }
+  .js-parents h1, .js-parents h2, .js-parents h3 {
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  .eyebrow, .section-eyebrow {
+    color: var(--jockshock-yellow);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 700;
+    font-size: 0.8125rem;
+    margin-bottom: 16px;
+  }
+  .section-headline {
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: #fff;
+    margin: 0 0 16px;
+    line-height: 1.15;
+  }
+  .section-headline.center { text-align: center; }
+  .section-sub {
+    font-size: 1.125rem;
+    color: var(--jockshock-muted);
+    line-height: 1.6;
+    margin-bottom: 56px;
+    max-width: 720px;
+  }
+  .section-sub.center {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+
+  /* === HERO ===
+     Pam's hero is warmer than Aaron's. Less locker-room cinematic, more
+     "you, in your kitchen, holding the answer." Still matte black core,
+     but no aggressive overlay imagery — just product + clean copy. */
+  .hero {
+    background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+    padding: 100px 5% 80px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .hero-grid {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 64px;
+    align-items: center;
+  }
+  .hero-copy { max-width: 640px; }
+  .hero-headline {
+    font-size: clamp(2.25rem, 4.5vw, 3.75rem);
+    color: #fff;
+    line-height: 1.1;
+    margin: 0 0 24px;
+  }
+  .hero-sub {
+    font-size: 1.125rem;
+    color: #d1d5db;
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .hero-promise {
+    font-size: 1.0625rem;
+    color: var(--jockshock-text);
+    line-height: 1.6;
+    margin-bottom: 32px;
+    padding: 16px 20px;
+    background: rgba(250, 204, 21, 0.06);
+    border-left: 3px solid var(--jockshock-yellow);
+  }
+  .hero-cta-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .cta-primary {
+    display: inline-block;
+    background: var(--jockshock-yellow);
+    color: var(--jockshock-black);
+    padding: 18px 36px;
+    text-decoration: none;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.9375rem;
+    border-radius: 4px;
+    transition: transform 0.1s ease, box-shadow 0.15s ease;
+  }
+  .cta-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(250, 204, 21, 0.35);
+  }
+  .cta-secondary {
+    display: inline-block;
+    color: #fff;
+    padding: 18px 24px;
+    text-decoration: none;
+    font-weight: 700;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    transition: border-color 0.15s ease;
+  }
+  .cta-secondary:hover { border-color: var(--jockshock-yellow); }
+  .hero-trust {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 16px 24px;
+    flex-wrap: wrap;
+    color: #d1d5db;
+    font-size: 0.875rem;
+  }
+  .hero-trust li {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .hero-trust li::before {
+    content: "✓";
+    color: var(--jockshock-yellow);
+    font-weight: 800;
+  }
+  .hero-product {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .hero-product img {
+    max-width: 100%;
+    height: auto;
+    max-height: 600px;
+    filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.7));
+  }
+
+  /* === TRIED === */
+  .tried {
+    padding: 100px 5%;
+    background: var(--jockshock-black);
+  }
+  .tried-inner { max-width: 1200px; margin: 0 auto; }
+  .tried-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+  }
+  .tried-card {
+    background: #141414;
+    padding: 32px;
+    border-left: 3px solid var(--jockshock-yellow-warm);
+  }
+  .tried-card h3 {
+    color: var(--jockshock-yellow);
+    font-size: 1.25rem;
+    margin: 0 0 12px;
+  }
+  .tried-card p {
+    color: var(--jockshock-text);
+    line-height: 1.6;
+    margin: 0;
+    font-size: 0.95rem;
+  }
+
+  /* === HOW === */
+  .how {
+    padding: 100px 5%;
+    background: #050505;
+  }
+  .how-inner { max-width: 1200px; margin: 0 auto; }
+  .how-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+  }
+  .how-card {
+    background: #141414;
+    padding: 32px;
+    border-left: 3px solid var(--jockshock-yellow);
+  }
+  .how-card h3 {
+    color: var(--jockshock-yellow);
+    font-size: 1.25rem;
+    margin: 0 0 12px;
+  }
+  .how-card p {
+    color: var(--jockshock-text);
+    line-height: 1.6;
+    margin: 0;
+    font-size: 0.95rem;
+  }
+
+  /* === HAND-BACK ROUTINE === */
+  .hand-back { padding: 100px 5%; background: var(--jockshock-black); }
+  .hand-back-inner { max-width: 900px; margin: 0 auto; }
+  .steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+  }
+  .steps li {
+    background: #141414;
+    padding: 32px;
+    text-align: center;
+  }
+  .steps h3 { color: #fff; font-size: 1.25rem; margin: 0 0 8px; }
+  .steps p { color: var(--jockshock-muted); margin: 0; font-size: 0.95rem; line-height: 1.5; }
+  .step-num {
+    display: inline-flex;
+    width: 56px;
+    height: 56px;
+    background: var(--jockshock-yellow);
+    color: var(--jockshock-black);
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+
+  /* === TIERS === */
+  .tiers {
+    padding: 100px 5%;
+    background: #050505;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .tiers-inner { max-width: 1200px; margin: 0 auto; text-align: center; }
+  .tier-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    margin-top: 16px;
+  }
+  .tier {
+    background: #141414;
+    padding: 40px 32px;
+    text-decoration: none;
+    color: var(--jockshock-text);
+    border: 2px solid transparent;
+    border-radius: 4px;
+    transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    position: relative;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .tier:hover {
+    border-color: var(--jockshock-yellow);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+  }
+  .tier.featured {
+    border-color: var(--jockshock-yellow);
+    background: #1a1a1a;
+    box-shadow: 0 0 0 1px var(--jockshock-yellow);
+  }
+  .tier-badge {
+    position: absolute;
+    top: -12px;
+    right: 24px;
+    background: var(--jockshock-yellow);
+    color: var(--jockshock-black);
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 0.6875rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+  .tier-label {
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 800;
+    font-size: 1rem;
+  }
+  .tier-detail { color: var(--jockshock-muted); font-size: 0.875rem; }
+  .tier-price { color: #fff; font-size: 2rem; font-weight: 900; margin-top: 8px; }
+  .tier-savings { color: var(--jockshock-yellow); font-weight: 700; font-size: 0.8125rem; }
+  .tier-bottom {
+    margin-top: 16px;
+    color: var(--jockshock-yellow);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.8125rem;
+  }
+
+  /* === FAQ === */
+  .faq { padding: 100px 5%; background: var(--jockshock-black); }
+  .faq-inner { max-width: 800px; margin: 0 auto; }
+  .faq .section-headline { margin-bottom: 48px; }
+  .faq-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .faq details {
+    background: #141414;
+    border-left: 3px solid transparent;
+    transition: border-color 0.15s ease;
+  }
+  .faq details[open] {
+    border-left-color: var(--jockshock-yellow);
+  }
+  .faq summary {
+    padding: 24px 32px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: #fff;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after {
+    content: "+";
+    color: var(--jockshock-yellow);
+    font-size: 1.5rem;
+    font-weight: 400;
+  }
+  .faq details[open] summary::after { content: "−"; }
+  .faq details p {
+    padding: 0 32px 24px;
+    color: var(--jockshock-muted);
+    line-height: 1.6;
+  }
+
+  /* === FINAL CTA === */
+  .final-cta {
+    padding: 100px 5%;
+    background: var(--jockshock-black);
+    border-top: 2px solid var(--jockshock-yellow);
+    border-bottom: 2px solid var(--jockshock-yellow);
+    text-align: center;
+  }
+  .final-cta-inner { max-width: 600px; margin: 0 auto; }
+  .final-cta h2 {
+    color: #fff;
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    margin-bottom: 16px;
+  }
+  .final-cta p {
+    color: var(--jockshock-muted);
+    margin-bottom: 32px;
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 900px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .hero-product img { max-height: 400px; }
+    .hero, .tried, .how, .hand-back, .tiers, .faq, .final-cta {
+      padding: 64px 5%;
+    }
+  }
+</style>

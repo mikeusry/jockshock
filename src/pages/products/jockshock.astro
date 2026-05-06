@@ -286,6 +286,14 @@ const description =
   )}
 </BaseLayout>
 
+<script>
+  // Aaron is the JockShock default — if no other signal stamped a persona,
+  // stamp Aaron. Existing cookie wins (don't overwrite a Pam/Carmen visitor
+  // who navigated here from /parents or /teams).
+  import { setPersonaIfMissing } from "../../utils/persona-stamp";
+  setPersonaIfMissing("aaron");
+</script>
+
 <style>
   /* === Brand variables (matches brand-brief.md) === */
   .pdp {
