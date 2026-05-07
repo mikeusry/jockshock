@@ -1,6 +1,8 @@
 # JockShock SEO Keyword Strategy
 
-> **Status:** Drafted 2026-05-07. Strategy synthesized from live Google SERP research + competitor pricing memory + brand brief. Live keyword volumes (DataForSEO / Semrush) NOT pulled — strategy is based on intent mapping + SERP shape, not exact volume estimates. Validate primary picks with DataForSEO before committing copy resources to the long-tail content hubs (months 2–6).
+> **Status:** Drafted 2026-05-07. **Updated 2026-05-06** with DataForSEO validation findings and the brand-widening decision. Original v1 strategy synthesized from live Google SERP research + competitor pricing memory + brand brief, without DFS volume data. v2 incorporates DFS data (`docs/research/2026-05-06-dataforseo-keyword-validation.md`) and the 2026-05-06 brand-widening decision (athletic + athletic-adjacent gear AND shoes).
+
+> **Brand framing (locked 2026-05-06):** JockShock is "athletic and athletic-adjacent gear and shoes." Single brand, single SKU line. See `project_brand_widening_athletic_adjacent.md`. The widening is the strategic context for the v2 changes throughout this doc.
 
 > **Hard rule:** Zero kill claims, zero EPA references, zero "disinfectant / sanitizer / antimicrobial / 24-hour / hospital-grade / HOCl / hypochlorous acid" language anywhere on-site. JockShock is a **deodorizer**. Search terms in this doc that contain forbidden language are flagged (do not use; ranked here only to surface intent we cannot serve, or to design content that out-flanks competitors who can't avoid those terms).
 
