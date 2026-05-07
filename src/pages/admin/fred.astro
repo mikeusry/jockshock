@@ -1,0 +1,486 @@
+---
+/**
+ * Fred Munzenmaier — JockShock Founder Plan
+ *
+ * Internal page behind /admin gate. Direct, founder-to-founder register.
+ * Math is sourced from Nexus DB (lmtjxckdcsdymqxpgjxo) as of 2026-05-06.
+ * Numbers will move when BOMs change — Nexus is the source of truth, not
+ * this page. The monthly commission report is the binding number.
+ *
+ * Definitions (locked with Mike 2026-05-06):
+ *   - Commission basis = contribution margin = revenue − COGS − Shopify
+ *     fee (2.9% + $0.30). Shipping is paid by the customer, not deducted.
+ *   - Fred's rate = 20% of contribution margin
+ *   - Subscriptions: recurring commission for the life of the sub, every
+ *     shipment, no expiration. 10% subscription discount applies to retail.
+ *
+ * Style: "He's worked here before. He gets it." Don't over-explain line
+ * items. Show the number that hits his account. Point at Nexus for the
+ * audit trail. Aaron voice but tightened for an insider audience.
+ *
+ * Claims register: JockShock is a deodorizer. Never reintroduce kill /
+ * antimicrobial / disinfectant / EPA / 24HR / residual claims here, even
+ * in internal copy — Fred uses this to brief gyms and we don't want him
+ * accidentally repeating language we don't substantiate.
+ */
+import AdminLayout from "../../layouts/AdminLayout.astro";
+
+// Snapshot of Nexus pricing/COGS as of 2026-05-06. This is shown as a
+// reference table in the page; the live number Fred is paid against is
+// always the Nexus monthly commission report.
+const SNAPSHOT_DATE = "2026-05-06";
+
+const SHOPIFY_FEE_PCT = 0.029;
+const SHOPIFY_FEE_FLAT = 0.30;
+const FRED_RATE = 0.20;
+
+interface Sku {
+  label: string;
+  retail: number;
+  cogs: number;
+}
+
+const jockshock: Sku[] = [
+  { label: "32oz Starter", retail: 24.99, cogs: 4.78 },
+  { label: "3-pack Athlete", retail: 59.99, cogs: 14.34 },
+  { label: "6-pack Team", retail: 99.99, cogs: 28.68 },
+];
+
+const zeropoint: Sku[] = [
+  { label: "ZeroPoint 4×1G Case", retail: 96.0, cogs: 33.39 },
+  { label: "ZeroPoint 2×2.5G Case", retail: 99.0, cogs: 40.63 },
+];
+
+function commission(sku: Sku, discount = 0): {
+  sale: number;
+  margin: number;
+  fred: number;
+} {
+  const sale = sku.retail * (1 - discount);
+  const fee = sale * SHOPIFY_FEE_PCT + SHOPIFY_FEE_FLAT;
+  const margin = sale - sku.cogs - fee;
+  return {
+    sale,
+    margin,
+    fred: margin * FRED_RATE,
+  };
+}
+
+const $ = (n: number) =>
+  n.toLocaleString("en-US", { style: "currency", currency: "USD" });
+---
+
+<AdminLayout title="Fred — Founder Plan" activeNav="/admin/fred/">
+  <p style="color: var(--accent); font-size: 12px; text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 8px;">
+    Internal · For Fred Munzenmaier · fmunzjr@gmail.com
+  </p>
+  <h1 style="font-size: 36px; line-height: 1.1; margin-bottom: 16px;">
+    The JockShock Founder Plan
+  </h1>
+  <p class="lede">
+    Hey Fred. Here's the deal. No marketing speak — just what we're building, what
+    you're walking into, and what the math actually looks like for you.
+  </p>
+
+  <div class="callout">
+    <strong>The short version.</strong> You're the founder face of the gym channel.
+    Not equity, but a real commission on every bottle and every case that moves —
+    forever, on subscriptions. Walk into gyms athlete-to-athlete. We do the
+    fulfillment, the support, the logistics. You bring the relationships and run
+    the program. Nexus generates your commission report monthly. You get paid
+    monthly.
+  </div>
+
+  <h2>Founder, but not equity — and why it still pays</h2>
+  <p>
+    Calling you a founder isn't a vanity title. It reflects what you're actually
+    going to do — be the human face of the gym channel, the one a gym owner trusts
+    to talk straight about what JockShock is and how the program works. UGA running
+    back, owns a D1 Training franchise, runs the program. That's the credential
+    set. That story matters more in this audience than any equity number on paper.
+  </p>
+  <p>
+    The reason it's commission and not equity: equity dilutes. Commission scales
+    with what you actually move. The more you sell, the more you make, and the
+    pay isn't gated by a cap table or a vesting schedule. The 20% rate is the
+    same rate we give everyone on our sales team. Your upside lives in volume,
+    not in a paper share.
+  </p>
+
+  <h2>What we actually sell</h2>
+  <p>
+    Two products, paired into one program.
+  </p>
+  <p>
+    <strong>JockShock</strong> is the athlete-side spray — 32oz matte black, goes
+    in the gear bag, sprayed inside pads, helmets, gloves, mouthguards, cleats
+    after every practice. Pro-grade equipment deodorizer powered by ZeroPoint
+    Technology.
+  </p>
+  <p>
+    <strong>ZeroPoint</strong> is the facility-side product — the same chemistry
+    family, sized for cleaning mats, equipment surfaces, locker rooms, water
+    bottle stations. Sold to gyms in cases.
+  </p>
+  <p>
+    Same chemistry, two formats, two use cases, one customer (the gym owner). We
+    pitch them together as a single program, not two SKUs. That's the whole
+    angle — the gym takes care of the facility, the athlete takes care of the
+    gear, both products work the same way.
+  </p>
+
+  <div class="callout subtle">
+    <strong>What we say about the chemistry.</strong> Same family of chemistry
+    your immune system produces. Goes after odor at the source. Gear-safe and
+    skin-safe at use concentration. Powered by ZeroPoint Technology.<br />
+    <strong>What we don't say.</strong> No "kills bacteria." No "antimicrobial."
+    No "disinfects." No "EPA-registered." No "24-hour protection." No claim
+    about residual or duration of effect. We're a deodorizer. Stay there.
+  </div>
+
+  <h2>How the math works for you</h2>
+  <p>
+    You earn <strong>20% of contribution margin</strong> on every sale you drive.
+    Contribution margin is what we sold it for, minus COGS, minus the Shopify
+    transaction fee. Shipping is paid by the customer at checkout — not part of
+    your math. Discounts come off the top before we calculate.
+  </p>
+  <p>
+    Below is a snapshot from Nexus on {SNAPSHOT_DATE}. <strong>The live numbers
+    move</strong> as costs change. The monthly Nexus report is always the
+    binding number, not this table.
+  </p>
+
+  <h3>JockShock — per unit</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>SKU</th>
+        <th class="r">Retail</th>
+        <th class="r">COGS</th>
+        <th class="r">Margin</th>
+        <th class="r yellow">Fred 20%</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        jockshock.map((s) => {
+          const c = commission(s);
+          return (
+            <tr>
+              <td>{s.label}</td>
+              <td class="r">{$(s.retail)}</td>
+              <td class="r">{$(s.cogs)}</td>
+              <td class="r">{$(c.margin)}</td>
+              <td class="r yellow"><strong>{$(c.fred)}</strong></td>
+            </tr>
+          );
+        })
+      }
+    </tbody>
+  </table>
+
+  <h3>ZeroPoint — per case (gym channel)</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>SKU</th>
+        <th class="r">Retail</th>
+        <th class="r">COGS</th>
+        <th class="r">Margin</th>
+        <th class="r yellow">Fred 20%</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        zeropoint.map((s) => {
+          const c = commission(s);
+          return (
+            <tr>
+              <td>{s.label}</td>
+              <td class="r">{$(s.retail)}</td>
+              <td class="r">{$(s.cogs)}</td>
+              <td class="r">{$(c.margin)}</td>
+              <td class="r yellow"><strong>{$(c.fred)}</strong></td>
+            </tr>
+          );
+        })
+      }
+    </tbody>
+  </table>
+  <p class="micro">
+    Both ZeroPoint formats are on offer to gyms. The gym picks based on how their
+    spray stations are set up — 4×1 gallon for portability, 2×2.5 gallon for
+    fewer changeouts.
+  </p>
+
+  <h2>Subscriptions — where it actually compounds</h2>
+  <p>
+    Subscription is the whole point of the gym channel. Most of the value isn't
+    a single $96 case sale — it's a gym that puts JockShock on every athlete's
+    locker hook and ZeroPoint on every spray station, set to auto-ship every
+    month, for years. Every shipment pays you.
+  </p>
+  <p>
+    We give a <strong>10% discount</strong> on subscription orders. Your
+    commission is 20% of contribution margin <em>on the discounted price</em> —
+    every shipment, for as long as the sub is active. No expiration, no clawback,
+    no "first sale only." If they keep ordering, you keep getting paid.
+  </p>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Subscription SKU</th>
+        <th class="r">Sub price (10% off)</th>
+        <th class="r yellow">Fred per shipment</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        [...jockshock.slice(1, 2), ...zeropoint].map((s) => {
+          const c = commission(s, 0.10);
+          return (
+            <tr>
+              <td>{s.label} — monthly</td>
+              <td class="r">{$(c.sale)}</td>
+              <td class="r yellow"><strong>{$(c.fred)}</strong></td>
+            </tr>
+          );
+        })
+      }
+    </tbody>
+  </table>
+
+  <h2>What this looks like in real money</h2>
+  <p>
+    Three scenarios. Each gym subscribes to <strong>one JockShock 3-pack +
+    one ZeroPoint 4×1G Case per month</strong> (the standard paired-program
+    starter). Numbers below are <em>your monthly commission</em>, every month,
+    for as long as the subs stay active.
+  </p>
+
+  {(() => {
+    const jsSub = commission(jockshock[1], 0.10).fred;
+    const zpSub = commission(zeropoint[0], 0.10).fred;
+    const perGymMonthly = jsSub + zpSub;
+    const scenarios = [
+      { label: "1 gym", count: 1 },
+      { label: "5 gyms", count: 5 },
+      { label: "20 gyms", count: 20 },
+    ];
+    return (
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Scenario</th>
+            <th class="r">Per month</th>
+            <th class="r yellow">Per year</th>
+          </tr>
+        </thead>
+        <tbody>
+          {scenarios.map((s) => {
+            const monthly = perGymMonthly * s.count;
+            return (
+              <tr>
+                <td>{s.label} on the paired sub</td>
+                <td class="r">{$(monthly)}</td>
+                <td class="r yellow"><strong>{$(monthly * 12)}</strong></td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    );
+  })()}
+
+  <p class="micro">
+    Doesn't include any one-time orders, ZeroPoint upgrades to 2×2.5G, gym
+    additions throughout the year, athletes on the gym's roster buying their
+    own JockShock with the gym's referral code, or any non-gym DTC sales you
+    drive. This is just the pure paired-program subscription floor.
+  </p>
+
+  <h2>How leads route</h2>
+  <p>
+    Every form submission on <code>/teams</code> (and <code>/gyms</code> when we
+    rename it) routes to your inbox first. Mike copied. You're primary on every
+    gym lead — you decide who you call, when, what the deal looks like.
+  </p>
+  <p>
+    DTC orders that come in through the public site flow normally; commission on
+    those is split based on referral attribution. If a gym you signed sends their
+    athletes to JockShock with the gym's discount code, you earn on those orders
+    too.
+  </p>
+
+  <h2>How you get paid</h2>
+  <ul class="bullets">
+    <li>
+      <strong>Source of truth: Nexus.</strong> All your commissions calculate
+      automatically against the live <code>products.standard_cost</code> in
+      Nexus and the actual order data. Nothing is hand-tracked.
+    </li>
+    <li>
+      <strong>Cadence: monthly.</strong> Report runs the first business day of
+      the month for the prior month. Payment follows the report.
+    </li>
+    <li>
+      <strong>The report is auditable.</strong> Every commission line ties to a
+      specific Shopify order ID, the SKU on that order, the COGS Nexus had at
+      the time of the order, and the fee Shopify charged. You can reconcile any
+      single dollar to a single transaction.
+    </li>
+    <li>
+      <strong>Numbers move when COGS moves.</strong> Sprayer cost goes up, your
+      commission per bottle goes down (slightly). Conversely, every time we cut
+      input cost or improve packout, your commission goes up. Same math for
+      everyone.
+    </li>
+  </ul>
+
+  <h2>First 90 days</h2>
+  <ul class="bullets">
+    <li>
+      <strong>Goal: 5 paying gyms on the paired subscription.</strong> Five
+      anchor accounts gives us a real read on what the program looks like at
+      scale and gives you a recurring base to build on.
+    </li>
+    <li>
+      <strong>What we'll build for you.</strong> Sales sheet (one-pager you can
+      hand a gym owner), pricing card with subscription math, simple
+      sample-shipment workflow so you can drop product without filling out a
+      form for every demo.
+    </li>
+    <li>
+      <strong>What we expect from you.</strong> Honest reads on the field. If a
+      gym says "wrong size case" or "wrong cadence" or "too expensive" — tell
+      us. The product spec and the program structure are both still pliable.
+      The math isn't.
+    </li>
+  </ul>
+
+  <h2>The non-negotiables</h2>
+  <ul class="bullets">
+    <li>
+      <strong>Stick to the deodorizer story.</strong> No kill claims, no
+      "antimicrobial," no EPA references, no duration-of-protection language.
+      We don't substantiate any of it on the JockShock label, so we can't say
+      it in front of a customer. ZeroPoint is registered separately and has
+      different rules — but this page is JockShock-first.
+    </li>
+    <li>
+      <strong>No off-the-books pricing.</strong> Don't quote a price below
+      Shopify's price card without checking with Mike. We can do volume deals;
+      they need to come through the system so commission calc stays clean.
+    </li>
+    <li>
+      <strong>If a gym refuses to subscribe, that's fine.</strong> We have a
+      one-time order option. Subscription is the goal because it compounds for
+      both of us, but a one-time gym is better than no gym.
+    </li>
+  </ul>
+
+  <p class="signoff">— Mike</p>
+
+  <style>
+    h1, h2, h3 {
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    h2 {
+      font-size: 24px;
+      margin-top: 40px;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+    h3 {
+      font-size: 16px;
+      margin-top: 24px;
+      margin-bottom: 10px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    p {
+      margin-bottom: 14px;
+      max-width: 64ch;
+    }
+    code {
+      background: var(--surface-2);
+      padding: 1px 6px;
+      border-radius: 3px;
+      font-size: 13px;
+    }
+    .lede {
+      font-size: 17px;
+      color: var(--text-secondary);
+      max-width: 64ch;
+      margin-bottom: 28px;
+    }
+    .callout {
+      background: var(--surface);
+      border-left: 3px solid var(--accent);
+      padding: 16px 20px;
+      border-radius: 4px;
+      margin: 16px 0 28px;
+      font-size: 14.5px;
+    }
+    .callout.subtle {
+      border-left-color: var(--text-secondary);
+      background: var(--surface);
+      font-size: 13.5px;
+    }
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0 18px;
+      font-size: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .table th,
+    .table td {
+      padding: 11px 14px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+    .table thead th {
+      background: var(--surface-2);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+    .table tbody tr:last-child td {
+      border-bottom: none;
+    }
+    .table .r {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+    .table .yellow {
+      color: var(--accent);
+    }
+    .micro {
+      font-size: 13px;
+      color: var(--text-secondary);
+      max-width: 64ch;
+    }
+    .bullets {
+      padding-left: 22px;
+      max-width: 64ch;
+    }
+    .bullets li {
+      margin-bottom: 12px;
+    }
+    .signoff {
+      margin-top: 40px;
+      font-size: 16px;
+      color: var(--text-secondary);
+    }
+  </style>
+</AdminLayout>
