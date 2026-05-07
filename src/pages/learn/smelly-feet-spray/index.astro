@@ -1,0 +1,359 @@
+---
+/**
+ * /learn/smelly-feet-spray/ — Tier 1d flagship hub (NEW 2026-06-09).
+ *
+ * SEO target cluster (DFS Labs pull 2026-06-09, claims-safe, KD low):
+ *   "smelly feet spray" (2,400/mo), "feet odor spray" (2,400),
+ *   "feet stink spray" (2,400), "odor eliminator for feet" (1,000),
+ *   "feet odor eliminator" (1,000), "best spray for stinky feet" (720),
+ *   "best feet odor spray" (720), "feet spray for odor" (590),
+ *   "boot deodorizer" (590), "stinky feet spray" (480), plus the
+ *   foot-odor long tail. Cluster ~18,000/mo cumulative.
+ * Why it's new: surfaced in the 2026-06-09 keyword run, NOT in the
+ *   2026-05-06 v2 strategy. Adjacent to the shoe-deodorizer hub —
+ *   shoes are the container, feet are the source. This page owns the
+ *   feet/boots intent and cross-links to the shoe hub for the gear side.
+ * Difficulty: low across the cluster; SERP is drugstore powders and
+ *   listicles, no athletic-brand presence — same wide-open shape as shoes.
+ *
+ * Audience: athletes + athletic-adjacent + the sports parent (Pam).
+ *   Feet are universal; written wider than athletes-only, Aaron-led voice.
+ *
+ * CLAIMS COMPLIANCE — re-read before editing:
+ *   FORBIDDEN here as everywhere: kill-the-microbe claims, EPA-registered,
+ *   disinfectant, sanitizer, antimicrobial, antibacterial, 24-hour,
+ *   hospital-grade, FDA-approved, HOCl, hypochlorous acid, prevents/treats
+ *   athlete's-foot / fungus / staph / MRSA. JockShock is a DEODORIZER.
+ *   "Kills odor / goes after the source of the smell" is ALLOWED (odor
+ *   claim, not a microbe claim — Mike approved 2026-06-09). NEVER frame it
+ *   as killing bacteria, treating a foot condition, or a medical use.
+ *   Trust attribution is "ZeroPoint Technology" only; mechanism via the
+ *   immune-system metaphor, never the molecule name.
+ *
+ * SCHEMA: Article + FAQPage JSON-LD. FAQ answers <60 words (snippet bait).
+ */
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import "../../../styles/learn-hub.css";
+
+const title =
+  "Smelly Feet Spray That Goes After the Source (Feet, Boots, and the Shoes They Live In)";
+const description =
+  "A feet odor spray built to go after the source of the smell — not mask it. Engineered for athletes' feet, boots, and shoes around the same chemistry your immune system uses. Powered by ZeroPoint Technology, made in USA.";
+
+const HERO_BOTTLE =
+  "https://res.cloudinary.com/southland-organics/image/upload/c_fit,w_700,q_auto,f_auto,dpr_auto/JockShock/jockshock-32oz-single-2026.png";
+
+// FAQ items target People Also Ask queries in the feet/boot cluster.
+// Each answer stays under 60 words for featured-snippet eligibility.
+// Claims compliance reviewed per item — deodorizer language only.
+const FAQ_ITEMS = [
+  {
+    q: "Why do my feet smell even after I shower?",
+    a: "Foot odor comes from sweat soaking into socks, shoes, and boots, where odor-producing bacteria thrive in the warm, dark, damp environment. Washing your feet helps for a few hours, but the smell lives in the footwear too. If you only clean your feet and skip the shoes and boots, the odor comes right back.",
+  },
+  {
+    q: "Does a feet odor spray actually work?",
+    a: "It works when it goes after the source instead of just adding scent. Most drugstore foot sprays are powders or perfumes that cover the smell for an hour. JockShock is built on a different model — chemistry that goes after the odor at its source, then dries clean with no powder residue and no fragrance.",
+  },
+  {
+    q: "Can I spray it on my feet, my boots, and my work shoes?",
+    a: "Yes. JockShock is engineered for the whole picture: feet, the insoles, the inside of boots, cleats, work shoes, and athletic shoes. Foot odor is a feet-plus-footwear problem, so treat both. Spray the feet, spray inside the footwear, let everything air dry.",
+  },
+  {
+    q: "Will it damage leather boots or work boots?",
+    a: "JockShock contains no bleach, no abrasives, and no staining dyes. It's safe on leather, mesh, suede, canvas, and synthetic linings when sprayed lightly and air dried. One flag: any liquid can watermark untreated suede if oversprayed — use a light mist, then let it dry fully.",
+  },
+  {
+    q: "Is it safe on skin?",
+    a: "Yes — JockShock is safe on skin contact at use concentration, with no fragrance and no harsh chemicals. It's built around the same kind of chemistry your own immune system produces. Spray it on your feet the way you'd treat the inside of a boot, and let it air dry.",
+  },
+  {
+    q: "How is this different from foot powder?",
+    a: "Powder absorbs moisture and adds a scent — it manages the symptom for a while, then cakes up in your socks and shoes. JockShock skips the powder entirely and goes after the source of the smell, then dries clean. No residue in your socks, no white cloud when you pull your boots off.",
+  },
+];
+
+const ARTICLE_LD = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: title,
+  description,
+  author: { "@type": "Organization", name: "JockShock" },
+  publisher: {
+    "@type": "Organization",
+    name: "JockShock",
+    "@id": "https://www.jockshockspray.com/#org",
+  },
+  datePublished: "2026-06-09",
+};
+
+const FAQ_LD = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQ_ITEMS.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: { "@type": "Answer", text: item.a },
+  })),
+};
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  jsonLd={[ARTICLE_LD, FAQ_LD]}
+>
+  <div class="js-learn">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">The Feet &amp; Boots Hub</p>
+          <h1 class="hero-headline">
+            Smelly feet aren't a feet problem. They're a feet-and-footwear
+            problem.
+          </h1>
+          <p class="hero-sub">
+            You can scrub your feet raw and the smell still comes back the
+            second you pull your boots on. That's because the odor lives in two
+            places — your feet and everything they sweat into. Treat one, skip
+            the other, and you've fixed nothing.
+          </p>
+          <p class="hero-promise">
+            JockShock goes after the source of the smell — on your feet, in your
+            boots, inside your shoes — then dries clean. No powder. No fragrance
+            cover-up. No white cloud when you pull your boots off.
+          </p>
+          <div class="hero-cta-row">
+            <a href="/products/jockshock/" class="cta-primary"
+              >Get JockShock — $24.99</a
+            >
+            <a href="#routine" class="cta-secondary">See the routine</a>
+          </div>
+          <ul class="hero-trust">
+            <li>No fragrance, no bleach</li>
+            <li>Safe on skin contact</li>
+            <li>Powered by ZeroPoint Technology</li>
+            <li>Made in USA</li>
+          </ul>
+        </div>
+        <div class="hero-product">
+          <img
+            src={HERO_BOTTLE}
+            alt="JockShock 32oz bottle — feet and boot deodorizer"
+            width="700"
+            height="467"
+            loading="eager"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- WHY FEET SMELL -->
+    <section class="why">
+      <div class="why-inner">
+        <p class="section-eyebrow">Why feet smell</p>
+        <h2 class="section-headline">
+          It's not sweat. It's what the sweat feeds.
+        </h2>
+        <p class="section-sub">
+          Sweat by itself is basically odorless. The smell shows up when
+          odor-producing bacteria feed on that sweat — and feet give them the
+          perfect home: warm, dark, damp, and wrapped in a sock and a shoe for
+          hours at a time.
+        </p>
+        <p class="section-sub">
+          That's why the smell follows your footwear. The bacteria don't just
+          live on your skin — they live in the insole, the lining, and the boot.
+          Wash only your feet and you've cleaned half the problem. The other
+          half is sitting in the closet, waiting.
+        </p>
+        <div class="why-grid">
+          <div class="why-card">
+            <h3>The feet</h3>
+            <p>
+              Skin sheds, sweat collects, bacteria feed. A shower resets your
+              feet for a few hours — until they're back in the footwear and the
+              cycle restarts.
+            </p>
+          </div>
+          <div class="why-card">
+            <h3>The footwear</h3>
+            <p>
+              Boots, cleats, and work shoes trap moisture and never fully dry
+              between wears. The smell concentrates there and transfers right
+              back onto clean feet.
+            </p>
+          </div>
+          <div class="why-card">
+            <h3>The cycle</h3>
+            <p>
+              Treat one and not the other and the smell always returns. Break
+              the cycle by going after the source in both places at once.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- THE ROUTINE -->
+    <section class="how" id="routine">
+      <div class="how-inner">
+        <p class="section-eyebrow">The routine</p>
+        <h2 class="section-headline">
+          Treat the feet and the footwear together.
+        </h2>
+        <p class="section-sub">
+          Thirty seconds, after the shoes or boots come off. Do both every time
+          and the smell stops coming back — because you're not chasing it
+          anymore, you're cutting it off at the source.
+        </p>
+        <ol class="how-steps">
+          <li>
+            <span class="step-n">1</span>
+            <div>
+              <h3>Spray the feet</h3>
+              <p>
+                A light mist over clean or post-workout feet — tops, soles, and
+                between the toes. It's safe on skin and dries without residue.
+              </p>
+            </div>
+          </li>
+          <li>
+            <span class="step-n">2</span>
+            <div>
+              <h3>Spray inside the footwear</h3>
+              <p>
+                Mist the insole and lining of the boots, cleats, or work shoes.
+                This is the step powders and foot sprays skip — and it's where
+                the smell actually lives.
+              </p>
+            </div>
+          </li>
+          <li>
+            <span class="step-n">3</span>
+            <div>
+              <h3>Let it air dry</h3>
+              <p>
+                Pull the insoles if they come out, and let everything dry open
+                air — not in a sealed bag or a hot car. Dry footwear is the
+                whole game.
+              </p>
+            </div>
+          </li>
+          <li>
+            <span class="step-n">4</span>
+            <div>
+              <h3>Repeat after every wear</h3>
+              <p>
+                Daily-use cadence is what keeps the source from rebuilding. One
+                32oz bottle handles a full season for one person's feet and
+                footwear.
+              </p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- WHAT DOESN'T WORK -->
+    <section class="wo">
+      <div class="wo-inner">
+        <p class="section-eyebrow">What doesn't work</p>
+        <h2 class="section-headline">
+          The drugstore aisle is mostly cover-up.
+        </h2>
+        <div class="wo-grid">
+          <div class="wo-card">
+            <h3>Foot powder</h3>
+            <p>
+              Absorbs moisture and adds a scent for a few hours, then cakes up
+              in your socks and shoes. It manages the symptom and ignores the
+              source — so the smell always comes back.
+            </p>
+          </div>
+          <div class="wo-card">
+            <h3>Fragrance sprays</h3>
+            <p>
+              Perfume on top of funk. The cover lasts an hour, then the two mix
+              into something worse. Adds scent, does nothing about why your feet
+              and boots smell.
+            </p>
+          </div>
+          <div class="wo-card">
+            <h3>Just washing your feet</h3>
+            <p>
+              Resets your skin but leaves the footwear untouched. Clean feet go
+              right back into a boot full of the same odor — and pick it up
+              again within minutes.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ — PAA bait, schema-rendered -->
+    <section class="faq">
+      <div class="faq-inner">
+        <p class="section-eyebrow">Common questions</p>
+        <h2 class="section-headline">Quick answers.</h2>
+        <div class="faq-list">
+          {
+            FAQ_ITEMS.map((item) => (
+              <details class="faq-item">
+                <summary>
+                  <span class="faq-q">{item.q}</span>
+                  <span class="faq-icon" aria-hidden="true">
+                    +
+                  </span>
+                </summary>
+                <p class="faq-a">{item.a}</p>
+              </details>
+            ))
+          }
+        </div>
+        <p class="faq-crosslink">
+          Smell coming from the gym shoes and cleats more than the feet? Start
+          with the <a href="/learn/shoe-deodorizer-spray/"
+            >shoe deodorizer hub</a
+          >.
+        </p>
+      </div>
+    </section>
+
+    <!-- TIERS / CTA -->
+    <section class="tiers">
+      <div class="tiers-inner">
+        <p class="section-eyebrow">Get yours</p>
+        <h2 class="section-headline">Most start with the 3-pack.</h2>
+        <p class="section-sub center">
+          One for the mudroom, one for the gym bag, one for the work boots by
+          the door. Lasts most of a season at after-every-wear cadence.
+        </p>
+        <div class="tier-grid">
+          <a href="/products/jockshock/" class="tier">
+            <div class="tier-label">Single</div>
+            <div class="tier-detail">1 × 32oz</div>
+            <div class="tier-price">$24.99</div>
+            <div class="tier-bottom">Get it →</div>
+          </a>
+          <a href="/products/jockshock/" class="tier featured">
+            <span class="tier-badge">Most Pick This</span>
+            <div class="tier-label">3-Pack</div>
+            <div class="tier-detail">3 × 32oz</div>
+            <div class="tier-price">$59.99</div>
+            <div class="tier-bottom">Get it →</div>
+          </a>
+          <a href="/products/jockshock/" class="tier">
+            <div class="tier-label">6-Pack</div>
+            <div class="tier-detail">6 × 32oz</div>
+            <div class="tier-price">$99.99</div>
+            <div class="tier-bottom">Get it →</div>
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
