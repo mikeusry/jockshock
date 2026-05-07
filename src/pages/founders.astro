@@ -1,0 +1,355 @@
+---
+/**
+ * /founders — the four UGA D1 athletes behind JockShock.
+ *
+ * This is the credibility layer the rest of the site leans on. The "Built by
+ * D1 Athletes" badge on the homepage cashes in here: four real people, four
+ * verified D1 careers, four roles on this thing.
+ *
+ * Image sourcing notes:
+ *   - Mike & Karin: Cloudinary (Southland Organics asset library, same
+ *     headshots used on southlandorganics.com/team/*)
+ *   - Fred: D1 Training franchise team page (Mike-supplied URL)
+ *   - Anna: D1 Training team page (Mike-supplied URL)
+ *
+ * If/when we shoot proper JockShock-branded portraits, swap the URLs.
+ *
+ * Page order: Mike → Karin → Fred → Anna. Founder-by-founder narrative arc:
+ *   - Mike opens (CEO)
+ *   - Karin pitched the gym channel + brings the gymnastics credential
+ *   - Fred runs the gym channel
+ *   - Anna closes with the strength-coach in-the-trenches angle
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const title = "Founders — Built by D1 Athletes";
+const description =
+  "JockShock was built by four UGA D1 athletes who lived in this gear. Mike Usry, Karin Lichey Usry, Fred Munzenmaier, and Anna Watson on what they're doing and why.";
+
+interface Founder {
+  name: string;
+  role: string;
+  credential: string;
+  bio: string;
+  photo: string;
+  alt: string;
+}
+
+const founders: Founder[] = [
+  {
+    name: "Mike Usry",
+    role: "Founder · CEO, Southland Organics",
+    credential: "UGA Football",
+    bio: "Mike played football at the University of Georgia and built Southland Organics from the kitchen table to a multi-brand company. JockShock is the brand he wishes he'd had during two-a-days. He runs day-to-day for the brand, owns the chemistry and supply side, and spent two decades figuring out what athletes actually need vs. what brands try to sell them.",
+    photo:
+      "https://res.cloudinary.com/southland-organics/image/upload/w_800,h_800,c_fill,g_face,f_auto,q_auto/Southland%20Website/team/MIKE_Usry",
+    alt: "Mike Usry, founder of JockShock and CEO of Southland Organics",
+  },
+  {
+    name: "Karin Lichey Usry",
+    role: "Co-Founder · Strategy",
+    credential: "UGA Gymnastics — 11× All-American · Honda Award · Perfect 40",
+    bio: "Karin's gymnastics career at Georgia is one of the most decorated in NCAA history — 11-time All-American, Honda Award winner, the rare athlete who scored a perfect 40 in competition. She brought the gym channel idea to JockShock and helped shape what the brand stands for. When we say \"built by D1 athletes,\" Karin is the one who lived at the highest level of the sport.",
+    photo:
+      "https://res.cloudinary.com/southland-organics/image/upload/w_800,h_800,c_fill,g_face,f_auto,q_auto/Southland%20Website/team/KARIN_Usry",
+    alt: "Karin Lichey Usry, co-founder and 11-time All-American UGA gymnast",
+  },
+  {
+    name: "Fred Munzenmaier",
+    role: "Founder · Gym Channel",
+    credential: "UGA Football · D1 Training Franchise Owner",
+    bio: "Fred played running back at the University of Georgia and now owns a D1 Training franchise in Athens. He runs the gym channel for JockShock — every gym, every program, every coach lead routes to him first. Athlete-to-athlete, gym-owner-to-gym-owner. If you're a coach or facility operator, Fred is your point of contact.",
+    photo:
+      "https://dbndiuxsumrq4.cloudfront.net/unsafe/f:webp/g:sm/w:1080/plain/https://d1-website.s3.us-east-1.amazonaws.com/media/teams/ca6bb996-fcb7-46fc-b29b-e591a54d7d25.png",
+    alt: "Fred Munzenmaier, founder and gym channel lead at JockShock",
+  },
+  {
+    name: "Anna Watson",
+    role: "Founder · Strength & Programs",
+    credential: "UGA Cheerleading · Strength Coach, D1 Training",
+    bio: "Anna's been called \"the world's strongest cheerleader\" — a UGA cheerleader who became one of the most respected strength athletes online and now coaches at D1 Training. She brings the in-the-trenches strength-coach perspective to JockShock and shapes how the program lands inside actual training facilities. If you've seen the videos, you know.",
+    photo:
+      "https://dbndiuxsumrq4.cloudfront.net/unsafe/f:webp/g:sm/w:1080/plain/https://d1-website.s3.us-east-1.amazonaws.com/media/teams/30b6acf9-0d0b-4eb4-8c9c-5d6e6045c2f4.png",
+    alt: "Anna Watson, founder and strength-coach voice for JockShock",
+  },
+];
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="founders-hero js-carbon">
+    <div class="founders-hero-inner">
+      <p class="eyebrow">Built by D1 Athletes</p>
+      <h1 class="founders-headline">
+        Four athletes.<br />One bottle.
+      </h1>
+      <p class="founders-sub">
+        JockShock wasn't built by a chemist looking for a market. It was built
+        by athletes who lived in this gear and got tired of the only options
+        being a fragrance bomb or nothing at all. Here's who's behind it and
+        why.
+      </p>
+    </div>
+  </section>
+
+  <section class="founders-grid-section">
+    <div class="founders-grid-inner">
+      {
+        founders.map((f, i) => (
+          <article class={`founder-card ${i % 2 === 1 ? "reverse" : ""}`}>
+            <div class="founder-photo-wrap">
+              <img
+                src={f.photo}
+                alt={f.alt}
+                class="founder-photo"
+                width="800"
+                height="800"
+                loading={i < 2 ? "eager" : "lazy"}
+              />
+            </div>
+            <div class="founder-copy">
+              <p class="founder-role">{f.role}</p>
+              <h2 class="founder-name">{f.name}</h2>
+              <p class="founder-credential">{f.credential}</p>
+              <p class="founder-bio">{f.bio}</p>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="founders-cta js-carbon">
+    <div class="founders-cta-inner">
+      <h2 class="cta-headline">
+        That's the team. Now grab a bottle.
+      </h2>
+      <p class="cta-sub">
+        We built JockShock for the gear bag we used to live out of. Whether
+        you're an athlete, a parent, or a coach — there's a version of this
+        sized for you.
+      </p>
+      <div class="cta-row">
+        <a href="/products/jockshock/" class="cta-primary">Get JockShock</a>
+        <a href="/teams/" class="cta-secondary">For coaches & teams</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* Carbon background pattern (matches the homepage hero/cta cadence). */
+  .js-carbon {
+    background:
+      radial-gradient(
+        circle at 20% 30%,
+        rgba(255, 213, 74, 0.06) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 80% 70%,
+        rgba(255, 213, 74, 0.04) 0%,
+        transparent 50%
+      ),
+      #0a0a0a;
+    color: #f3f4f6;
+  }
+
+  .founders-hero {
+    padding: 80px 5% 64px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .founders-hero-inner {
+    max-width: 920px;
+    margin: 0 auto;
+  }
+
+  .eyebrow {
+    color: #facc15;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    margin: 0 0 16px;
+  }
+
+  .founders-headline {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui,
+      sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.4rem, 5vw, 4rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin: 0 0 24px;
+    color: #ffffff;
+  }
+  .founders-sub {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    max-width: 64ch;
+    color: #d1d5db;
+    margin: 0;
+  }
+
+  .founders-grid-section {
+    background: #f5f5f4;
+    color: #111;
+    padding: 80px 5%;
+  }
+  .founders-grid-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 80px;
+  }
+
+  .founder-card {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 56px;
+    align-items: center;
+  }
+
+  .founder-card.reverse {
+    grid-template-columns: 1.4fr 1fr;
+  }
+  .founder-card.reverse .founder-photo-wrap {
+    order: 2;
+  }
+  .founder-card.reverse .founder-copy {
+    order: 1;
+  }
+
+  .founder-photo-wrap {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 8px;
+    background: #0a0a0a;
+    box-shadow:
+      0 1px 0 rgba(255, 213, 74, 0.4),
+      0 24px 60px -16px rgba(0, 0, 0, 0.35);
+  }
+  .founder-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .founder-role {
+    color: #ca8a04;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    margin: 0 0 8px;
+  }
+
+  .founder-name {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui,
+      sans-serif;
+    font-weight: 800;
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin: 0 0 6px;
+    color: #0a0a0a;
+  }
+
+  .founder-credential {
+    font-size: 0.95rem;
+    color: #4b5563;
+    font-weight: 600;
+    margin: 0 0 20px;
+  }
+
+  .founder-bio {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #1f2937;
+    max-width: 56ch;
+    margin: 0;
+  }
+
+  .founders-cta {
+    padding: 80px 5%;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .founders-cta-inner {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .cta-headline {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui,
+      sans-serif;
+    font-weight: 800;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    line-height: 1.1;
+    margin: 0 0 16px;
+    color: #ffffff;
+  }
+  .cta-sub {
+    color: #d1d5db;
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 56ch;
+    margin: 0 auto 32px;
+  }
+  .cta-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .cta-primary,
+  .cta-secondary {
+    display: inline-block;
+    padding: 14px 28px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .cta-primary {
+    background: #facc15;
+    color: #0a0a0a;
+  }
+  .cta-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px -8px rgba(250, 204, 21, 0.5);
+  }
+  .cta-secondary {
+    background: transparent;
+    color: #facc15;
+    border: 1px solid rgba(250, 204, 21, 0.5);
+  }
+  .cta-secondary:hover {
+    background: rgba(250, 204, 21, 0.08);
+  }
+
+  @media (max-width: 760px) {
+    .founder-card,
+    .founder-card.reverse {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+    .founder-card.reverse .founder-photo-wrap {
+      order: 0;
+    }
+    .founder-card.reverse .founder-copy {
+      order: 1;
+    }
+    .founder-photo-wrap {
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    .founders-grid-inner {
+      gap: 56px;
+    }
+  }
+</style>
