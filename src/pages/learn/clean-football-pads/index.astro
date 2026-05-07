@@ -1,0 +1,314 @@
+---
+/**
+ * /learn/clean-football-pads/ — Tier 2 #1 sport hub.
+ *
+ * SEO target: "how to clean football pads" (320/mo, KD 0, LOW
+ * competition per DFS). Highest sport-specific search volume of all
+ * the sport hubs.
+ *
+ * Competitive context: Matguard owns this SERP with disinfect/
+ * antimicrobial language we can't follow. We counter with D1
+ * athlete proof + the routine angle, plus claims-compliant copy.
+ *
+ * Audience: football parents (Pam) + HS/college players (Aaron).
+ * Football pads are the #1 reek-source in any house with a player.
+ */
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import "../../../styles/learn-hub.css";
+
+const title = "How to Clean Football Pads (Without Ruining Them)";
+const description =
+  "How to clean football shoulder pads, helmets, and the rest of the kit — for athletes and the parents who haul the bag. Pro-grade deodorizer engineered for athletic foam, leather, and mesh. Powered by ZeroPoint Technology.";
+
+const HERO_BOTTLE =
+  "https://res.cloudinary.com/southland-organics/image/upload/c_fit,w_700,q_auto,f_auto,dpr_auto/JockShock/jockshock-32oz-single-2026.png";
+
+const FAQ_ITEMS = [
+  {
+    q: "Can you machine wash football shoulder pads?",
+    a: "No. The agitation crushes the foam padding, the heat warps the plastic shell, and the seams holding the impact-absorbing layers together come apart. Machine washing destroys the protective function of the pads. Hand-clean only — wipe the shell, spray the padded interior, air-dry off the bag.",
+  },
+  {
+    q: "How do you get the smell out of football pads?",
+    a: "Spray inside the pads — between the foam and the shell — where the bacterial reservoir lives. Wait 60 seconds. Wipe down the outer shell with a damp cloth. Air-dry on a hanger or rack, never inside a sealed bag. Repeat after every practice and the smell never compounds.",
+  },
+  {
+    q: "Will spraying damage the foam in football pads?",
+    a: "JockShock won't. It's engineered for athletic foam, leather, mesh, and molded plastic — the actual materials in shoulder pads, helmets, and rib protectors. No bleach, no harsh oxidizers, no fragrance dyes that stain a uniform. Light mist, then air dry.",
+  },
+  {
+    q: "Should I clean the helmet too?",
+    a: "Yes — the helmet liner is the single worst-smelling component on the field, often worse than the pads. Spray the foam liner inside the helmet, wait 60 seconds, wipe with a microfiber cloth, leave the chinstrap unbuckled and the helmet upside-down to air-dry. Don't use bleach or alcohol cleaners on the polycarbonate shell — they degrade it.",
+  },
+  {
+    q: "How often should I clean football pads?",
+    a: "After every practice, every scrimmage, every game. The 32oz bottle is sized for that — a single committed athlete uses 4–6 bottles a season. Coaches and equipment managers running team-wide programs go through cases. Once-a-week cleaning isn't enough to keep ahead of the smell.",
+  },
+  {
+    q: "What about the rib protector, the girdle, and the rest of the under-pad layers?",
+    a: "Same routine. Rib protectors and girdles are the most-soaked items in the entire kit because they're closest to the body. Spray inside, wait, air dry, never store in the bag wet. The under-pad layer is also where most of the body-fluid contact happens — clean every wear, full stop.",
+  },
+  {
+    q: "Why does my kid's football bag smell so bad even when I clean the pads?",
+    a: "Because the bag itself becomes a reservoir. After 30+ wears, the bag interior holds enough bacteria to re-contaminate clean gear within hours of zipping it up. Spray inside the bag too — three pumps in the main compartment, two in any side pockets — at the same time you do the pads. Treat the bag like the 13th piece of gear.",
+  },
+];
+
+const ARTICLE_LD = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: title,
+  description,
+  author: { "@type": "Organization", name: "JockShock" },
+  publisher: {
+    "@type": "Organization",
+    name: "JockShock",
+    "@id": "https://www.jockshockspray.com/#org",
+  },
+  datePublished: "2026-05-06",
+};
+
+const FAQ_LD = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQ_ITEMS.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: { "@type": "Answer", text: item.a },
+  })),
+};
+---
+
+<BaseLayout title={title} description={description} jsonLd={[ARTICLE_LD, FAQ_LD]}>
+  <div class="js-learn">
+    <section class="hero">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">The football pads hub</p>
+          <h1 class="hero-headline">
+            Football pads are the #1 reek<br />in your house.
+          </h1>
+          <p class="hero-sub">
+            Shoulder pads, rib protector, girdle, helmet liner, the bag — every
+            piece is a sponge for sweat, then a sealed environment for the
+            bacteria producing the smell. Most parents try to wash them and
+            destroy the foam. Most players just live with it. Neither is the
+            answer.
+          </p>
+          <p class="hero-promise">
+            JockShock is built by D1 athletes who lived in this gear. Engineered
+            for athletic foam, leather, mesh, and molded plastic. Spray inside,
+            air dry, store. Powered by ZeroPoint Technology.
+          </p>
+          <div class="hero-cta-row">
+            <a href="/products/jockshock/" class="cta-primary">Get JockShock — $24.99</a>
+            <a href="#routine" class="cta-secondary">See the routine</a>
+          </div>
+          <ul class="hero-trust">
+            <li>ZeroPoint Technology</li>
+            <li>Safe on foam + leather</li>
+            <li>Won't stain jerseys</li>
+            <li>Built by D1 athletes</li>
+          </ul>
+        </div>
+        <div class="hero-product">
+          <img src={HERO_BOTTLE} alt="JockShock 32oz pro-grade equipment deodorizer" width="700" height="700" />
+        </div>
+      </div>
+    </section>
+
+    <section class="why">
+      <div class="why-inner">
+        <p class="section-eyebrow">Why football gear smells worse than the rest</p>
+        <h2 class="section-headline">
+          More gear, more soaked, more sealed, more often.
+        </h2>
+        <p class="section-sub">
+          Football is the worst-case scenario for gear smell, and it's not
+          close. Other sports have one or two damp pieces. Football has the
+          full kit: helmet, shoulder pads, rib protector, girdle, mouthguard,
+          jersey, undershirt, pants, socks, cleats. Every piece soaks through
+          during a 90-minute practice in late August. Then everything goes
+          into the bag together, and the bag stays in the car for 12 hours.
+        </p>
+        <p class="section-sub">
+          Most of the gear is also the worst material for smell management.
+          Foam padding is the most absorbent material in athletic equipment.
+          Helmet liners are made of the same foam, sealed inside a
+          polycarbonate shell. There's nowhere for the moisture to go and
+          nothing to slow the bacterial growth. It compounds.
+        </p>
+      </div>
+    </section>
+
+    <section class="how" id="routine">
+      <div class="how-inner">
+        <p class="section-eyebrow">The post-practice routine</p>
+        <h2 class="section-headline">
+          Pads off the bag. Spray. Hang. Done.
+        </h2>
+        <p class="section-sub">
+          The single most important rule: <strong>get the gear out of the bag
+          immediately after practice</strong>. Sealed-bag drying is what makes
+          football smell like football. Even a 20-minute window of airing
+          before storage breaks the cycle.
+        </p>
+        <ol class="steps">
+          <li>
+            <span class="step-num">1</span>
+            <h3>Unzip everything</h3>
+            <p>Pull every piece out of the bag. Hang shoulder pads on a doorknob, drape rib protector over a chair, set the helmet on its crown.</p>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <h3>Spray the inside of every piece</h3>
+            <p>Inside the shoulder pads (between shell and foam), inside the helmet liner, inside the girdle. The outside is for show; the inside is where the smell lives.</p>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <h3>Air for 20 minutes, then store</h3>
+            <p>Even on a school night, 20 minutes of airing before re-bagging breaks the bacteria cycle. Spray the bag interior too. Zip up only when everything is dry to the touch.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="works-on">
+      <div class="works-on-inner">
+        <p class="section-eyebrow">Piece by piece</p>
+        <h2 class="section-headline">Same chemistry, different routines for each piece.</h2>
+        <p class="section-sub">
+          Football is enough gear that one-size-fits-all instructions don't
+          work. Each piece has its own failure mode. Here's the breakdown.
+        </p>
+        <div class="works-on-grid">
+          <div class="works-on-card">
+            <h3>Helmet</h3>
+            <p>
+              Spray the foam liner directly. Wipe the polycarbonate shell with
+              a damp cloth — never bleach or alcohol on the shell, it
+              degrades. Store upside-down with the chinstrap loose so the
+              liner airs.
+            </p>
+          </div>
+          <div class="works-on-card">
+            <h3>Shoulder pads</h3>
+            <p>
+              The single most important piece to spray. Inside between the
+              shell and the foam. Hang on a doorknob to dry — not balled up
+              in the bag.
+            </p>
+          </div>
+          <div class="works-on-card">
+            <h3>Rib protector</h3>
+            <p>
+              Closest to the body, most-soaked piece in the kit. Spray inside
+              and out, drape flat to dry. Replace if the foam has compressed
+              past 60% of original — that's a different problem (impact
+              protection failure), not a smell one.
+            </p>
+          </div>
+          <div class="works-on-card">
+            <h3>Girdle / pants</h3>
+            <p>
+              The pants can usually go in cold-water wash if the manufacturer
+              allows. The padded girdle cannot — hand-spray and air-dry only.
+              Don't soak the foam; saturated foam never fully dries.
+            </p>
+          </div>
+          <div class="works-on-card">
+            <h3>Mouthguard</h3>
+            <p>
+              See the dedicated <a href="/learn/how-to-clean-a-mouthguard/" class="inline-link">mouthguard hub</a>.
+              Spray, 30-second wait, rinse with cool water, vented case.
+            </p>
+          </div>
+          <div class="works-on-card">
+            <h3>Cleats + bag</h3>
+            <p>
+              The cleats are their own animal — see the <a href="/learn/get-smell-out-of-cleats/" class="inline-link">cleats hub</a>.
+              The bag interior gets a quick spray too: three pumps main
+              compartment, two in side pockets.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq">
+      <div class="faq-inner">
+        <p class="section-eyebrow">Common questions</p>
+        <h2 class="section-headline">Quick answers.</h2>
+        <div class="faq-list">
+          {
+            FAQ_ITEMS.map((item) => (
+              <details class="faq-item">
+                <summary>
+                  <span class="faq-q">{item.q}</span>
+                  <span class="faq-icon" aria-hidden="true">+</span>
+                </summary>
+                <p class="faq-a">{item.a}</p>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="tiers">
+      <div class="tiers-inner">
+        <p class="section-eyebrow">Get yours</p>
+        <h2 class="section-headline">For football, start with the 6-pack.</h2>
+        <p class="section-sub center">
+          More gear, more bottles. One in the gear bag, one at home, one for
+          the locker, one in the car, two on reserve. The 6-pack is what most
+          football households actually need.
+        </p>
+        <div class="tier-grid">
+          <a href="/products/jockshock/" class="tier">
+            <div class="tier-label">Single</div>
+            <div class="tier-detail">1 × 32oz</div>
+            <div class="tier-price">$24.99</div>
+            <div class="tier-bottom">Get it →</div>
+          </a>
+          <a href="/products/jockshock/" class="tier">
+            <div class="tier-label">3-Pack</div>
+            <div class="tier-detail">3 × 32oz</div>
+            <div class="tier-price">$59.99</div>
+            <div class="tier-bottom">Get it →</div>
+          </a>
+          <a href="/products/jockshock/" class="tier featured">
+            <span class="tier-badge">Football Pick</span>
+            <div class="tier-label">6-Pack</div>
+            <div class="tier-detail">6 × 32oz</div>
+            <div class="tier-price">$99.99</div>
+            <div class="tier-bottom">Get it →</div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="related">
+      <div class="related-inner">
+        <p class="section-eyebrow">Related</p>
+        <h2 class="section-headline">More from the football kit.</h2>
+        <div class="related-grid">
+          <a href="/learn/how-to-clean-a-mouthguard/" class="related-card">
+            <h3>How to clean a mouthguard</h3>
+            <p>The other thing in the football bag that nobody cleans enough.</p>
+          </a>
+          <a href="/learn/get-smell-out-of-cleats/" class="related-card">
+            <h3>Get the smell out of cleats</h3>
+            <p>The cleats need their own routine. Here's the playbook for football, soccer, lacrosse, baseball.</p>
+          </a>
+          <a href="/learn/shoe-deodorizer-spray/" class="related-card">
+            <h3>Shoe deodorizer for athletes</h3>
+            <p>Training shoes, gym shoes, the rotation between practice and weight room.</p>
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
