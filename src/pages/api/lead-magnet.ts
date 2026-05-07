@@ -68,60 +68,89 @@ export const POST: APIRoute = async ({ request }) => {
   const persona = data.persona || "aaron";
   const source = data.source || "jockshock-footer-field-guide";
 
-  // Klaviyo Profile Subscription Bulk Create Job
-  // https://developers.klaviyo.com/en/reference/subscribe_profiles
-  const payload = {
+  // Klaviyo's bulk-subscription endpoint does NOT accept `properties` on the
+  // profile (returns 400 "properties is not a valid field"). So this is a
+  // two-step dance:
+  //   1. POST /profile-import/ — upsert profile with the custom properties
+  //   2. POST /profile-subscription-bulk-create-jobs/ — subscribe the profile
+  //      to the list with consent
+  // Doing them in this order matters: the profile + properties are always
+  // created. The subscribe step is what feeds the welcome flow trigger; if
+  // it fails we still have the profile, so worst case we can backfill via
+  // a Klaviyo segment + flow re-trigger.
+  const profileProperties = {
+    sub_brand: "jockshock",
+    jockshock_persona: persona,
+    jockshock_lead_source: source,
+    jockshock_lead_magnet: "gear-smell-field-guide",
+    jockshock_signup_at: new Date().toISOString(),
+  };
+
+  const baseHeaders = {
+    Authorization: `Klaviyo-API-Key ${apiKey}`,
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    revision: KLAVIYO_REVISION,
+  };
+
+  // Step 1: upsert profile with custom properties.
+  const profilePayload = {
     data: {
-      type: "profile-subscription-bulk-create-job",
-      attributes: {
-        custom_source: source,
-        profiles: {
-          data: [
-            {
-              type: "profile",
-              attributes: {
-                email,
-                properties: {
-                  sub_brand: "jockshock",
-                  jockshock_persona: persona,
-                  jockshock_lead_source: source,
-                  jockshock_lead_magnet: "gear-smell-field-guide",
-                  jockshock_signup_at: new Date().toISOString(),
-                },
-                subscriptions: {
-                  email: {
-                    marketing: { consent: "SUBSCRIBED" },
-                  },
-                },
-              },
-            },
-          ],
-        },
-      },
-      relationships: {
-        list: { data: { type: "list", id: listId } },
-      },
+      type: "profile",
+      attributes: { email, properties: profileProperties },
     },
   };
 
   try {
-    const r = await fetch(`${KLAVIYO_API}/profile-subscription-bulk-create-jobs/`, {
+    const profRes = await fetch(`${KLAVIYO_API}/profile-import/`, {
       method: "POST",
-      headers: {
-        Authorization: `Klaviyo-API-Key ${apiKey}`,
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        revision: KLAVIYO_REVISION,
+      headers: baseHeaders,
+      body: JSON.stringify(profilePayload),
+    });
+    if (!profRes.ok) {
+      const errorText = await profRes.text();
+      console.error("[lead-magnet] Klaviyo profile-import error:", profRes.status, errorText);
+      // Continue to subscribe anyway — we'd rather have an unsubscribed
+      // profile with properties than fail the whole request.
+    }
+
+    // Step 2: subscribe to the list (no properties on the inner profile here —
+    // those are already set in step 1 by email match).
+    const subPayload = {
+      data: {
+        type: "profile-subscription-bulk-create-job",
+        attributes: {
+          custom_source: source,
+          profiles: {
+            data: [
+              {
+                type: "profile",
+                attributes: {
+                  email,
+                  subscriptions: {
+                    email: { marketing: { consent: "SUBSCRIBED" } },
+                  },
+                },
+              },
+            ],
+          },
+        },
+        relationships: {
+          list: { data: { type: "list", id: listId } },
+        },
       },
-      body: JSON.stringify(payload),
+    };
+
+    const subRes = await fetch(`${KLAVIYO_API}/profile-subscription-bulk-create-jobs/`, {
+      method: "POST",
+      headers: baseHeaders,
+      body: JSON.stringify(subPayload),
     });
 
-    if (!r.ok) {
-      const errorText = await r.text();
-      console.error("[lead-magnet] Klaviyo error:", r.status, errorText);
-      // Don't 500 the user — let them see success even if Klaviyo's having a
-      // moment, and we'll backfill from Sentry. Worst case: they don't get
-      // the email; best case: it shows up a few minutes late.
+    if (!subRes.ok) {
+      const errorText = await subRes.text();
+      console.error("[lead-magnet] Klaviyo subscribe error:", subRes.status, errorText);
+      // Don't 500 the user — profile may still have been imported in step 1.
       return new Response(JSON.stringify({ ok: true, queued: false }), { status: 200 });
     }
 

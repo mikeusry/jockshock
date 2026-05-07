@@ -22,9 +22,11 @@ const DEFAULT_DESC =
   "Pro-grade equipment deodorizer for serious athletes. Built for gear, not for the kitchen. Powered by ZeroPoint Technology.";
 // Pre-rendered OG card (1200x630) — JockShock wordmark + tagline + bottle.
 // Re-render via ~/.claude/skills/jockshock-design/render-og.mjs and upload
-// with the same public_id to refresh.
+// with the same public_id to refresh. Bump the v… prefix on every refresh
+// so social platforms (FB/LinkedIn/Slack) re-fetch instead of serving the
+// cached preview.
 const DEFAULT_OG_IMAGE =
-  "https://res.cloudinary.com/southland-organics/image/upload/f_jpg,q_auto/v1778155082/JockShock/jockshock-og-2026.png";
+  "https://res.cloudinary.com/southland-organics/image/upload/f_jpg,q_auto/v1778164127/JockShock/jockshock-og-2026.png";
 
 const {
   title,
