@@ -4,6 +4,7 @@
    * Variant selection + active image + add-to-cart, all client-side so the
    * selected variant updates without a full reload.
    */
+  import { onMount } from "svelte";
   import { addCartItem, isCartUpdating } from "../stores/cart";
 
   type Variant = {
@@ -39,20 +40,51 @@
     if (!selected || !selected.available) return;
 
     // Fire pixel event before adding so we capture the click intent even
-    // if the cart mutation is slow.
+    // if the cart mutation is slow. Also POST to /api/cart-event so the
+    // Klaviyo profile (if we have one — lead-magnet signups, returning
+    // customers) gets an "Added to Cart" event for the abandon flow.
+    const props = {
+      sku: selected.sku,
+      variant_id: selected.id,
+      price: parseFloat(selected.price.amount),
+      bottles: selected.bottleCount,
+      sub_brand: "jockshock",
+      persona: getStoredPersona(),
+    };
     if (typeof window !== "undefined" && (window as any).pdPixel) {
-      (window as any).pdPixel.track("add_to_cart", {
-        sku: selected.sku,
-        variant_id: selected.id,
-        price: parseFloat(selected.price.amount),
-        bottles: selected.bottleCount,
-        sub_brand: "jockshock",
-        persona: getStoredPersona(),
-      });
+      (window as any).pdPixel.track("add_to_cart", props);
     }
+    void fetch("/api/cart-event", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ event: "added_to_cart", properties: props }),
+      keepalive: true,
+    }).catch(() => {});
 
     addCartItem({ id: selected.id, quantity: 1 });
   }
+
+  // Fire view_product on mount so Klaviyo + the CDP both see the impression.
+  // Persona is read at fire time, not at render, so it picks up any cookie
+  // stamp that ran during the page load.
+  onMount(() => {
+    if (!selected) return;
+    const props = {
+      sku: selected.sku,
+      variant_id: selected.id,
+      price: parseFloat(selected.price.amount),
+      bottles: selected.bottleCount,
+      sub_brand: "jockshock",
+      persona: getStoredPersona(),
+    };
+    if ((window as any).pdPixel) (window as any).pdPixel.track("view_product", props);
+    void fetch("/api/cart-event", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ event: "viewed_product", properties: props }),
+      keepalive: true,
+    }).catch(() => {});
+  });
 
   function getStoredPersona(): string {
     if (typeof document === "undefined") return "aaron";
@@ -159,7 +191,7 @@
   }
 
   .eyebrow {
-    color: #facc15;
+    color: #FFE500;
     text-transform: uppercase;
     letter-spacing: 0.15em;
     font-weight: 700;
@@ -205,21 +237,21 @@
     font-family: inherit;
   }
   .variant:hover:not(.selected) {
-    border-color: rgba(250, 204, 21, 0.4);
+    border-color: rgba(255, 229, 0, 0.4);
   }
   .variant.selected {
-    border-color: #facc15;
+    border-color: #FFE500;
     background: #1a1a1a;
   }
   .variant.featured.selected {
-    box-shadow: 0 0 0 1px #facc15, 0 8px 24px rgba(250, 204, 21, 0.2);
+    box-shadow: 0 0 0 1px #FFE500, 0 8px 24px rgba(255, 229, 0, 0.2);
   }
   .variant-badge {
     position: absolute;
     top: -10px;
     left: 50%;
     transform: translateX(-50%);
-    background: #facc15;
+    background: #FFE500;
     color: #0a0a0a;
     padding: 3px 10px;
     border-radius: 999px;
@@ -252,7 +284,7 @@
     font-size: 0.6875rem;
   }
   .variant-savings {
-    color: #facc15;
+    color: #FFE500;
     font-size: 0.6875rem;
     font-weight: 700;
     margin-top: 2px;
@@ -261,7 +293,7 @@
   /* === CTA === */
   .cta {
     width: 100%;
-    background: #facc15;
+    background: #FFE500;
     color: #0a0a0a;
     border: none;
     padding: 20px 24px;
@@ -276,7 +308,7 @@
   }
   .cta:hover:not(:disabled) {
     transform: translateY(-1px);
-    box-shadow: 0 8px 20px rgba(250, 204, 21, 0.35);
+    box-shadow: 0 8px 20px rgba(255, 229, 0, 0.35);
   }
   .cta:disabled {
     background: #4b5563;
@@ -300,7 +332,7 @@
   }
   .trust-row li::before {
     content: "✓";
-    color: #facc15;
+    color: #FFE500;
     font-weight: 800;
   }
 

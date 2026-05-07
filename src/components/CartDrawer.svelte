@@ -19,13 +19,74 @@
     ? "opacity-50 pointer-events-none"
     : "");
 
-  // Add focus to cart drawer when it opens
+  // Add focus to cart drawer when it opens, and fire pixel + Klaviyo
+  // view_cart event so the abandon-cart flow has a hook before checkout.
+  let lastViewedCartId: string | null = null;
   run(() => {
     if ($isCartDrawerOpen) {
       document.querySelector("body")?.classList.add("overflow-hidden");
       cartDrawerEl?.focus();
+      // Only fire once per cart-id-while-open so toggling the drawer doesn't
+      // spam events. New cart id (after checkout / clear) re-fires.
+      const c = $cart;
+      if (c?.id && c.id !== lastViewedCartId && c.totalQuantity > 0) {
+        lastViewedCartId = c.id;
+        const props = cartEventProps(c, "view_cart");
+        const pixel = (window as unknown as { pdPixel?: { track: (n: string, p: Record<string, unknown>) => void } }).pdPixel;
+        pixel?.track("view_cart", props);
+        void fetch("/api/cart-event", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ event: "viewed_cart", properties: props }),
+          keepalive: true,
+        }).catch(() => {});
+      }
     }
   });
+
+  function getStoredPersona(): string {
+    if (typeof document === "undefined") return "aaron";
+    const m = document.cookie.match(/sl_persona=([^;]+)/);
+    return m ? decodeURIComponent(m[1]) : "aaron";
+  }
+
+  function cartEventProps(c: typeof $cart, _kind: string) {
+    return {
+      cart_id: c.id,
+      cart_total: parseFloat(c.cost.subtotalAmount.amount || "0"),
+      currency: c.cost.subtotalAmount.currencyCode || "USD",
+      total_quantity: c.totalQuantity,
+      lines: c.lines.nodes.map((l) => ({
+        title: l.merchandise?.product?.title,
+        variant_id: l.merchandise?.id,
+        sku: l.merchandise?.sku,
+        quantity: l.quantity,
+        line_total: parseFloat(l.cost?.totalAmount?.amount || "0"),
+      })),
+      checkout_url: c.checkoutUrl,
+      sub_brand: "jockshock",
+      persona: getStoredPersona(),
+    };
+  }
+
+  function handleCheckoutClick(e: MouseEvent) {
+    // Fire begin_checkout to both pixel and Klaviyo before the navigation
+    // happens. keepalive on fetch lets the request finish even after the
+    // window unloads.
+    const c = $cart;
+    if (!c?.id) return;
+    const props = cartEventProps(c, "begin_checkout");
+    const pixel = (window as unknown as { pdPixel?: { track: (n: string, p: Record<string, unknown>) => void } }).pdPixel;
+    pixel?.track("begin_checkout", props);
+    void fetch("/api/cart-event", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ event: "started_checkout", properties: props }),
+      keepalive: true,
+    }).catch(() => {});
+    // Don't preventDefault — the <a href> proceeds to Shopify checkout.
+    void e;
+  }
 
   function removeItem(id: string) {
     removeCartItems([id]);
@@ -227,7 +288,7 @@
                       Shipping and taxes calculated at checkout.
                     </p>
                     <div class="mt-6">
-                      <a href={$cart.checkoutUrl} class="button">Checkout</a>
+                      <a href={$cart.checkoutUrl} class="button" onclick={handleCheckoutClick}>Checkout</a>
                     </div>
                   </div>
                 {/if}

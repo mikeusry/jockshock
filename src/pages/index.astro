@@ -1,249 +1,471 @@
 ---
 /**
- * JockShock homepage. Aaron voice (per brand-brief.md). No unsubstantiated
- * claims. CTAs route to /products/jockshock for the actual buy path. Uses
- * BaseLayout so the point.dog pixel + cart drawer fire on this page.
+ * JockShock homepage. Aaron voice. Light/dark rhythm: dark hero → light
+ * mechanism → light routine → dark tiers (the buy zone) → light pivots →
+ * dark founders → yellow guarantee → black footer. Carbon-fiber SVG
+ * texture on light sections so they read "athletic gear" not "wellness."
+ *
+ * Substance is locked: no HOCl mention, no kill claims, no EPA references.
+ * Trust attribution is "ZeroPoint Technology" only. Mechanism is described
+ * via the immune-system metaphor, not the molecule name.
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
+import StepBadge from "../components/StepBadge.astro";
 
 const title = "JockShock — Pro-Grade Equipment Deodorizer for Serious Athletes";
 const description =
-  "Pro-grade gear deodorizer. ZeroPoint Technology. Built for athletic gear, not for the kitchen. 32oz matte-black bottle, made in USA.";
+  "Pro-grade gear deodorizer. Powered by ZeroPoint Technology. Built for athletic gear, not for the kitchen. 32oz matte-black bottle, made in USA.";
 
+// Cloudinary tx notes: w_1800 + dpr_auto serves 1x to mid-DPI (saves ~300KB
+// vs w_2400) and only upscales for high-DPI devices that need it. f_auto
+// already picks AVIF/WebP. Bottle PNGs trimmed to true rendered size.
 const HERO_BG =
-  "https://res.cloudinary.com/southland-organics/image/upload/JockShock/beckham2_t9b1zk.jpg";
+  "https://res.cloudinary.com/southland-organics/image/upload/c_fill,w_1800,h_1200,g_auto,q_auto,f_auto,dpr_auto/JockShock/beckham.jpg";
+const MECH_BG =
+  "https://res.cloudinary.com/southland-organics/image/upload/c_fill,w_1000,h_1200,g_auto,q_auto,f_auto,dpr_auto/JockShock/beckham2_t9b1zk.jpg";
+const FOUNDERS_BG =
+  "https://res.cloudinary.com/southland-organics/image/upload/c_fill,w_1800,h_1200,g_auto,q_auto,f_auto,dpr_auto/JockShock/beckham4.jpg";
 const HERO_BOTTLE =
-  "https://res.cloudinary.com/southland-organics/image/upload/c_fit,w_900,q_auto,f_auto/JockShock/jockshock-32oz-single-2026.png";
+  "https://res.cloudinary.com/southland-organics/image/upload/c_fit,w_700,q_auto,f_auto,dpr_auto/JockShock/jockshock-32oz-single-2026.png";
+const PACK_3 =
+  "https://res.cloudinary.com/southland-organics/image/upload/c_fit,w_560,q_auto,f_auto,dpr_auto/JockShock/jockshock-3pack-athlete-2026.png";
+const PACK_6 =
+  "https://res.cloudinary.com/southland-organics/image/upload/c_fit,w_560,q_auto,f_auto,dpr_auto/JockShock/jockshock-6pack-team-2026.png";
+
+// =============================================================================
+// Homepage FAQ — top-of-funnel, brand-level questions. Distinct from the PDP
+// FAQ (product details). The questions/answers below also feed FAQPage
+// JSON-LD so we get the SERP "People also ask"–style accordion treatment.
+// Watch claims compliance on every answer (no kill / EPA / 24HR / HOCl).
+// =============================================================================
+const FAQ_ITEMS = [
+  {
+    q: "What is JockShock?",
+    a: "JockShock is a pro-grade equipment deodorizer engineered for athletic gear — pads, helmets, gloves, cleats, the bag itself. Powered by ZeroPoint Technology. No fragrance, no masking. The funk doesn't get covered up — it goes away.",
+  },
+  {
+    q: "How is it different from Febreze, Lysol, or Tide?",
+    a: "Those are designed for surfaces in your home and fabric in your closet. They mask smell with fragrance, then the smell comes back. JockShock is built for athletic materials — foam, leather, mesh, padding, plastic — and it goes after the source instead of perfuming over it.",
+  },
+  {
+    q: "Will it damage gear or stain a uniform?",
+    a: "No. JockShock is engineered for athletic materials. No bleach, no abrasives, no fragrance dyes. Spray on gear, let it air, you're done. Won't fade colors, won't crisp up foam, won't leave a film.",
+  },
+  {
+    q: "Is it for one sport or all sports?",
+    a: "All of them. Football pads, lacrosse gloves, hockey gear, wrestling singlets, jiu-jitsu gis, baseball helmets, climbing harnesses, soccer cleats — if it lives in a gear bag, it's in scope.",
+  },
+  {
+    q: "Why is the bottle 32oz?",
+    a: "Because gear sprays should outlast a season. A travel size is a marketing decision, not a use-case decision. A 32oz bottle covers 6–10 weeks of heavy use; most serious athletes go through 3–6 bottles a year.",
+  },
+  {
+    q: "Do you sell to gyms and teams?",
+    a: "Yes — that's our gym channel. JockShock for the athletes' gear, ZeroPoint for the facility, paired on a monthly subscription. A D1 Training franchise owner runs the program. See our gym + team page for a quote.",
+  },
+  {
+    q: "Where is it made?",
+    a: "Made in the USA. Powered by ZeroPoint Technology. Built by a team of D1 athletes inside Southland Organics.",
+  },
+];
+
+const FAQ_LD = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQ_ITEMS.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: { "@type": "Answer", text: item.a },
+  })),
+};
 ---
 
-<BaseLayout title={title} description={description}>
-  <div class="js-home">
-    <!-- HERO -->
-    <section class="hero">
-      <div class="hero-bg" style={`background-image: url('${HERO_BG}')`}></div>
-      <div class="hero-overlay"></div>
-      <div class="hero-grid">
-        <div class="hero-copy">
-          <p class="eyebrow">Performance Protection for Serious Athletes</p>
-          <h1 class="hero-headline">
-            Built for the locker room.<br />Not for the laundry room.
-          </h1>
-          <p class="hero-sub">
-            JockShock is a pro-grade equipment deodorizer engineered for the
-            gear athletes actually use. Hypochlorous acid chemistry, powered
-            by ZeroPoint Technology. No fragrance, no masking — just gear
-            that doesn't reek when you open the bag.
-          </p>
-          <div class="hero-cta-row">
-            <a href="/products/jockshock/" class="cta-primary">Get JockShock</a>
-            <a href="#how" class="cta-secondary">How it works</a>
-          </div>
-          <ul class="hero-trust">
-            <li>ZeroPoint Technology</li>
-            <li>Built by D1 athletes</li>
-            <li>Made in USA</li>
-          </ul>
+<BaseLayout title={title} description={description} jsonLd={[FAQ_LD]}>
+  {/* HERO — carbon backdrop with athlete imagery */}
+  <section class="hero js-carbon">
+    <div class="hero-bg" style={`background-image: url('${HERO_BG}')`}></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">Performance Protection for Serious Athletes</p>
+        <h1 class="hero-headline">
+          Built for the locker room.<br />Not for the laundry room.
+        </h1>
+        <p class="hero-sub">
+          JockShock is a pro-grade equipment deodorizer engineered for the
+          gear athletes actually use. Powered by ZeroPoint Technology. No
+          fragrance, no masking — just gear that doesn't reek when you open
+          the bag.
+        </p>
+        <div class="hero-cta-row">
+          <a href="/products/jockshock/" class="cta-primary">Get JockShock</a>
+          <a href="#how" class="cta-secondary">How it works</a>
         </div>
-        <div class="hero-product">
-          <img src={HERO_BOTTLE} alt="JockShock 32oz pro-grade equipment deodorizer" />
-        </div>
+        <ul class="hero-trust">
+          <li>
+            <span class="hero-trust-rule"></span>
+            <div>
+              <span class="hero-trust-label">ZeroPoint</span>
+              <span class="hero-trust-detail">Technology</span>
+            </div>
+          </li>
+          <li>
+            <span class="hero-trust-rule"></span>
+            <a href="/founders/" class="hero-trust-link">
+              <span class="hero-trust-label">Built by</span>
+              <span class="hero-trust-detail">D1 Athletes</span>
+            </a>
+          </li>
+          <li>
+            <span class="hero-trust-rule"></span>
+            <div>
+              <span class="hero-trust-label">Made in</span>
+              <span class="hero-trust-detail">USA</span>
+            </div>
+          </li>
+        </ul>
       </div>
-    </section>
+      <div class="hero-product">
+        <img src={HERO_BOTTLE} alt="JockShock 32oz pro-grade equipment deodorizer" />
+      </div>
+    </div>
+  </section>
 
-    <!-- THE MECHANISM -->
-    <section class="mechanism" id="how">
-      <div class="mechanism-inner">
-        <p class="section-eyebrow">The mechanism</p>
+  {/* MECHANISM — light section, two-column with cinematic bottle imagery */}
+  <section class="js-section js-fiber mechanism-section" id="how">
+    <div class="js-section--inner mechanism-inner">
+      <div class="mechanism-copy">
+        <p class="eyebrow">The mechanism</p>
         <h2 class="section-headline">
-          Hypochlorous acid. The same chemistry your immune system makes.
+          The same chemistry your immune system uses.
         </h2>
         <p class="section-sub">
           Most "gear sprays" mask smell with fragrance. JockShock goes after
-          the source. HOCl is the molecule your own white blood cells produce
-          — fast-acting, gear-safe, and residue-free at use concentration.
-          Powered by ZeroPoint Technology.
+          the source — using the same family of chemistry your body produces
+          to fight infection. Powered by ZeroPoint Technology. Fast-acting,
+          gear-safe, residue-free.
         </p>
 
-        <div class="mech-grid">
-          <div class="mech-card">
+        <div class="mech-stack">
+          <div class="js-card">
             <h3>Goes after the source</h3>
             <p>
               Targets odor at its origin in pads, helmets, gloves, mats,
               cleats, mouthguards. Not perfume.
             </p>
           </div>
-          <div class="mech-card">
+          <div class="js-card">
             <h3>Gear-safe materials</h3>
             <p>
               Engineered for foam, leather, mesh, padding, plastic — what your
               athletic equipment is actually made of. Won't damage gear.
             </p>
           </div>
-          <div class="mech-card">
+          <div class="js-card">
             <h3>Skin-safe contact</h3>
             <p>
-              Same chemistry family as wound-care saline sprays. Safe on
+              Same family of chemistry as wound-care saline sprays. Safe on
               mouthguards, headgear, contact-area gear at use concentration.
             </p>
           </div>
         </div>
       </div>
-    </section>
 
-    <!-- ROUTINE -->
-    <section class="routine">
-      <div class="routine-inner">
-        <p class="section-eyebrow">The routine</p>
-        <h2 class="section-headline">
-          Spray after every practice. The funk never sets in.
-        </h2>
-        <p class="section-sub">
-          JockShock works best as a routine — not a rescue mission. 60 seconds
-          after practice keeps your gear, your bag, and your car from turning
-          into a hockey-bag horror show.
-        </p>
-        <ol class="steps">
-          <li>
-            <span class="step-num">1</span>
-            <h3>Spray</h3>
-            <p>Inside the pads. Inside the helmet. Inside the bag.</p>
-          </li>
-          <li>
-            <span class="step-num">2</span>
-            <h3>Air</h3>
-            <p>Two minutes. Hang it if you can.</p>
-          </li>
-          <li>
-            <span class="step-num">3</span>
-            <h3>Done</h3>
-            <p>Pack it away. Tomorrow's practice doesn't smell like yesterday's.</p>
-          </li>
-        </ol>
-      </div>
-    </section>
-
-    <!-- PRODUCT TIERS / CTA -->
-    <section class="tiers">
-      <div class="tiers-inner">
-        <p class="section-eyebrow">Get yours</p>
-        <h2 class="section-headline">One bottle. Three packs. No subscription required.</h2>
-
-        <div class="tier-grid">
-          <a href="/products/jockshock/?variant=single" class="tier">
-            <div class="tier-label">Single</div>
-            <div class="tier-detail">1 × 32oz</div>
-            <div class="tier-price">$24.99</div>
-            <div class="tier-bottom">Get it →</div>
-          </a>
-          <a href="/products/jockshock/?variant=athlete" class="tier featured">
-            <span class="tier-badge">Most Popular</span>
-            <div class="tier-label">Athlete Pack</div>
-            <div class="tier-detail">3 × 32oz</div>
-            <div class="tier-price">$59.99</div>
-            <div class="tier-savings">Save $15</div>
-            <div class="tier-bottom">Get it →</div>
-          </a>
-          <a href="/products/jockshock/?variant=team" class="tier">
-            <div class="tier-label">Team Pack</div>
-            <div class="tier-detail">6 × 32oz</div>
-            <div class="tier-price">$99.99</div>
-            <div class="tier-savings">Save $50</div>
-            <div class="tier-bottom">Get it →</div>
-          </a>
+      <div class="mechanism-media" style={`background-image: url('${MECH_BG}')`}>
+        <div class="mechanism-media-overlay"></div>
+        <div class="mechanism-media-frame">
+          <img
+            src={HERO_BOTTLE}
+            alt="JockShock 32oz bottle"
+            loading="lazy"
+          />
         </div>
-
-        <div class="pivots">
-          <div class="pivot">
-            <p>
-              <strong>Sports parent?</strong>
-              You opened the trunk and gagged. Here's how to fix it.
-              <a href="/parents/">For parents →</a>
-            </p>
-          </div>
-          <div class="pivot">
-            <p>
-              <strong>Coaching a team or running a facility?</strong>
-              Volume pricing for programs.
-              <a href="/teams/">Get a team quote →</a>
-            </p>
+        <div class="mechanism-media-tag">
+          <span class="hero-trust-rule"></span>
+          <div>
+            <span class="hero-trust-label">Pro-grade</span>
+            <span class="hero-trust-detail">32oz · Matte black</span>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- CREDENTIAL -->
-    <section class="credential">
-      <div class="credential-inner">
-        <p class="section-eyebrow">Built by athletes</p>
-        <h2 class="section-headline">
-          We made the spray we wanted in our own bags.
-        </h2>
-        <p class="credential-body">
-          JockShock is built by D1 athletes who got tired of the gear stink and
-          tired of products that don't fix it. Bleach destroys pads. Household
-          sprays just mask. The "cleaning aisle" deodorizers read like cleaning
-          aisle deodorizers. So we built something different — pro-grade, made
-          for gear, made in the USA.
-        </p>
-      </div>
-    </section>
+  {/* ROUTINE — light section, slightly cooler background to differentiate */}
+  <section class="js-section js-fiber routine-section">
+    <div class="js-section--inner">
+      <p class="eyebrow">The routine</p>
+      <h2 class="section-headline">
+        Spray after every practice. The funk never sets in.
+      </h2>
+      <p class="section-sub">
+        JockShock works best as a routine — not a rescue mission. 60 seconds
+        after practice keeps your gear, your bag, and your car from turning
+        into a hockey-bag horror show.
+      </p>
+      <ol class="steps">
+        <li>
+          <div class="step-icon step-icon--bottle">
+            <img
+              src={HERO_BOTTLE}
+              alt="JockShock 32oz bottle"
+              loading="lazy"
+            />
+          </div>
+          <StepBadge number="1" tone="yellow" size={56} class="step-badge" />
+          <h3>Spray</h3>
+          <p>Inside the pads. Inside the helmet. Inside the bag.</p>
+        </li>
+        <li>
+          <div class="step-icon">
+            {/* Solid gear bag with bold airflow arrows */}
+            <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              {/* Bag body */}
+              <path d="M10 24 L54 24 L52 52 Q51 56 47 56 L17 56 Q13 56 12 52 Z" fill="currentColor"/>
+              {/* Strap arcs above the bag */}
+              <path d="M22 24 L22 19 Q22 14 27 14 L37 14 Q42 14 42 19 L42 24 L38 24 L38 19 Q38 18 37 18 L27 18 Q26 18 26 19 L26 24 Z" fill="currentColor"/>
+              {/* Airflow arrows in negative space */}
+              <path d="M16 38 L23 38 L23 35 L29 39 L23 43 L23 40 L16 40 Z" fill="#FFE500"/>
+              <path d="M48 38 L41 38 L41 35 L35 39 L41 43 L41 40 L48 40 Z" fill="#FFE500"/>
+            </svg>
+          </div>
+          <StepBadge number="2" tone="yellow" size={56} class="step-badge" />
+          <h3>Air</h3>
+          <p>Two minutes. Hang it if you can.</p>
+        </li>
+        <li>
+          <div class="step-icon">
+            {/* Bold checkmark in solid circle */}
+            <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="32" cy="32" r="26" fill="currentColor"/>
+              <path d="M19 32 L28 41 L46 23 L42 19 L28 33 L23 28 Z" fill="#FFE500"/>
+            </svg>
+          </div>
+          <StepBadge number="3" tone="yellow" size={56} class="step-badge" />
+          <h3>Done</h3>
+          <p>Tomorrow's practice doesn't smell like yesterday's.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
 
-    <!-- 30-DAY GUARANTEE -->
-    <section class="guarantee">
-      <div class="guarantee-inner">
-        <h2>30-day money-back guarantee.</h2>
-        <p>
-          Try a bottle. If it doesn't work for you, we'll refund it — keep
-          what's left.
-        </p>
-        <a href="/products/jockshock/" class="cta-primary">Get JockShock</a>
+  {/* TIERS — DARK buy zone */}
+  <section class="js-section js-carbon">
+    <div class="js-section--inner tiers-inner">
+      <p class="eyebrow">Get yours</p>
+      <h2 class="section-headline">One bottle. Three packs. No subscription required.</h2>
+      <p class="section-sub">
+        Most athletes start with the Athlete Pack — one bottle for the gear
+        bag, one for the laundry room, one for the car. Trained-use cadence
+        gets you 6-10 weeks per bottle.
+      </p>
+
+      <div class="tier-grid">
+        <a href="/products/jockshock/?variant=single" class="tier">
+          <img src={HERO_BOTTLE} alt="JockShock 32oz single bottle — matte-black equipment deodorizer" class="tier-img" loading="lazy" />
+          <div class="tier-label">Single</div>
+          <div class="tier-detail">1 × 32oz</div>
+          <div class="tier-price">$24.99</div>
+          <div class="tier-bottom">Get it →</div>
+        </a>
+        <a href="/products/jockshock/?variant=athlete" class="tier featured">
+          <span class="tier-badge">Most Popular</span>
+          <img src={PACK_3} alt="JockShock Athlete Pack — three 32oz bottles" class="tier-img" loading="lazy" />
+          <div class="tier-label">Athlete Pack</div>
+          <div class="tier-detail">3 × 32oz</div>
+          <div class="tier-price">$59.99</div>
+          <div class="tier-savings">Save $15</div>
+          <div class="tier-bottom">Get it →</div>
+        </a>
+        <a href="/products/jockshock/?variant=team" class="tier">
+          <img src={PACK_6} alt="JockShock Team Pack — six 32oz bottles" class="tier-img" loading="lazy" />
+          <div class="tier-label">Team Pack</div>
+          <div class="tier-detail">6 × 32oz</div>
+          <div class="tier-price">$99.99</div>
+          <div class="tier-savings">Save $50</div>
+          <div class="tier-bottom">Get it →</div>
+        </a>
       </div>
-    </section>
-  </div>
+    </div>
+  </section>
+
+  {/* PIVOTS — light, secondary surfaces for Pam + Carmen */}
+  <section class="js-section js-fiber">
+    <div class="js-section--inner">
+      <div class="pivots">
+        <a href="/parents/" class="pivot">
+          <div class="pivot-icon">
+            {/* Car with stink lines coming out of trunk */}
+            <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M8 42 L8 36 L14 24 L46 24 L52 36 L56 36 L56 42" />
+              <path d="M8 42 L56 42 L56 48 L52 48 L52 50 L46 50 L46 48 L18 48 L18 50 L12 50 L12 48 L8 48 Z" />
+              <circle cx="18" cy="44" r="4" />
+              <circle cx="46" cy="44" r="4" />
+              <path d="M22 14 Q24 11 26 14" />
+              <path d="M30 12 Q32 9 34 12" />
+              <path d="M38 14 Q40 11 42 14" />
+            </svg>
+          </div>
+          <p class="eyebrow">Sports parent?</p>
+          <h3>You opened the trunk and gagged.</h3>
+          <p class="pivot-body">
+            Here's how to fix it — without bleach, without a graveyard of
+            half-used Febreze cans.
+          </p>
+          <span class="pivot-link">For parents →</span>
+        </a>
+        <a href="/teams/" class="pivot">
+          <div class="pivot-icon">
+            {/* Clipboard with checklist */}
+            <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="14" y="12" width="36" height="44" rx="2" />
+              <rect x="22" y="6" width="20" height="10" rx="2" />
+              <path d="M22 26 L26 30 L34 22" />
+              <line x1="40" y1="26" x2="44" y2="26" />
+              <path d="M22 38 L26 42 L34 34" />
+              <line x1="40" y1="38" x2="44" y2="38" />
+              <path d="M22 50 L26 54 L34 46" />
+              <line x1="40" y1="50" x2="44" y2="50" />
+            </svg>
+          </div>
+          <p class="eyebrow">Coaching a team?</p>
+          <h3>Volume pricing for programs.</h3>
+          <p class="pivot-body">
+            Twelve athletes or two hundred, hockey rink or wrestling room —
+            get a quote on program-wide JockShock.
+          </p>
+          <span class="pivot-link">Get a team quote →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  {/* CREDENTIAL — DARK, four founders, cinematic backdrop */}
+  <section class="js-section js-carbon credential">
+    <div class="credential-bg" style={`background-image: url('${FOUNDERS_BG}')`}></div>
+    <div class="credential-overlay"></div>
+    <div class="js-section--inner credential-inner">
+      <span class="credential-rule"></span>
+      <p class="eyebrow">Built by D1 athletes</p>
+      <h2 class="credential-headline">
+        Four athletes from one school.<br />All Bulldogs. All in.
+      </h2>
+      <p class="credential-body">
+        JockShock is built by four D1 athletes who got tired of products that
+        don't fix the gear stink. Bleach destroys pads. Household sprays just
+        mask. The cleaning-aisle deodorizers read like cleaning-aisle
+        deodorizers. So we built something different — pro-grade, made for
+        gear, made in the USA.
+      </p>
+
+      <ul class="founders">
+        <li class="founder">
+          <p class="founder-name">Mike Usry</p>
+          <p class="founder-cred">UGA Football</p>
+          <p class="founder-detail">Co-founder, Southland Organics. Operator-CEO across the Southland brands.</p>
+        </li>
+        <li class="founder">
+          <p class="founder-name">Karin Lichey Usry</p>
+          <p class="founder-cred">UGA Gymnastics, '96–'99</p>
+          <p class="founder-detail">11× All-American. 1999 Honda Sports Award. First collegiate gymnast to score a perfect 40.0.</p>
+        </li>
+        <li class="founder">
+          <p class="founder-name">Fred Munzenmaier</p>
+          <p class="founder-cred">UGA Football, '07–'09</p>
+          <p class="founder-detail">Running back, #48. Owner of a D1 Training franchise. Runs the JockShock gym program.</p>
+        </li>
+        <li class="founder">
+          <p class="founder-name">Anna Watson Munzenmaier</p>
+          <p class="founder-cred">UGA Cheerleading</p>
+          <p class="founder-detail">"World's strongest cheerleader." Strength coach at D1 Training Athens.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  {/* GUARANTEE — yellow punctuation band with hard-and-fast rules */}
+  <section class="guarantee-band">
+    <div class="guarantee-inner">
+      <h2>30-day money-back guarantee.</h2>
+      <p class="guarantee-tag">No fine print, no return labels, no hassle.</p>
+      <ul class="guarantee-rules">
+        <li>
+          <span class="guarantee-rule-num">30</span>
+          <div>
+            <span class="guarantee-rule-label">Days</span>
+            <span class="guarantee-rule-detail">Try it for a month</span>
+          </div>
+        </li>
+        <li>
+          <span class="guarantee-rule-num">0</span>
+          <div>
+            <span class="guarantee-rule-label">Questions</span>
+            <span class="guarantee-rule-detail">We don't need a reason</span>
+          </div>
+        </li>
+        <li>
+          <span class="guarantee-rule-num">∞</span>
+          <div>
+            <span class="guarantee-rule-label">Bottle</span>
+            <span class="guarantee-rule-detail">Keep what's left</span>
+          </div>
+        </li>
+      </ul>
+      <a href="/products/jockshock/" class="cta-secondary cta-on-yellow">Get JockShock</a>
+    </div>
+  </section>
+
+  {/* FAQ — top-of-funnel brand questions. Mirrored as FAQPage JSON-LD above. */}
+  <section class="home-faq" id="faq">
+    <div class="home-faq-inner">
+      <p class="eyebrow">Real questions</p>
+      <h2 class="home-faq-headline">Stuff people ask before they buy.</h2>
+      <div class="home-faq-grid">
+        {FAQ_ITEMS.map((item) => (
+          <details>
+            <summary>{item.q}</summary>
+            <p>{item.a}</p>
+          </details>
+        ))}
+      </div>
+      <p class="home-faq-foot">
+        More product detail on the <a href="/products/jockshock/">product page</a>.
+        Coaching a team or running a facility?
+        <a href="/teams/">See the gym + team program</a>.
+      </p>
+    </div>
+  </section>
 </BaseLayout>
 
 <script>
-  // Aaron is the JockShock default — if no other signal stamped a persona,
-  // stamp Aaron. Existing cookie wins (don't overwrite a Pam/Carmen visitor
-  // who clicked back to the homepage).
   import { setPersonaIfMissing } from "../utils/persona-stamp";
   setPersonaIfMissing("aaron");
 </script>
 
 <style>
-  .js-home {
-    --jockshock-black: #0a0a0a;
-    --jockshock-yellow: #facc15;
-    --jockshock-text: #f3f4f6;
-    --jockshock-muted: #9ca3af;
-    background: var(--jockshock-black);
-    color: var(--jockshock-text);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-  }
-  .js-home h1, .js-home h2, .js-home h3 {
-    font-weight: 800;
-    letter-spacing: -0.02em;
-  }
-
-  /* === HERO === */
+  /* HERO */
   .hero {
     position: relative;
     min-height: 88vh;
     overflow: hidden;
-    color: #fff;
+    padding: 0;
   }
   .hero-bg {
     position: absolute;
     inset: 0;
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
     z-index: 0;
   }
   .hero-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(10, 10, 10, 0.96) 0%, rgba(10, 10, 10, 0.6) 100%);
+    background: linear-gradient(
+      120deg,
+      rgba(10, 10, 10, 0.94) 0%,
+      rgba(10, 10, 10, 0.74) 45%,
+      rgba(10, 10, 10, 0.45) 100%
+    );
     z-index: 1;
   }
   .hero-grid {
@@ -253,31 +475,19 @@ const HERO_BOTTLE =
     margin: 0 auto;
     padding: 100px 5% 80px;
     display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 64px;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
     align-items: center;
-    min-height: 88vh;
+    min-height: 92vh;
   }
   .hero-copy { max-width: 640px; }
-  .eyebrow {
-    color: var(--jockshock-yellow);
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-    font-weight: 700;
-    font-size: 0.8125rem;
-    margin-bottom: 24px;
-  }
-  .hero-headline {
-    font-size: clamp(2.5rem, 5vw, 4.5rem);
-    line-height: 1.05;
-    color: #fff;
-    margin: 0 0 24px;
-  }
+  .hero-headline { color: #fff; margin-bottom: 24px; }
   .hero-sub {
-    font-size: 1.125rem;
+    font-size: 18px;
     line-height: 1.55;
     color: #d1d5db;
     margin-bottom: 32px;
+    max-width: 580px;
   }
   .hero-cta-row {
     display: flex;
@@ -285,53 +495,64 @@ const HERO_BOTTLE =
     margin-bottom: 32px;
     flex-wrap: wrap;
   }
-  .cta-primary {
-    display: inline-block;
-    background: var(--jockshock-yellow);
-    color: var(--jockshock-black);
-    padding: 18px 36px;
-    text-decoration: none;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-size: 0.9375rem;
-    transition: transform 0.1s ease, box-shadow 0.15s ease;
-    border-radius: 4px;
-  }
-  .cta-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(250, 204, 21, 0.35);
-  }
-  .cta-secondary {
-    display: inline-block;
-    color: #fff;
-    padding: 18px 24px;
-    text-decoration: none;
-    font-weight: 700;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 4px;
-    transition: border-color 0.15s ease;
-  }
-  .cta-secondary:hover { border-color: var(--jockshock-yellow); }
   .hero-trust {
     list-style: none;
     padding: 0;
     margin: 0;
     display: flex;
-    gap: 16px 24px;
+    gap: 24px 36px;
     flex-wrap: wrap;
-    color: #d1d5db;
-    font-size: 0.875rem;
   }
   .hero-trust li {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 14px;
   }
-  .hero-trust li::before {
-    content: "✓";
-    color: var(--jockshock-yellow);
-    font-weight: 800;
+  .hero-trust-rule {
+    width: 3px;
+    height: 28px;
+    background: var(--electric-yellow);
+    display: inline-block;
+  }
+  .hero-trust li > div,
+  .hero-trust-link {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .hero-trust-link {
+    text-decoration: none;
+    color: inherit;
+    border-bottom: 1px dotted rgba(255, 229, 0, 0.4);
+    padding: 8px 0 6px;
+    margin: -8px 0 -6px;
+    min-height: 44px;
+    justify-content: center;
+    transition: border-color 0.15s ease;
+  }
+  .hero-trust-link:hover {
+    border-bottom-color: var(--electric-yellow);
+  }
+  .hero-trust-link:hover .hero-trust-detail {
+    color: var(--electric-yellow);
+  }
+  .hero-trust-label {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #9ca3af;
+    line-height: 1;
+  }
+  .hero-trust-detail {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 17px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #fff;
+    line-height: 1;
+    white-space: nowrap;
   }
   .hero-product {
     display: flex;
@@ -341,209 +562,507 @@ const HERO_BOTTLE =
   .hero-product img {
     max-width: 100%;
     height: auto;
-    max-height: 600px;
-    filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.7));
+    max-height: 720px;
+    filter: drop-shadow(0 40px 80px rgba(0, 0, 0, 0.8));
   }
 
-  /* === SECTIONS === */
-  .section-eyebrow {
-    color: var(--jockshock-yellow);
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    font-weight: 700;
-    font-size: 0.8125rem;
-    margin-bottom: 12px;
-  }
-  .section-headline {
-    font-size: clamp(2rem, 4vw, 3rem);
-    color: #fff;
-    margin: 0 0 16px;
-    line-height: 1.15;
-  }
+  /* SECTION SHARED */
+  .section-headline { margin-bottom: 16px; }
   .section-sub {
-    font-size: 1.125rem;
-    color: var(--jockshock-muted);
+    font-size: 18px;
     line-height: 1.6;
     margin-bottom: 56px;
     max-width: 720px;
   }
 
-  /* === MECHANISM === */
-  .mechanism { padding: 100px 5%; background: var(--jockshock-black); }
-  .mechanism-inner { max-width: 1200px; margin: 0 auto; }
-  .mech-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 32px;
+  /* Routine section: cooler steel-50 background + heavy yellow top rule
+   * for stronger visual separation from the mechanism above. */
+  .routine-section {
+    background-color: var(--steel-50);
+    border-top: 4px solid var(--electric-yellow);
   }
-  .mech-card {
-    background: #141414;
-    padding: 32px;
-    border-left: 3px solid var(--jockshock-yellow);
-  }
-  .mech-card h3 {
-    color: var(--jockshock-yellow);
-    font-size: 1.25rem;
-    margin: 0 0 12px;
-  }
-  .mech-card p { color: var(--jockshock-text); line-height: 1.6; font-size: 0.95rem; margin: 0; }
 
-  /* === ROUTINE === */
-  .routine { padding: 100px 5%; background: #050505; }
-  .routine-inner { max-width: 900px; margin: 0 auto; }
+  /* MECHANISM — two-column with cinematic bottle */
+  .mechanism-inner {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .mechanism-copy { max-width: 560px; }
+  .mech-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .mechanism-media {
+    position: relative;
+    background-color: var(--carbon-black);
+    background-size: cover;
+    background-position: center;
+    padding: 56px 48px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22);
+  }
+  /* Dark overlay so the bottle still pops against the busy gloves photo */
+  .mechanism-media-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(10, 10, 10, 0.86) 0%,
+      rgba(10, 10, 10, 0.65) 50%,
+      rgba(10, 10, 10, 0.86) 100%
+    );
+    z-index: 1;
+  }
+  .mechanism-media-frame,
+  .mechanism-media-tag {
+    position: relative;
+    z-index: 2;
+  }
+  /* Subtle yellow accent corner on the dark frame */
+  .mechanism-media::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 64px;
+    height: 4px;
+    background: var(--electric-yellow);
+  }
+  .mechanism-media::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 64px;
+    background: var(--electric-yellow);
+  }
+  .mechanism-media-frame {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 480px;
+  }
+  .mechanism-media-frame img {
+    max-width: 100%;
+    max-height: 540px;
+    height: auto;
+    width: auto;
+    filter: drop-shadow(0 30px 60px rgba(255, 229, 0, 0.08));
+  }
+  .mechanism-media-tag {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .mechanism-media-tag > div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .mechanism-media-tag .hero-trust-label {
+    color: #9ca3af;
+  }
+  .mechanism-media-tag .hero-trust-detail {
+    color: #f3f4f6;
+  }
+
+  @media (max-width: 900px) {
+    .mechanism-inner {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+    .mechanism-media-frame { min-height: 360px; }
+    .mechanism-media-frame img { max-height: 380px; }
+  }
+
+  /* ROUTINE STEPS */
   .steps {
     list-style: none;
     padding: 0;
     margin: 0;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 32px;
+    gap: 24px;
   }
   .steps li {
-    background: #141414;
-    padding: 32px;
+    background: #fff;
+    padding: 40px 32px;
     text-align: center;
+    box-shadow: 0 2px 0 rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.04);
+    position: relative;
   }
-  .steps h3 {
-    color: #fff;
-    font-size: 1.25rem;
-    margin: 0 0 8px;
-  }
-  .steps p { color: var(--jockshock-muted); margin: 0; font-size: 0.95rem; }
-  .step-num {
-    display: inline-flex;
-    width: 56px;
-    height: 56px;
-    background: var(--jockshock-yellow);
-    color: var(--jockshock-black);
-    border-radius: 50%;
+  .steps h3 { margin: 0 0 8px; color: var(--ink); }
+  .steps p { color: var(--graphite); margin: 0; font-size: 15px; }
+  /* Icon slot — fixed height across all three step cards so the StepBadges
+     below line up. Width can vary by content. */
+  .step-icon {
+    color: var(--carbon-black);
+    width: 72px;
+    height: 96px;
+    margin: 0 auto 24px;
+    display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 900;
-    font-size: 1.5rem;
-    margin-bottom: 20px;
+  }
+  .step-icon svg {
+    width: 72px;
+    height: 72px;
+  }
+  /* The bottle photo is taller-aspect than the SVG icons, so we widen the
+     slot a little to keep the bottle proportional, but height stays locked
+     to 96px so the StepBadge below is on the same baseline as #2 and #3. */
+  .step-icon--bottle {
+    width: 90px;
+    height: 96px;
+  }
+  .step-icon--bottle img {
+    max-width: 100%;
+    max-height: 96px;
+    height: auto;
+    width: auto;
+    filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.18));
+  }
+  /* StepBadge spacing inside the routine card */
+  .steps :global(.step-badge) {
+    margin: 0 auto 16px;
   }
 
-  /* === TIERS === */
-  .tiers { padding: 100px 5%; background: var(--jockshock-black); border-top: 1px solid rgba(255,255,255,0.06); }
-  .tiers-inner { max-width: 1200px; margin: 0 auto; text-align: center; }
-  .tiers-inner .section-sub { margin-left: auto; margin-right: auto; }
+  /* TIERS — dark buy zone */
+  .tiers-inner { text-align: center; }
+  .tiers-inner .section-sub {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 96px; /* breathing room above the tier cards */
+  }
+
   .tier-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 24px;
-    margin-top: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 32px;
+    margin-top: 24px;
+    padding: 24px 0; /* extra room so the lifted featured card has air */
   }
   .tier {
-    background: #141414;
-    padding: 40px 32px;
+    background: var(--carbon-tint);
+    padding: 36px 28px;
     text-decoration: none;
-    color: var(--jockshock-text);
-    border: 2px solid transparent;
-    border-radius: 4px;
+    color: var(--bone);
+    border: 1px solid rgba(255, 229, 0, 0.18);
     transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
     position: relative;
-    text-align: left;
+    text-align: center;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    align-items: center;
+    gap: 6px;
   }
   .tier:hover {
-    border-color: var(--jockshock-yellow);
+    border-color: var(--electric-yellow);
     transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
   }
   .tier.featured {
-    border-color: var(--jockshock-yellow);
+    border: 2px solid var(--electric-yellow);
     background: #1a1a1a;
-    box-shadow: 0 0 0 1px var(--jockshock-yellow);
+    box-shadow: 0 0 0 1px var(--electric-yellow), 0 16px 40px var(--yellow-glow);
+    transform: translateY(-8px);
+  }
+  .tier.featured:hover {
+    transform: translateY(-10px);
+  }
+  .tier-img {
+    height: 200px;
+    width: auto;
+    object-fit: contain;
+    margin-bottom: 12px;
   }
   .tier-badge {
     position: absolute;
     top: -12px;
-    right: 24px;
-    background: var(--jockshock-yellow);
-    color: var(--jockshock-black);
-    padding: 4px 12px;
-    border-radius: 999px;
-    font-size: 0.6875rem;
-    font-weight: 800;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--electric-yellow);
+    color: var(--carbon-black);
+    padding: 5px 14px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 900;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.12em;
+    white-space: nowrap;
   }
   .tier-label {
+    font-family: 'Bebas Neue', sans-serif;
     color: #fff;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    font-weight: 800;
-    font-size: 1rem;
+    font-size: 28px;
+    letter-spacing: 0.06em;
   }
-  .tier-detail { color: var(--jockshock-muted); font-size: 0.875rem; }
-  .tier-price { color: #fff; font-size: 2rem; font-weight: 900; margin-top: 8px; }
-  .tier-savings { color: var(--jockshock-yellow); font-weight: 700; font-size: 0.8125rem; }
+  .tier-detail {
+    color: var(--steel);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .tier-price {
+    font-family: 'Bebas Neue', sans-serif;
+    color: #fff;
+    font-size: 48px;
+    margin-top: 8px;
+    line-height: 1;
+  }
+  .tier-savings {
+    color: var(--electric-yellow);
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
   .tier-bottom {
     margin-top: 16px;
-    color: var(--jockshock-yellow);
+    color: var(--electric-yellow);
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    font-size: 0.8125rem;
+    letter-spacing: 0.12em;
+    font-size: 12px;
   }
 
+  /* PIVOTS */
   .pivots {
-    margin-top: 56px;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 16px;
-    text-align: left;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 32px;
   }
   .pivot {
-    padding: 24px;
-    background: #141414;
-    border-left: 3px solid var(--jockshock-yellow);
-  }
-  .pivot p { margin: 0; color: var(--jockshock-text); }
-  .pivot strong { color: #fff; display: block; margin-bottom: 4px; }
-  .pivot a {
-    color: var(--jockshock-yellow);
+    background: #fff;
+    padding: 48px 44px;
     text-decoration: none;
-    font-weight: 700;
-    display: inline-block;
-    margin-top: 8px;
+    color: var(--ink);
+    border-left: 6px solid var(--electric-yellow);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: 0 2px 0 rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.04);
+    position: relative;
   }
-  .pivot a:hover { text-decoration: underline; }
-
-  /* === CREDENTIAL === */
-  .credential { padding: 100px 5%; background: #050505; }
-  .credential-inner { max-width: 800px; margin: 0 auto; text-align: center; }
-  .credential-body {
-    color: var(--jockshock-muted);
-    line-height: 1.7;
-    font-size: 1.05rem;
+  .pivot:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 0 rgba(0,0,0,0.06), 0 16px 32px rgba(0,0,0,0.08);
+  }
+  .pivot-icon {
+    width: 56px;
+    height: 56px;
+    color: var(--carbon-black);
+    margin-bottom: 24px;
+  }
+  .pivot-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+  .pivot h3 { color: var(--ink); margin-bottom: 12px; }
+  .pivot-body {
+    color: var(--graphite);
+    font-size: 15px;
+    margin-bottom: 20px;
+    line-height: 1.55;
+  }
+  .pivot-link {
+    color: #b08e00;
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
   }
 
-  /* === GUARANTEE === */
-  .guarantee {
-    padding: 100px 5%;
-    background: var(--jockshock-black);
-    border-top: 2px solid var(--jockshock-yellow);
-    border-bottom: 2px solid var(--jockshock-yellow);
+  /* CREDENTIAL — cinematic founders moment */
+  .credential {
+    position: relative;
+    overflow: hidden;
+    padding: 144px 5%;
+  }
+  .credential-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.7;
+    z-index: 0;
+  }
+  /* Lighter overlay — keep the rower visible but ensure copy stays
+   * legible. Vertical gradient anchors text in the middle band. */
+  .credential-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(10, 10, 10, 0.5) 0%,
+      rgba(10, 10, 10, 0.7) 50%,
+      rgba(10, 10, 10, 0.5) 100%
+    );
+    z-index: 1;
+  }
+  .credential-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 720px;
+    margin: 0 auto;
     text-align: center;
   }
-  .guarantee-inner { max-width: 600px; margin: 0 auto; }
-  .guarantee h2 {
-    color: #fff;
-    font-size: clamp(1.75rem, 3vw, 2.5rem);
-    margin-bottom: 16px;
+  .credential-rule {
+    display: block;
+    width: 4px;
+    height: 56px;
+    background: var(--electric-yellow);
+    margin: 0 auto 32px;
   }
-  .guarantee p {
-    color: var(--jockshock-muted);
+  .credential .eyebrow {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .credential-headline {
+    font-family: 'Bebas Neue', sans-serif;
+    color: #fff;
+    font-size: clamp(36px, 5.5vw, 56px);
+    line-height: 1.05;
+    letter-spacing: 0.04em;
     margin-bottom: 32px;
-    font-size: 1.05rem;
-    line-height: 1.6;
+  }
+  .credential-body {
+    color: #d1d5db;
+    line-height: 1.75;
+    font-size: 17px;
+    max-width: 640px;
+    margin: 0 auto 56px;
   }
 
-  /* === RESPONSIVE === */
+  /* Four founders, equal weight */
+  .founders {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    text-align: left;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .founder {
+    background: rgba(20, 20, 20, 0.85);
+    backdrop-filter: blur(8px);
+    border-left: 3px solid var(--electric-yellow);
+    padding: 28px 24px;
+    transition: transform 0.15s ease;
+  }
+  .founder:hover {
+    transform: translateY(-3px);
+  }
+  .founder-name {
+    font-family: 'Bebas Neue', sans-serif;
+    color: #fff;
+    font-size: 22px;
+    line-height: 1.05;
+    letter-spacing: 0.04em;
+    margin-bottom: 8px;
+  }
+  .founder-cred {
+    color: var(--electric-yellow);
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .founder-detail {
+    color: #d1d5db;
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* GUARANTEE — yellow band */
+  .guarantee-band {
+    background: var(--electric-yellow);
+    color: var(--carbon-black);
+    text-align: center;
+    padding: 96px 5%;
+  }
+  .guarantee-inner {
+    max-width: 980px;
+    margin: 0 auto;
+  }
+  .guarantee-band h2 {
+    color: var(--carbon-black);
+    margin-bottom: 8px;
+  }
+  .guarantee-tag {
+    color: var(--carbon-black);
+    font-size: 15px;
+    margin-bottom: 48px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .guarantee-rules {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 48px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 32px;
+    text-align: left;
+  }
+  .guarantee-rules li {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    background: rgba(10, 10, 10, 0.06);
+    border-left: 3px solid var(--carbon-black);
+  }
+  .guarantee-rule-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 56px;
+    line-height: 1;
+    color: var(--carbon-black);
+  }
+  .guarantee-rules li > div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .guarantee-rule-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 0.06em;
+    color: var(--carbon-black);
+    line-height: 1;
+  }
+  .guarantee-rule-detail {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: rgba(10, 10, 10, 0.7);
+    line-height: 1.3;
+  }
+  .cta-on-yellow {
+    color: var(--carbon-black);
+    border-color: var(--carbon-black);
+  }
+  .cta-on-yellow:hover {
+    background: var(--carbon-black);
+    color: var(--electric-yellow);
+  }
+
+  /* RESPONSIVE */
   @media (max-width: 900px) {
     .hero-grid {
       grid-template-columns: 1fr;
@@ -551,9 +1070,90 @@ const HERO_BOTTLE =
       padding: 64px 5% 56px;
       min-height: auto;
     }
-    .hero-product img { max-height: 400px; }
-    .mechanism, .routine, .tiers, .credential, .guarantee {
-      padding: 64px 5%;
-    }
+    .hero-product img { max-height: 360px; }
+    .tier-img { height: 160px; }
+  }
+
+  /* === Homepage FAQ === */
+  .home-faq {
+    background: #050505;
+    padding: 96px 5%;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .home-faq-inner {
+    max-width: 880px;
+    margin: 0 auto;
+  }
+  .home-faq-headline {
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    color: #fff;
+    margin: 12px 0 48px;
+    letter-spacing: -0.02em;
+  }
+  .home-faq-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .home-faq details {
+    background: #141414;
+    border-left: 3px solid transparent;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .home-faq details[open] {
+    border-left-color: #FFE500;
+    background: #181818;
+  }
+  .home-faq summary {
+    padding: 22px 28px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: #fff;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+  }
+  .home-faq summary::-webkit-details-marker { display: none; }
+  .home-faq summary::after {
+    content: "+";
+    color: #FFE500;
+    font-size: 1.5rem;
+    font-weight: 400;
+    line-height: 1;
+    transition: transform 0.2s ease;
+  }
+  .home-faq details[open] summary::after { content: "−"; }
+  .home-faq details p {
+    padding: 0 28px 22px;
+    color: #9ca3af;
+    line-height: 1.7;
+    font-size: 0.98rem;
+  }
+  .home-faq-foot {
+    margin-top: 40px;
+    color: #9ca3af;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    text-align: center;
+  }
+  .home-faq-foot a {
+    color: #FFE500;
+    text-decoration: none;
+    font-weight: 600;
+    /* Tap target — inline-block with padding gives a real hit zone for thumbs
+       without breaking the surrounding paragraph flow. */
+    display: inline-block;
+    padding: 12px 6px;
+    margin: -12px -6px;
+  }
+  .home-faq-foot a:hover { text-decoration: underline; }
+
+  @media (max-width: 768px) {
+    .home-faq { padding: 64px 5%; }
+    .home-faq summary { padding: 18px 22px; font-size: 1rem; }
+    .home-faq details p { padding: 0 22px 18px; }
   }
 </style>

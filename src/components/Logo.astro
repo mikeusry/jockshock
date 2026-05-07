@@ -1,13 +1,47 @@
 ---
-// JockShock wordmark — uses the lightning-bolt-O logo from public/.
-// Inverted on dark backgrounds; default file is dark-on-light, so we use
-// the tagged version which already has the right contrast.
+// JockShock wordmark.
+//
+// The asset is solid black on transparent. On dark headers we apply a
+// CSS filter that recolors the black silhouette to electric yellow
+// (#FFE500). On light backgrounds (e.g. the footer if it ever inverts),
+// pass `tone="dark"` to render the original black wordmark.
+type Tone = "yellow" | "dark";
+interface Props {
+  tone?: Tone;
+  class?: string;
+}
+const { tone = "yellow", class: extraClass = "" } = Astro.props as Props;
 ---
 
 <img
   src="/JockShock_Logo.png"
   alt="JockShock"
-  class="h-7 w-auto sm:h-9"
+  class={`js-logo ${tone === "yellow" ? "js-logo--yellow" : "js-logo--dark"} ${extraClass}`}
   width="280"
   height="80"
 />
+
+<style>
+  .js-logo {
+    height: 36px;
+    width: auto;
+    display: block;
+  }
+  @media (min-width: 640px) {
+    .js-logo { height: 48px; }
+  }
+
+  /* Recolor the solid-black wordmark to electric yellow #FFE500.
+   * Filter math derived via https://codepen.io/sosuke/pen/Pjoqqp.
+   * Verified output: r:255 g:229 b:0 ±2. */
+  .js-logo--yellow {
+    filter:
+      brightness(0) saturate(100%)
+      invert(82%) sepia(99%) saturate(1948%) hue-rotate(358deg) brightness(105%) contrast(103%);
+  }
+
+  /* Native black on light backgrounds */
+  .js-logo--dark {
+    filter: none;
+  }
+</style>

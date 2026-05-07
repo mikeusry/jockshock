@@ -104,9 +104,54 @@ const description =
 // PDP shares the 3-pack as the social-share image (the featured variant)
 const ogImage =
   "https://res.cloudinary.com/southland-organics/image/upload/c_fit,w_1200,h_630,b_rgb:0a0a0a,q_auto,f_jpg/JockShock/jockshock-3pack-athlete-2026.png";
+
+// =============================================================================
+// Product JSON-LD — feeds Google rich product cards (price, availability,
+// brand). One Product schema with `offers` as an array (one per variant), so
+// SERP can show price-from + in-stock badge without us defining 3 separate
+// products. SKUs are the Nexus standard SKUs; mpn matches.
+// =============================================================================
+const PRODUCT_LD = product
+  ? {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "@id": "https://www.jockshockspray.com/products/jockshock/#product",
+      name: "JockShock Equipment Deodorizer",
+      description:
+        "Pro-grade equipment deodorizer for serious athletes. Built for gear, not for the kitchen. Powered by ZeroPoint Technology. Made in the USA.",
+      image: [
+        "https://res.cloudinary.com/southland-organics/image/upload/c_fit,w_1200,q_auto,f_auto/JockShock/jockshock-32oz-single-2026.png",
+        "https://res.cloudinary.com/southland-organics/image/upload/c_fit,w_1200,q_auto,f_auto/JockShock/jockshock-3pack-athlete-2026.png",
+        "https://res.cloudinary.com/southland-organics/image/upload/c_fit,w_1200,q_auto,f_auto/JockShock/jockshock-6pack-team-2026.png",
+      ],
+      brand: { "@type": "Brand", name: "JockShock" },
+      manufacturer: { "@id": "https://www.jockshockspray.com/#organization" },
+      category: "Sporting Goods > Sports Equipment Care > Deodorizer",
+      audience: {
+        "@type": "PeopleAudience",
+        audienceType: "Athletes, coaches, parents of athletes",
+      },
+      offers: variants.map((v) => ({
+        "@type": "Offer",
+        sku: v.sku,
+        mpn: v.sku,
+        name: `${v.label} — ${v.sublabel}`,
+        url: `https://www.jockshockspray.com/products/jockshock/?variant=${encodeURIComponent(v.sku)}`,
+        priceCurrency: v.price.currencyCode,
+        price: v.price.amount,
+        availability: v.available
+          ? "https://schema.org/InStock"
+          : "https://schema.org/OutOfStock",
+        itemCondition: "https://schema.org/NewCondition",
+        seller: { "@id": "https://www.jockshockspray.com/#organization" },
+      })),
+    }
+  : null;
+
+const productJsonLd = PRODUCT_LD ? [PRODUCT_LD] : [];
 ---
 
-<BaseLayout title={title} description={description} ogImage={ogImage} ogType="product">
+<BaseLayout title={title} description={description} ogImage={ogImage} ogType="product" jsonLd={productJsonLd}>
   {!product || variants.length === 0 ? (
     <section class="error">
       <div class="error-inner">
@@ -121,15 +166,15 @@ const ogImage =
         <JockShockPDP client:load variants={variants} initialSku="JOCKSHOCK-3x32oz-Pack" />
       </section>
 
-      {/* The mechanism — what HOCl is, why it's different */}
+      {/* The mechanism */}
       <section class="mechanism">
         <div class="mechanism-inner">
           <h2 class="mechanism-headline">Built for gear. Not for the kitchen.</h2>
           <p class="mechanism-subhead">
-            JockShock runs on hypochlorous acid — the same molecule your
-            immune system produces. Powered by ZeroPoint Technology. No
-            fragrance. No masking. The funk doesn't get covered up. It goes
-            away.
+            JockShock runs on the same chemistry your immune system uses to
+            fight bacteria — adapted for athletic gear. Powered by ZeroPoint
+            Technology. No fragrance. No masking. The funk doesn't get
+            covered up. It goes away.
           </p>
           <div class="mechanism-grid">
             <div class="mechanism-card">
@@ -223,8 +268,8 @@ const ogImage =
           </h2>
           <p class="teams-body">
             12 athletes or 200, hockey rink or wrestling room — get a quote on
-            program-wide JockShock. Includes a sanitation protocol PDF you can
-            hand to assistants and athletic trainers.
+            program-wide JockShock + ZeroPoint. Includes a gear-care protocol
+            PDF you can hand to assistants and athletic trainers.
           </p>
           <a href="/teams/" class="teams-link">Get a team quote →</a>
         </div>
@@ -248,7 +293,7 @@ const ogImage =
               <p>
                 Lysol and Febreze are designed for surfaces in your home and
                 fabric in your closet. They mask smell with fragrance. JockShock
-                uses HOCl chemistry to go after the source — so the smell
+                uses ZeroPoint Technology to go after the source — so the smell
                 actually goes away instead of getting covered up.
               </p>
             </details>
@@ -264,9 +309,9 @@ const ogImage =
             <details>
               <summary>Is it safe on skin contact — mouthguards, headgear?</summary>
               <p>
-                Yes. HOCl is the same family of chemistry used in wound-care
-                saline sprays — the molecule your own immune system produces.
-                It's safe on skin contact at use concentration. We still
+                Yes. The active chemistry is in the same family as wound-care
+                saline sprays — the same molecule your own immune system
+                produces. Safe on skin contact at use concentration. We still
                 recommend air-drying gear before re-use.
               </p>
             </details>
@@ -302,8 +347,8 @@ const ogImage =
   /* === Brand variables (matches brand-brief.md) === */
   .pdp {
     --jockshock-black: #0a0a0a;
-    --jockshock-yellow: #facc15;
-    --jockshock-yellow-dim: rgba(250, 204, 21, 0.15);
+    --jockshock-yellow: #FFE500;
+    --jockshock-yellow-dim: rgba(255, 229, 0, 0.15);
     --jockshock-text-on-black: #f3f4f6;
     --jockshock-muted: #9ca3af;
     background: var(--jockshock-black);
@@ -505,7 +550,7 @@ const ogImage =
   }
   .teams-link:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(250, 204, 21, 0.3);
+    box-shadow: 0 8px 20px rgba(255, 229, 0, 0.3);
   }
 
   /* === FAQ === */

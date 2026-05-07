@@ -12,24 +12,120 @@ export interface Props {
   ogImage?: string;
   /** Override the og:type. Default 'website'; set to 'product' on PDP. */
   ogType?: "website" | "product";
+  /** Additional JSON-LD schemas to inject (e.g., Product schema on PDP).
+   *  Each item should be a complete schema.org object. */
+  jsonLd?: Record<string, unknown>[];
 }
 
-const SITE_URL = "https://jockshock.com";
+const SITE_URL = "https://www.jockshockspray.com";
 const DEFAULT_DESC =
   "Pro-grade equipment deodorizer for serious athletes. Built for gear, not for the kitchen. Powered by ZeroPoint Technology.";
+// Pre-rendered OG card (1200x630) — JockShock wordmark + tagline + bottle.
+// Re-render via ~/.claude/skills/jockshock-design/render-og.mjs and upload
+// with the same public_id to refresh.
 const DEFAULT_OG_IMAGE =
-  "https://res.cloudinary.com/southland-organics/image/upload/c_fit,w_1200,h_630,b_rgb:0a0a0a,q_auto,f_jpg/JockShock/jockshock-32oz-single-2026.png";
+  "https://res.cloudinary.com/southland-organics/image/upload/f_jpg,q_auto/v1778155082/JockShock/jockshock-og-2026.png";
 
 const {
   title,
   description = DEFAULT_DESC,
   ogImage = DEFAULT_OG_IMAGE,
   ogType = "website",
+  jsonLd: extraJsonLd = [],
 } = Astro.props as Props;
 
 // Canonical URL — strip query string, normalize trailing slash.
 const canonicalPath = Astro.url.pathname;
 const canonicalUrl = `${SITE_URL}${canonicalPath}`;
+
+// =============================================================================
+// JSON-LD structured data
+//
+// 1. Organization — universal, every page. Includes founders array (Mike,
+//    Karin, Fred, Anna) per project_founders_and_team memory. Their
+//    Wikipedia links seed Google's knowledge graph.
+// 2. WebSite — universal. Lets Google show a sitelinks search box.
+// 3. Page-specific schemas (e.g., Product on PDP) get passed in via the
+//    jsonLd prop.
+// =============================================================================
+
+const ORGANIZATION_LD = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": `${SITE_URL}/#organization`,
+  name: "JockShock",
+  legalName: "Southland Organics, Inc.",
+  url: SITE_URL,
+  logo: `${SITE_URL}/icon-512.png`,
+  description:
+    "Pro-grade equipment deodorizer for serious athletes. Built by D1 athletes. Powered by ZeroPoint Technology.",
+  brand: { "@type": "Brand", name: "JockShock" },
+  parentOrganization: {
+    "@type": "Organization",
+    name: "Southland Organics",
+    url: "https://southlandorganics.com",
+  },
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "189 Luke Road",
+    addressLocality: "Bogart",
+    addressRegion: "GA",
+    postalCode: "30622",
+    addressCountry: "US",
+  },
+  contactPoint: {
+    "@type": "ContactPoint",
+    telephone: "+1-800-608-3755",
+    contactType: "customer service",
+    email: "mike@southlandorganics.com",
+    areaServed: "US",
+  },
+  founder: [
+    {
+      "@type": "Person",
+      name: "Mike Usry",
+      jobTitle: "Co-founder",
+      alumniOf: { "@type": "CollegeOrUniversity", name: "University of Georgia" },
+    },
+    {
+      "@type": "Person",
+      name: "Karin Lichey Usry",
+      jobTitle: "Co-founder",
+      alumniOf: { "@type": "CollegeOrUniversity", name: "University of Georgia" },
+      sameAs: ["https://en.wikipedia.org/wiki/Karin_Lichey"],
+      description:
+        "11-time NCAA All-American gymnast. 1999 Honda Sports Award. First collegiate gymnast to score a perfect 40.0.",
+    },
+    {
+      "@type": "Person",
+      name: "Fred Munzenmaier",
+      jobTitle: "Gym Channel Lead",
+      alumniOf: { "@type": "CollegeOrUniversity", name: "University of Georgia" },
+      sameAs: ["https://247sports.com/player/fred-munzenmaier-5073/"],
+      description: "UGA football running back 2007–2009. Owner of a D1 Training franchise.",
+    },
+    {
+      "@type": "Person",
+      name: "Anna Watson Munzenmaier",
+      jobTitle: "Co-founder",
+      alumniOf: { "@type": "CollegeOrUniversity", name: "University of Georgia" },
+      sameAs: ["https://en.wikipedia.org/wiki/Anna_Watson_(cheerleader)"],
+      description:
+        "UGA cheerleader. Strength coach at D1 Training Athens. Featured on Good Morning America and Inside Edition.",
+    },
+  ],
+};
+
+const WEBSITE_LD = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${SITE_URL}/#website`,
+  url: SITE_URL,
+  name: "JockShock",
+  publisher: { "@id": `${SITE_URL}/#organization` },
+};
+
+const allJsonLd = [ORGANIZATION_LD, WEBSITE_LD, ...extraJsonLd];
 
 // point.dog pixel config — JockShock events land in the Southland CDP table.
 // Per legal-entity decision (project_jockshock_legal_entity), JockShock is a
@@ -47,8 +143,25 @@ const pixelEndpoint =
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- Favicons — the real JockShock "O" glyph (chamfered rectangle with
+         lightning bolt) cropped from the wordmark. PNGs at multiple sizes;
+         no SVG (the bolt geometry is too distinctive to redraw cleanly). -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#0a0a0a" />
+
     <link rel="canonical" href={canonicalUrl} />
+
+    <!-- JockShock display + body fonts. Loaded via <link> rather than CSS
+         @import because Tailwind v4 + Vite strips cross-origin @import. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;700;900&display=swap"
+    />
 
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -71,6 +184,16 @@ const pixelEndpoint =
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
     <meta name="twitter:image:alt" content="JockShock — pro-grade equipment deodorizer" />
+
+    {/* JSON-LD structured data — Organization + WebSite globally; pages can
+        contribute additional schemas (e.g., Product on PDP) via the jsonLd prop. */}
+    {allJsonLd.map((schema) => (
+      <script
+        type="application/ld+json"
+        is:inline
+        set:html={JSON.stringify(schema)}
+      />
+    ))}
 
     <!-- point.dog Pixel -->
     <script is:inline define:vars={{ pixelBrandId, pixelEndpoint }}>

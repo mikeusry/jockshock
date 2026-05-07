@@ -1,43 +1,45 @@
 @import "tailwindcss";
+/* Fonts are loaded via <link> in BaseLayout.astro — Vite/Tailwind v4 strips
+ * cross-origin @import url() statements during build. */
 
+/* =============================================================================
+ * JockShock Design Tokens (locked 2026-05-07)
+ * See mothership/docs/brands/southland-organics/jockshock/brand-brief.md
+ * ============================================================================= */
 @theme {
+  /* Carbon family — anchors the brand */
+  --color-carbon-black: #0a0a0a;       /* hero, header, footer, PDP buy zone */
+  --color-carbon-tint: #141414;        /* card backgrounds inside dark sections */
+  --color-carbon-line: #1f1f1f;        /* dividers on dark */
+
+  /* Light family */
+  --color-off-white: #fafafa;
+  --color-steel-50: #f3f4f6;
+
+  /* Yellow — the brand's electric heartbeat */
+  --color-electric-yellow: #FFE500;
+
+  /* Text */
+  --color-ink: #0a0a0a;
+  --color-graphite: #4b4b4b;
+  --color-bone: #f3f4f6;
+  --color-steel: #9ca3af;
+
   /* Animation */
   --animate-shake: shake 0.5s infinite;
 
   @keyframes shake {
-    0% {
-      transform: translate(1px, 1px) rotate(0deg);
-    }
-    10% {
-      transform: translate(-1px, -2px) rotate(-1deg);
-    }
-    20% {
-      transform: translate(-3px, 0px) rotate(1deg);
-    }
-    30% {
-      transform: translate(3px, 2px) rotate(0deg);
-    }
-    40% {
-      transform: translate(1px, -1px) rotate(1deg);
-    }
-    50% {
-      transform: translate(-1px, 2px) rotate(-1deg);
-    }
-    60% {
-      transform: translate(-3px, 1px) rotate(0deg);
-    }
-    70% {
-      transform: translate(3px, 1px) rotate(-1deg);
-    }
-    80% {
-      transform: translate(-1px, -1px) rotate(1deg);
-    }
-    90% {
-      transform: translate(1px, 2px) rotate(0deg);
-    }
-    100% {
-      transform: translate(1px, -2px) rotate(-1deg);
-    }
+    0%   { transform: translate(1px, 1px) rotate(0deg); }
+    10%  { transform: translate(-1px, -2px) rotate(-1deg); }
+    20%  { transform: translate(-3px, 0px) rotate(1deg); }
+    30%  { transform: translate(3px, 2px) rotate(0deg); }
+    40%  { transform: translate(1px, -1px) rotate(1deg); }
+    50%  { transform: translate(-1px, 2px) rotate(-1deg); }
+    60%  { transform: translate(-3px, 1px) rotate(0deg); }
+    70%  { transform: translate(3px, 1px) rotate(-1deg); }
+    80%  { transform: translate(-1px, -1px) rotate(1deg); }
+    90%  { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
   }
 }
 
@@ -46,32 +48,53 @@
   padding-inline: 1.5rem;
 }
 
+/* CSS-variable mirrors so the @theme tokens are usable as plain
+ * `var(--electric-yellow)` etc. in scoped <style> blocks. */
+:root {
+  --carbon-black: #0a0a0a;
+  --carbon-tint: #141414;
+  --carbon-line: #1f1f1f;
+  --off-white: #fafafa;
+  --steel-50: #f3f4f6;
+  --electric-yellow: #FFE500;
+  --yellow-glow: rgba(255, 229, 0, 0.35);
+  --yellow-tint: rgba(255, 229, 0, 0.08);
+  --ink: #0a0a0a;
+  --graphite: #4b4b4b;
+  --bone: #f3f4f6;
+  --steel: #9ca3af;
+
+  /* Carbon-fiber SVG texture for light sections — visible weave, still
+   * subtle enough not to compete with content. Two crossing diagonals
+   * per 6px tile in #d8dde2 / #e5e7eb gray. */
+  --carbon-fiber-bg:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='6' height='6' viewBox='0 0 6 6'><defs><pattern id='c' x='0' y='0' width='6' height='6' patternUnits='userSpaceOnUse'><rect width='6' height='6' fill='%23fafafa'/><path d='M0 3 L3 0 M3 6 L6 3' stroke='%23d4d8de' stroke-width='0.9' stroke-linecap='square'/><path d='M0 0 L3 3 M3 3 L6 0 M0 6 L3 3 M3 3 L6 6' stroke='%23dde1e6' stroke-width='0.7' stroke-linecap='square'/></pattern></defs><rect width='100%25' height='100%25' fill='url(%23c)'/></svg>");
+}
+
 @layer base {
-  html {
-    @apply scroll-smooth;
-  }
+  html { @apply scroll-smooth; }
 
   body {
     @apply flex min-h-screen flex-col;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--off-white);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  main {
-    @apply flex-1;
-  }
+  main { @apply flex-1; }
 
-  details > summary {
-    list-style: none;
-  }
-  details > summary::-webkit-details-marker {
-    display: none;
-  }
+  /* JockShock display headlines — moved out of @layer base into a
+   * higher-priority @layer below so Tailwind preflight cannot eat them. */
 
-  *,
-  :before,
-  :after {
-    @apply border-gray-200;
-  }
+  details > summary { list-style: none; }
+  details > summary::-webkit-details-marker { display: none; }
 
+  *, :before, :after { @apply border-gray-200; }
+
+  /* Legacy starter button — kept for AddToCartForm compat, but JockShock
+   * pages should use .cta-primary / .cta-secondary instead. */
   .button {
     @apply flex items-center justify-center rounded-lg;
     @apply bg-gradient-to-br from-emerald-900 via-emerald-800 to-emerald-600;
@@ -80,4 +103,138 @@
     @apply focus:ring-2 focus:ring-black focus:ring-offset-1 focus:outline-none;
     @apply disabled:cursor-not-allowed disabled:opacity-60;
   }
+}
+
+/* =============================================================================
+ * JockShock display headlines — Bebas Neue. Loaded outside @layer so it
+ * sits in the top cascade and beats Tailwind's preflight reset.
+ * ============================================================================= */
+h1, h2, h3 {
+  font-family: 'Bebas Neue', 'Impact', sans-serif !important;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  line-height: 0.95;
+}
+h1 { font-size: clamp(48px, 8vw, 96px) !important; }
+h2 { font-size: clamp(36px, 6vw, 64px) !important; }
+h3 {
+  font-size: clamp(22px, 3vw, 32px) !important;
+  letter-spacing: 0.06em;
+}
+
+/* =============================================================================
+ * JockShock layout primitives — usable on any page via class names
+ * ============================================================================= */
+
+.js-section { padding: 96px 5%; }
+.js-section--inner {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.js-carbon {
+  background: var(--carbon-black);
+  color: var(--bone);
+}
+.js-carbon h1, .js-carbon h2, .js-carbon h3 { color: #fff; }
+.js-carbon p { color: var(--steel); }
+
+.js-fiber {
+  background-color: var(--off-white);
+  background-image: var(--carbon-fiber-bg);
+  background-repeat: repeat;
+  color: var(--ink);
+}
+.js-fiber h1, .js-fiber h2, .js-fiber h3 { color: var(--ink); }
+.js-fiber p { color: var(--graphite); }
+
+/* =============================================================================
+ * CTA buttons — sharp, athletic, no rounded corners
+ * ============================================================================= */
+.cta-primary,
+.cta-secondary {
+  display: inline-block;
+  padding: 18px 36px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  border-radius: 2px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, color 0.15s ease;
+  line-height: 1;
+}
+.cta-primary {
+  background: var(--electric-yellow);
+  color: var(--carbon-black);
+  box-shadow: 0 4px 0 rgba(0,0,0,0.15);
+}
+.cta-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px var(--yellow-glow);
+}
+.cta-secondary {
+  background: transparent;
+  color: var(--ink);
+  border: 2px solid var(--carbon-black);
+}
+.cta-secondary:hover {
+  background: var(--carbon-black);
+  color: var(--bone);
+}
+.js-carbon .cta-secondary {
+  color: var(--bone);
+  border-color: var(--bone);
+}
+.js-carbon .cta-secondary:hover {
+  background: var(--bone);
+  color: var(--carbon-black);
+}
+
+/* =============================================================================
+ * Eyebrows — small all-caps yellow labels above headlines
+ * ============================================================================= */
+.eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--electric-yellow);
+  margin-bottom: 16px;
+  display: block;
+}
+.js-fiber .eyebrow,
+.js-fiber p.eyebrow {
+  color: #b08e00;
+}
+
+/* =============================================================================
+ * Cards — accent-bordered blocks
+ * ============================================================================= */
+.js-card {
+  padding: 32px;
+  border-left: 3px solid var(--electric-yellow);
+  background: var(--carbon-tint);
+  color: var(--bone);
+}
+.js-fiber .js-card {
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 0 2px 0 rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.04);
+}
+.js-card h3 {
+  color: var(--electric-yellow);
+  margin-bottom: 12px;
+}
+.js-fiber .js-card h3 {
+  color: var(--carbon-black);
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .js-section { padding: 64px 5%; }
 }

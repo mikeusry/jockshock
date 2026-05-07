@@ -1,117 +1,218 @@
 ---
 /**
- * /teams — Carmen's B2B intake page.
+ * /teams — JockShock + ZeroPoint gym program intake.
  *
- * Per persona work + brand-brief.md: Carmen is the team / facility / program
- * buyer. The 6-pack consumer SKU is wrong-shape for her — she wants gallons
- * or 5-gal pails (v2). This page is a quote-form intake, not a consumer
- * add-to-cart.
+ * Per the May 2026 gym-channel pivot (project_gym_channel_program memory):
+ * this page sells the PAIRED program — JockShock for athletes' gear,
+ * ZeroPoint for the facility — on monthly subscription with Fred as the
+ * point of contact.
  *
- * Aaron-voice rule: this is a Carmen surface, so voice translates to
- * professional / operations-flavored. No locker-room slang. No parent-
- * emotional framing. Treat the visitor like a peer program-runner.
- *
- * Form submit: POSTs to /api/teams-intake (TODO — placeholder for now;
- * a follow-up wires Klaviyo + HubSpot per persona doc).
+ * Karin Lichey Usry pitched the gym channel as a one-line idea. Fred
+ * Munzenmaier (UGA RB, D1 Training franchise owner, ex-Southland) runs it.
+ * All form leads route to Fred via /api/teams-intake.
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
+import StepBadge from "../components/StepBadge.astro";
 
-const title = "JockShock for Teams — Program Quote";
+const title = "JockShock for Gyms + Teams — A Program Built by Gym Owners, for Gym Owners";
 const description =
-  "JockShock for coaches, athletic trainers, club directors, and gym owners. Volume pricing, sanitation protocol PDFs, and per-athlete cost calculators for your program.";
+  "JockShock for the athletes. ZeroPoint for the facility. Monthly subscription. Built by D1 athletes, run by a D1 Training franchise owner. Talk to Fred.";
+
+const HERO_BG =
+  "https://res.cloudinary.com/southland-organics/image/upload/c_fill,w_1800,h_1200,g_auto,q_auto,f_auto,dpr_auto/JockShock/beckham.jpg";
+const PACK_6 =
+  "https://res.cloudinary.com/southland-organics/image/upload/c_fit,w_700,q_auto,f_auto,dpr_auto/JockShock/jockshock-6pack-team-2026.png";
 ---
 
 <BaseLayout title={title} description={description}>
   <div class="js-teams">
-    <!-- HERO -->
-    <section class="hero">
-      <div class="hero-inner">
-        <p class="eyebrow">For coaches, ATCs, club directors, and facility owners</p>
-        <h1 class="hero-headline">
-          Program-wide gear deodorizer.<br />Built for the way your roster actually uses gear.
-        </h1>
-        <p class="hero-sub">
-          JockShock is the equipment deodorizer programs actually use — not a
-          household cleaner repackaged for the locker room. HOCl chemistry,
-          powered by ZeroPoint Technology. Gear-safe materials and a written
-          gear-care protocol you can hand to your assistants and athletic
-          trainers.
-        </p>
-        <a href="#quote" class="cta">Request a program quote</a>
+    {/* HERO — gym + facility framing */}
+    <section class="teams-hero js-carbon">
+      <div class="teams-hero-bg" style={`background-image: url('${HERO_BG}')`}></div>
+      <div class="teams-hero-overlay"></div>
+      <div class="teams-hero-grid">
+        <div class="teams-hero-copy">
+          <p class="eyebrow">For gym owners + athletic programs</p>
+          <h1 class="teams-hero-headline">
+            Two products.<br />One protocol.<br />Zero phone calls.
+          </h1>
+          <p class="teams-hero-sub">
+            JockShock for the athletes' gear. ZeroPoint for your facility.
+            Sold together on monthly subscription so you stop ordering
+            and start training.
+          </p>
+          <div class="teams-hero-cta-row">
+            <a href="#quote" class="cta-primary">Get a program quote</a>
+            <a href="#program" class="cta-secondary">How it works</a>
+          </div>
+          <ul class="teams-hero-trust">
+            <li>
+              <span class="hero-trust-rule"></span>
+              <div>
+                <span class="hero-trust-label">Run by</span>
+                <span class="hero-trust-detail">A Gym Owner</span>
+              </div>
+            </li>
+            <li>
+              <span class="hero-trust-rule"></span>
+              <div>
+                <span class="hero-trust-label">Built by</span>
+                <span class="hero-trust-detail">D1 Athletes</span>
+              </div>
+            </li>
+            <li>
+              <span class="hero-trust-rule"></span>
+              <div>
+                <span class="hero-trust-label">Made in</span>
+                <span class="hero-trust-detail">USA</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="teams-hero-product">
+          <img src={PACK_6} alt="JockShock 6-pack team pack" />
+        </div>
       </div>
     </section>
 
-    <!-- WHAT YOU GET -->
-    <section class="what">
-      <div class="what-inner">
-        <p class="section-eyebrow">What you get</p>
-        <h2 class="section-headline">Built around what programs actually need.</h2>
-        <div class="what-grid">
-          <div class="what-card">
-            <h3>Volume pricing</h3>
-            <p>
-              Per-athlete pricing scales with your roster — 12 athletes or 200,
-              hockey rink or wrestling room. Bulk shipping to one address or
-              split-shipped across multiple sites.
-            </p>
+    {/* THE PROGRAM — JockShock + ZeroPoint paired */}
+    <section class="js-section js-fiber" id="program">
+      <div class="js-section--inner">
+        <p class="eyebrow">The program</p>
+        <h2 class="program-headline">
+          JockShock + ZeroPoint. Married chemistry, paired protocol.
+        </h2>
+        <p class="program-sub">
+          Same chemistry family, two jobs. Together they cover everything
+          from a hockey player's helmet to your locker-room mat to the
+          rower in the corner. Sold together, one cadence, one invoice.
+        </p>
+
+        <div class="program-pair">
+          <div class="program-card">
+            <p class="program-card-eyebrow">For the athletes</p>
+            <h3>JockShock</h3>
+            <p class="program-card-tag">Goes home in the gear bag.</p>
+            <ul class="program-card-list">
+              <li>Pads, helmets, gloves, mouthguards</li>
+              <li>Cleats, mats, shin guards, headgear</li>
+              <li>Equipment that can't go in the wash</li>
+              <li>32oz bottles, 6-pack team case</li>
+            </ul>
           </div>
-          <div class="what-card">
-            <h3>Written protocol</h3>
-            <p>
-              A gear-care protocol PDF you can drop into your binder, post in
-              the locker room, and hand to assistants. Mat-room specific.
-              Locker-room specific. Pre-season checklist included.
-            </p>
+          <div class="program-pair-amp">
+            <span>+</span>
           </div>
-          <div class="what-card">
-            <h3>Documentation on file</h3>
-            <p>
-              SDS, application instructions, and ZeroPoint Technology
-              chemistry sheets — all available for your AD, your facilities
-              team, or anyone who asks. No back-and-forth.
-            </p>
-          </div>
-          <div class="what-card">
-            <h3>Replenishment cadence</h3>
-            <p>
-              Quarterly or seasonal restock based on your program's roster size.
-              Auto-ship if you want it; one-and-done if you don't. No surprises.
-            </p>
+          <div class="program-card">
+            <p class="program-card-eyebrow">For the facility</p>
+            <h3>ZeroPoint</h3>
+            <p class="program-card-tag">Stays in the facility.</p>
+            <ul class="program-card-list">
+              <li>Mats, equipment surfaces, shared gear</li>
+              <li>Locker rooms, water bottle stations</li>
+              <li>Cleaning protocols + facility hygiene</li>
+              <li>Gallon, 2.5-gallon, 5-gallon pail</li>
+            </ul>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- WHO -->
-    <section class="who">
-      <div class="who-inner">
-        <p class="section-eyebrow">Who we work with</p>
-        <h2 class="section-headline">If your program shares gear or a locker room, this is for you.</h2>
+    {/* SUBSCRIPTION — three steps with the hexagon-O badge */}
+    <section class="js-section js-fiber routine-section subscription-section">
+      <div class="js-section--inner">
+        <p class="eyebrow">The subscription</p>
+        <h2 class="program-headline">
+          Stop reordering. Start training.
+        </h2>
+        <p class="program-sub">
+          Gym owners hate calling to reorder. So we built the program around
+          a subscription cadence — case of JockShock + case of ZeroPoint
+          ships every month or every other month. ~10% off covers your
+          shipping. Pause or cancel any time, no contract.
+        </p>
+
+        <ol class="subscription-steps">
+          <li>
+            <StepBadge number="1" tone="yellow" size={56} class="step-badge" />
+            <h3>Pick your cadence</h3>
+            <p>Monthly or bi-monthly. We'll size the case to your roster + spray frequency.</p>
+          </li>
+          <li>
+            <StepBadge number="2" tone="yellow" size={56} class="step-badge" />
+            <h3>It ships automatically</h3>
+            <p>You get a heads-up email five days before each shipment. Skip a month, push it out, never lift a finger.</p>
+          </li>
+          <li>
+            <StepBadge number="3" tone="yellow" size={56} class="step-badge" />
+            <h3>Pause whenever</h3>
+            <p>Off-season? Holiday? Pause it. No contract, no phone tag, no minimum commitment.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    {/* FRED — the program lead */}
+    <section class="js-section js-carbon fred-section">
+      <div class="js-section--inner fred-inner">
+        <p class="eyebrow">Talk to Fred</p>
+        <h2 class="fred-headline">
+          A gym owner runs this program.<br />Because gym owners trust gym owners.
+        </h2>
+        <div class="fred-card">
+          <div class="fred-detail">
+            <p class="fred-name">Fred Munzenmaier</p>
+            <p class="fred-creds">
+              UGA Football, 2007–2009 · Running Back · #48
+            </p>
+            <p class="fred-creds">
+              Owner — D1 Training franchise
+            </p>
+            <p class="fred-body">
+              Fred wakes up in his gym every morning. He knows what the funk
+              from a class of 20 athletes does to a mat by Friday. He knows
+              what the equipment closet smells like in August. He runs this
+              program because he wanted it to exist for his own gym first.
+            </p>
+            <a href="#quote" class="cta-primary">Get Fred your details</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* WHO THIS IS FOR */}
+    <section class="js-section js-fiber">
+      <div class="js-section--inner">
+        <p class="eyebrow">Who we work with</p>
+        <h2 class="program-headline">If your roster shares gear or your athletes share a mat, this is for you.</h2>
         <ul class="who-list">
-          <li>High school athletic programs (football, hockey, lacrosse, wrestling, soccer)</li>
-          <li>Club and travel-team programs</li>
-          <li>College athletic departments and club teams</li>
+          <li>D1 Training franchises + functional fitness gyms</li>
+          <li>CrossFit boxes + strength-and-conditioning gyms</li>
           <li>MMA, jiu-jitsu, and combat-sports gyms</li>
-          <li>Boxing and wrestling rooms</li>
+          <li>Boxing + wrestling rooms</li>
+          <li>High school athletic programs (football, hockey, lacrosse, wrestling)</li>
+          <li>Club + travel-team programs</li>
+          <li>College athletic departments and club teams</li>
           <li>Cheerleading and tumbling facilities</li>
           <li>Athletic training facilities and PT clinics</li>
-          <li>Recreation centers, YMCAs, and municipal sports programs</li>
+          <li>Recreation centers, YMCAs, municipal sports programs</li>
         </ul>
       </div>
     </section>
 
-    <!-- QUOTE FORM -->
-    <section class="quote" id="quote">
-      <div class="quote-inner">
-        <p class="section-eyebrow">Request a quote</p>
-        <h2 class="section-headline">Tell us about your program. We'll get back within one business day.</h2>
+    {/* QUOTE FORM */}
+    <section class="js-section js-carbon quote-section" id="quote">
+      <div class="js-section--inner quote-inner">
+        <p class="eyebrow">Request a quote</p>
+        <h2 class="quote-headline">Tell Fred about your program.<br />He'll reply within one business day.</h2>
 
         <div class="quote-success" data-success hidden>
-          <h3>Got it. We'll be in touch.</h3>
+          <h3>Got it. Fred's on it.</h3>
           <p>
-            Mike or someone from the team will email you within one business
-            day with a quote tailored to your roster size and sport. If you
-            need to chat sooner, reach out directly: <a href="mailto:mike@southlandorganics.com">mike@southlandorganics.com</a>.
+            Fred or someone from the team will email you within one business
+            day with a quote tailored to your roster size and use case. If
+            you need to chat sooner, give us a call at
+            <a href="tel:8006083755">800-608-3755</a> and ask for Fred.
           </p>
         </div>
 
@@ -125,12 +226,12 @@ const description =
               <span>Role</span>
               <select name="role" required>
                 <option value="">Select…</option>
+                <option>Gym owner</option>
                 <option>Head coach</option>
                 <option>Assistant coach</option>
                 <option>Athletic trainer (ATC)</option>
                 <option>Club / program director</option>
                 <option>Athletic director</option>
-                <option>Gym / facility owner</option>
                 <option>Equipment manager</option>
                 <option>Other</option>
               </select>
@@ -139,31 +240,32 @@ const description =
 
           <div class="form-row">
             <label>
-              <span>Program / organization</span>
+              <span>Gym / program / organization</span>
               <input type="text" name="organization" required autocomplete="organization" />
             </label>
             <label>
               <span>Email</span>
-              <input type="email" name="email" required autocomplete="email" />
+              <input type="email" name="email" required autocomplete="email" inputmode="email" />
             </label>
           </div>
 
           <div class="form-row">
             <label>
               <span>Phone (optional)</span>
-              <input type="tel" name="phone" autocomplete="tel" />
+              <input type="tel" name="phone" autocomplete="tel" inputmode="tel" />
             </label>
             <label>
-              <span>Sport</span>
+              <span>Sport / discipline</span>
               <select name="sport" required>
                 <option value="">Select…</option>
+                <option>Functional fitness / D1 Training / CrossFit</option>
+                <option>MMA / BJJ / combat sports</option>
                 <option>Hockey</option>
                 <option>Lacrosse</option>
                 <option>Wrestling</option>
                 <option>Football</option>
-                <option>MMA / BJJ</option>
                 <option>Soccer</option>
-                <option>Multi-sport program</option>
+                <option>Multi-sport / general athletic</option>
                 <option>Other</option>
               </select>
             </label>
@@ -171,7 +273,7 @@ const description =
 
           <div class="form-row">
             <label>
-              <span>Roster size (athletes)</span>
+              <span>Roster size (athletes per week)</span>
               <select name="roster_size" required>
                 <option value="">Select…</option>
                 <option>Under 25</option>
@@ -199,16 +301,17 @@ const description =
             <textarea
               name="notes"
               rows="4"
-              placeholder="Outbreak in the program? Pre-season prep? Just upgrading from a household cleaner? Whatever the context — short answer is fine."
+              placeholder="Outbreak smell in the gym? Pre-season prep? Tired of reordering household sprays that don't work? Whatever the context — short answer is fine."
             ></textarea>
           </label>
 
           <input type="hidden" name="persona" value="carmen" />
           <input type="hidden" name="source" value="jockshock-teams-page" />
 
-          <button type="submit" class="cta cta-submit">Send the request</button>
+          <button type="submit" class="cta-primary cta-submit">Send the request</button>
           <p class="form-note">
-            We'll reply within one business day. No marketing spam, no auto-enrollment.
+            Goes to Fred Munzenmaier (program lead). Mike Usry is cc'd.
+            No marketing spam, no auto-enrollment.
           </p>
         </form>
       </div>
@@ -217,22 +320,18 @@ const description =
 </BaseLayout>
 
 <script>
-  // Stamp persona=carmen as soon as someone lands on /teams (positive signal
-  // per the persona-gap memory + brand-brief — Carmen requires positive
-  // signal, never defaults). Done client-side because the cookie sets
-  // happen in the existing persona module which is browser-only.
+  // Stamp persona=carmen — gym/coach/facility surface always overrides default.
   import { setPersona } from "../utils/persona-stamp";
   setPersona("carmen");
 
-  // Pixel event for the lander itself
   if (typeof window !== "undefined" && (window as any).pdPixel) {
     (window as any).pdPixel.track("teams_lander_view", {
       sub_brand: "jockshock",
       persona: "carmen",
+      surface: "gym-program",
     });
   }
 
-  // Form submit: POST JSON to /api/teams-intake, render thank-you on success.
   const form = document.querySelector<HTMLFormElement>("[data-quote-form]");
   const successPanel = document.querySelector<HTMLElement>("[data-success]");
   const submitBtn = form?.querySelector<HTMLButtonElement>(".cta-submit");
@@ -248,8 +347,6 @@ const description =
     const fd = new FormData(form);
     const payload = Object.fromEntries(fd.entries());
 
-    // Pixel — fire BEFORE the network call so the click is captured even if
-    // the API is slow or fails.
     if ((window as any).pdPixel) {
       (window as any).pdPixel.track("teams_quote_submitted", {
         sub_brand: "jockshock",
@@ -268,7 +365,6 @@ const description =
         body: JSON.stringify(payload),
       });
       if (!r.ok) throw new Error(`Server returned ${r.status}`);
-      // Swap form for thank-you panel
       form.hidden = true;
       if (successPanel) {
         successPanel.hidden = false;
@@ -278,7 +374,6 @@ const description =
       console.error("[teams-intake] submit failed", err);
       submitBtn.disabled = false;
       submitBtn.textContent = originalLabel;
-      // Inline error so the user knows to try again or email directly.
       let errorEl = form.querySelector<HTMLElement>(".form-error");
       if (!errorEl) {
         errorEl = document.createElement("p");
@@ -286,107 +381,254 @@ const description =
         submitBtn.insertAdjacentElement("afterend", errorEl);
       }
       errorEl.textContent =
-        "Something went wrong sending that. Email mike@southlandorganics.com directly and we'll handle it.";
+        "Something went wrong sending that. Email Fred directly at fmunzjr@gmail.com and we'll handle it.";
     }
   });
 </script>
 
 <style>
-  .js-teams {
-    --jockshock-black: #0a0a0a;
-    --jockshock-yellow: #facc15;
-    --jockshock-text: #f3f4f6;
-    --jockshock-muted: #9ca3af;
-    background: var(--jockshock-black);
-    color: var(--jockshock-text);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  /* HERO ============================================================ */
+  .teams-hero {
+    position: relative;
+    min-height: 78vh;
+    overflow: hidden;
+    padding: 0;
   }
-  .js-teams h1, .js-teams h2, .js-teams h3 {
-    font-weight: 800;
-    letter-spacing: -0.02em;
+  .teams-hero-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    z-index: 0;
+  }
+  .teams-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      120deg,
+      rgba(10,10,10,0.94) 0%,
+      rgba(10,10,10,0.74) 45%,
+      rgba(10,10,10,0.45) 100%
+    );
+    z-index: 1;
+  }
+  .teams-hero-grid {
+    position: relative;
+    z-index: 2;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 96px 5% 80px;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 56px;
+    align-items: center;
+    min-height: 78vh;
+  }
+  .teams-hero-copy { max-width: 640px; }
+  .teams-hero-headline {
+    color: #fff;
+    margin-bottom: 24px;
+    line-height: 0.95;
+  }
+  .teams-hero-sub {
+    font-size: 18px;
+    line-height: 1.55;
+    color: #d1d5db;
+    margin-bottom: 32px;
+    max-width: 520px;
+  }
+  .teams-hero-cta-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .teams-hero-trust {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 24px 36px;
+    flex-wrap: wrap;
+  }
+  .teams-hero-trust li {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .teams-hero-product {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .teams-hero-product img {
+    max-width: 100%;
+    max-height: 540px;
+    height: auto;
+    width: auto;
+    filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.7));
   }
 
-  .eyebrow, .section-eyebrow {
-    color: var(--jockshock-yellow);
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    font-weight: 700;
-    font-size: 0.8125rem;
+  /* SECTION SHARED =================================================== */
+  .program-headline {
     margin-bottom: 16px;
   }
-
-  /* === HERO === */
-  .hero {
-    padding: 100px 5% 80px;
-    background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-  }
-  .hero-inner { max-width: 900px; margin: 0 auto; }
-  .hero-headline {
-    font-size: clamp(2rem, 4.5vw, 3.5rem);
-    color: #fff;
-    line-height: 1.1;
-    margin: 0 0 24px;
-  }
-  .hero-sub {
-    font-size: 1.125rem;
-    color: #d1d5db;
+  .program-sub {
+    font-size: 18px;
     line-height: 1.6;
-    margin-bottom: 32px;
+    margin-bottom: 56px;
     max-width: 720px;
   }
-  .cta {
-    display: inline-block;
-    background: var(--jockshock-yellow);
-    color: var(--jockshock-black);
-    padding: 18px 36px;
-    text-decoration: none;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-size: 0.9375rem;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: transform 0.1s ease, box-shadow 0.15s ease;
-    font-family: inherit;
-  }
-  .cta:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(250, 204, 21, 0.35);
-  }
 
-  /* === SECTION HEADERS === */
-  .section-headline {
-    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
-    color: #fff;
-    margin: 0 0 32px;
-    line-height: 1.2;
-  }
-
-  /* === WHAT YOU GET === */
-  .what { padding: 100px 5%; }
-  .what-inner { max-width: 1200px; margin: 0 auto; }
-  .what-grid {
+  /* PAIRED PROGRAM ==================================================== */
+  .program-pair {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: 1fr auto 1fr;
+    gap: 24px;
+    align-items: center;
+  }
+  .program-card {
+    background: #fff;
+    border-left: 4px solid var(--electric-yellow);
+    padding: 40px 36px;
+    box-shadow: 0 2px 0 rgba(0,0,0,0.04), 0 12px 28px rgba(0,0,0,0.05);
+  }
+  .program-card-eyebrow {
+    color: #b08e00;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .program-card h3 {
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .program-card-tag {
+    color: var(--graphite);
+    font-size: 14px;
+    margin-bottom: 24px;
+    font-style: italic;
+  }
+  .program-card-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .program-card-list li {
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.5;
+    padding: 8px 0 8px 24px;
+    position: relative;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  .program-card-list li:last-child { border-bottom: none; }
+  .program-card-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 17px;
+    width: 8px;
+    height: 8px;
+    background: var(--electric-yellow);
+  }
+  .program-pair-amp {
+    font-family: 'Bebas Neue', sans-serif;
+    color: var(--electric-yellow);
+    font-size: 96px;
+    line-height: 1;
+    text-align: center;
+    -webkit-text-stroke: 1px rgba(0,0,0,0.2);
+  }
+
+  /* SUBSCRIPTION ===================================================== */
+  .subscription-section {
+    background-color: var(--steel-50);
+    border-top: 4px solid var(--electric-yellow);
+  }
+  .subscription-steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 24px;
   }
-  .what-card {
-    background: #141414;
-    padding: 32px;
-    border-left: 3px solid var(--jockshock-yellow);
+  .subscription-steps li {
+    background: #fff;
+    padding: 40px 32px;
+    text-align: center;
+    box-shadow: 0 2px 0 rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.04);
   }
-  .what-card h3 {
-    color: var(--jockshock-yellow);
-    font-size: 1.25rem;
-    margin: 0 0 12px;
+  .subscription-steps :global(.step-badge) {
+    margin: 0 auto 20px;
   }
-  .what-card p { color: var(--jockshock-text); line-height: 1.6; margin: 0; }
+  .subscription-steps h3 {
+    color: var(--ink);
+    margin: 0 0 8px;
+  }
+  .subscription-steps p {
+    color: var(--graphite);
+    font-size: 15px;
+    line-height: 1.5;
+    margin: 0;
+  }
 
-  /* === WHO === */
-  .who { padding: 100px 5%; background: #050505; }
-  .who-inner { max-width: 900px; margin: 0 auto; }
+  /* FRED ============================================================ */
+  .fred-section {
+    background-color: var(--carbon-black);
+    background-image:
+      linear-gradient(180deg, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.78) 60%, rgba(10,10,10,0.96) 100%),
+      url("https://res.cloudinary.com/southland-organics/image/upload/c_fill,w_1800,h_900,g_auto,q_auto,f_jpg/v1778154580/JockShock/dark-abstract-texture-pattern-background-with-spot_rpsqte.jpg");
+    background-size: cover;
+    background-position: center;
+    padding: 120px 5%;
+  }
+  .fred-inner {
+    text-align: center;
+  }
+  .fred-headline {
+    color: #fff;
+    font-size: clamp(28px, 4vw, 44px);
+    line-height: 1.15;
+    margin-bottom: 48px;
+  }
+  .fred-card {
+    background: #141414;
+    border-left: 4px solid var(--electric-yellow);
+    padding: 56px 48px;
+    max-width: 720px;
+    margin: 0 auto;
+    text-align: left;
+  }
+  .fred-name {
+    font-family: 'Bebas Neue', sans-serif;
+    color: #fff;
+    font-size: 40px;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+  .fred-creds {
+    color: var(--electric-yellow);
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .fred-body {
+    color: #d1d5db;
+    font-size: 16px;
+    line-height: 1.7;
+    margin: 24px 0 32px;
+  }
+
+  /* WHO LIST ========================================================= */
   .who-list {
     list-style: none;
     padding: 0;
@@ -394,29 +636,39 @@ const description =
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 12px 32px;
+    max-width: 1100px;
   }
   .who-list li {
-    color: var(--jockshock-text);
+    color: var(--ink);
     padding-left: 24px;
     position: relative;
-    line-height: 1.5;
+    line-height: 1.6;
+    font-size: 15px;
   }
   .who-list li::before {
     content: "→";
     position: absolute;
     left: 0;
-    color: var(--jockshock-yellow);
+    color: #b08e00;
     font-weight: 800;
   }
 
-  /* === QUOTE FORM === */
-  .quote { padding: 100px 5%; background: var(--jockshock-black); border-top: 1px solid rgba(255,255,255,0.08); }
+  /* QUOTE FORM ====================================================== */
+  .quote-section {
+    padding: 120px 5%;
+  }
   .quote-inner { max-width: 800px; margin: 0 auto; }
+  .quote-headline {
+    color: #fff;
+    margin-bottom: 32px;
+    line-height: 1.1;
+  }
   .quote-form {
     background: #141414;
     padding: 40px;
     border-radius: 4px;
     margin-top: 16px;
+    border-left: 4px solid var(--electric-yellow);
   }
   .form-row {
     display: grid;
@@ -434,11 +686,12 @@ const description =
     gap: 6px;
   }
   .quote-form span {
-    color: var(--jockshock-muted);
-    font-size: 0.8125rem;
-    font-weight: 600;
+    color: var(--steel);
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.12em;
   }
   .quote-form input,
   .quote-form select,
@@ -449,28 +702,32 @@ const description =
     padding: 14px 16px;
     border-radius: 4px;
     font-family: inherit;
-    font-size: 1rem;
+    font-size: 16px; /* prevent iOS zoom on focus; 16px is the iOS threshold */
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0; /* lets the input shrink inside grid columns */
     transition: border-color 0.15s ease;
   }
   .quote-form input:focus,
   .quote-form select:focus,
   .quote-form textarea:focus {
     outline: none;
-    border-color: var(--jockshock-yellow);
+    border-color: var(--electric-yellow);
   }
   .quote-form textarea {
     resize: vertical;
-    min-height: 100px;
+    min-height: 110px;
   }
   .cta-submit {
     width: 100%;
     margin-top: 8px;
   }
   .form-note {
-    color: var(--jockshock-muted);
-    font-size: 0.8125rem;
+    color: var(--steel);
+    font-size: 12px;
     text-align: center;
     margin: 16px 0 0;
+    letter-spacing: 0.04em;
   }
   .form-error {
     color: #fca5a5;
@@ -484,34 +741,49 @@ const description =
   .quote-success {
     background: #141414;
     padding: 40px;
-    border-left: 3px solid var(--jockshock-yellow);
+    border-left: 4px solid var(--electric-yellow);
     border-radius: 4px;
     margin-top: 16px;
   }
   .quote-success h3 {
-    color: var(--jockshock-yellow);
-    font-size: 1.5rem;
-    margin: 0 0 16px;
+    color: var(--electric-yellow);
+    font-size: 32px;
+    margin-bottom: 16px;
   }
   .quote-success p {
-    color: var(--jockshock-text);
+    color: #d1d5db;
     line-height: 1.7;
-    font-size: 1rem;
+    font-size: 16px;
     margin: 0;
   }
   .quote-success a {
-    color: var(--jockshock-yellow);
+    color: var(--electric-yellow);
     text-decoration: none;
     font-weight: 700;
   }
   .quote-success a:hover { text-decoration: underline; }
 
-  @media (max-width: 768px) {
-    .hero, .what, .who, .quote { padding: 64px 5%; }
+  /* RESPONSIVE ====================================================== */
+  @media (max-width: 900px) {
+    .teams-hero-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+      padding: 64px 5% 56px;
+      min-height: auto;
+    }
+    .teams-hero-product img { max-height: 360px; }
+
+    .program-pair {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .program-pair-amp { font-size: 56px; }
+
     .form-row {
       grid-template-columns: 1fr;
       gap: 20px;
     }
     .quote-form { padding: 24px; }
+    .fred-card { padding: 36px 28px; }
   }
 </style>

@@ -12,7 +12,11 @@
 </script>
 
 <div>
-  <button class="relative" onclick={() => openCart()}>
+  <button
+    class="relative inline-flex items-center justify-center min-w-11 min-h-11 -m-2 p-2 text-white hover:text-[#FFE500] transition-colors"
+    onclick={() => openCart()}
+    aria-label="Open cart"
+  >
     <span class="sr-only">Open your cart</span>
     <svg
       xmlns="http://www.w3.org/2000/svg"

@@ -1,21 +1,22 @@
 /**
- * /api/teams-intake — Carmen B2B quote intake handler.
+ * /api/teams-intake — gym + team B2B intake handler.
  *
- * POST endpoint that receives the form from /teams.astro, sends a branded
- * email to Mike via SendGrid. v1 keeps it simple: email notification only,
- * Mike replies with a quote within 24 hours per the page's promise.
+ * Per the May 2026 gym-channel pivot (see project_gym_channel_program memory):
+ * lead routes to Fred Munzenmaier first (UGA RB, owns a D1 Training franchise,
+ * runs the JockShock gym channel). Mike is cc'd for visibility but Fred owns
+ * the response.
  *
  * v2 follow-up (Nexus #652): wire HubSpot contact + deal creation, Klaviyo
- * subscribe + B2B intake flow, Slack notification. The scaffolding here
- * leaves a clear seam for that — payload shape and response shape both
- * already match what a v2 handler would expect.
+ * gym-program flow, Slack notification.
  */
 import type { APIRoute } from "astro";
 
 const SENDGRID_API = "https://api.sendgrid.com/v3/mail/send";
-const NOTIFY_RECIPIENTS = [
-  { email: "mike@southlandorganics.com", name: "Mike Usry" },
-];
+
+// Primary recipient is Fred. Mike is cc'd. If Fred's email becomes a placeholder
+// (env override below), make sure Mike still receives the lead.
+const PRIMARY_RECIPIENT = { email: "fmunzjr@gmail.com", name: "Fred Munzenmaier" };
+const CC_RECIPIENTS = [{ email: "mike@southlandorganics.com", name: "Mike Usry" }];
 
 interface TeamsIntakePayload {
   name: string;
@@ -52,18 +53,18 @@ function escapeHtml(str: string): string {
 function buildEmail(data: TeamsIntakePayload): string {
   const row = (label: string, value: string) => `
     <tr>
-      <td style="padding:10px 14px;border-bottom:1px solid #1f2937;font-weight:700;color:#facc15;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;width:160px;vertical-align:top;">${label}</td>
+      <td style="padding:10px 14px;border-bottom:1px solid #1f2937;font-weight:700;color:#FFE500;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;width:160px;vertical-align:top;">${label}</td>
       <td style="padding:10px 14px;border-bottom:1px solid #1f2937;color:#f3f4f6;font-size:14px;">${value}</td>
     </tr>`;
 
   const phone = data.phone
-    ? `<a href="tel:${escapeHtml(data.phone)}" style="color:#facc15;text-decoration:none;">${escapeHtml(data.phone)}</a>`
+    ? `<a href="tel:${escapeHtml(data.phone)}" style="color:#FFE500;text-decoration:none;">${escapeHtml(data.phone)}</a>`
     : '<span style="color:#6b7280;">—</span>';
 
   const notes = data.notes
     ? `
-    <div style="margin-top:24px;padding:20px;background:#0a0a0a;border-left:3px solid #facc15;">
-      <p style="margin:0 0 6px;font-size:11px;font-weight:700;color:#facc15;text-transform:uppercase;letter-spacing:0.08em;">What they're trying to solve</p>
+    <div style="margin-top:24px;padding:20px;background:#0a0a0a;border-left:3px solid #FFE500;">
+      <p style="margin:0 0 6px;font-size:11px;font-weight:700;color:#FFE500;text-transform:uppercase;letter-spacing:0.08em;">What they're trying to solve</p>
       <p style="margin:0;color:#f3f4f6;white-space:pre-wrap;line-height:1.6;font-size:14px;">${escapeHtml(data.notes)}</p>
     </div>`
     : "";
@@ -80,8 +81,8 @@ function buildEmail(data: TeamsIntakePayload): string {
         <tr><td style="background:#0a0a0a;padding:24px 32px;border:1px solid #1f2937;border-bottom:none;border-radius:6px 6px 0 0;">
           <table width="100%" cellpadding="0" cellspacing="0">
             <tr>
-              <td style="color:#facc15;font-size:20px;font-weight:900;letter-spacing:0.04em;">JOCKSHOCK</td>
-              <td align="right" style="color:#9ca3af;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;">Team Quote Request</td>
+              <td style="color:#FFE500;font-size:20px;font-weight:900;letter-spacing:0.04em;">JOCKSHOCK</td>
+              <td align="right" style="color:#9ca3af;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;">Gym + Team Lead</td>
             </tr>
           </table>
         </td></tr>
@@ -89,14 +90,14 @@ function buildEmail(data: TeamsIntakePayload): string {
         <!-- Body -->
         <tr><td style="background:#141414;padding:32px;border-left:1px solid #1f2937;border-right:1px solid #1f2937;">
 
-          <h2 style="margin:0 0 8px;font-size:22px;color:#fff;font-weight:800;letter-spacing:-0.01em;">New B2B quote request</h2>
-          <p style="margin:0 0 24px;color:#9ca3af;font-size:13px;">From the JockShock /teams page. Reply within one business day per the page's promise.</p>
+          <h2 style="margin:0 0 8px;font-size:22px;color:#fff;font-weight:800;letter-spacing:-0.01em;">New gym / team lead</h2>
+          <p style="margin:0 0 24px;color:#9ca3af;font-size:13px;">From the JockShock /teams page. Fred — please reply within one business day per the page's promise. Mike is cc'd for visibility.</p>
 
           <table style="border-collapse:collapse;width:100%;">
             ${row("Name", escapeHtml(data.name))}
             ${row("Role", escapeHtml(data.role))}
             ${row("Organization", escapeHtml(data.organization))}
-            ${row("Email", `<a href="mailto:${escapeHtml(data.email)}" style="color:#facc15;text-decoration:none;">${escapeHtml(data.email)}</a>`)}
+            ${row("Email", `<a href="mailto:${escapeHtml(data.email)}" style="color:#FFE500;text-decoration:none;">${escapeHtml(data.email)}</a>`)}
             ${row("Phone", phone)}
             ${row("Sport", escapeHtml(data.sport))}
             ${row("Roster size", escapeHtml(data.roster_size))}
@@ -110,7 +111,7 @@ function buildEmail(data: TeamsIntakePayload): string {
         <!-- Footer -->
         <tr><td style="background:#0a0a0a;padding:20px 32px;border:1px solid #1f2937;border-top:none;border-radius:0 0 6px 6px;">
           <p style="margin:0;font-size:11px;color:#6b7280;text-align:center;line-height:1.6;">
-            Lead from <a href="https://jockshock.com/teams" style="color:#facc15;text-decoration:none;">jockshock.com/teams</a> ·
+            Lead from <a href="https://jockshock.com/teams" style="color:#FFE500;text-decoration:none;">jockshock.com/teams</a> ·
             persona: <strong style="color:#9ca3af;">${escapeHtml(data.persona || "carmen")}</strong> ·
             source: <strong style="color:#9ca3af;">${escapeHtml(data.source || "jockshock-teams-page")}</strong>
           </p>
@@ -156,10 +157,16 @@ export const POST: APIRoute = async ({ request }) => {
   // Honeypot-free for now; if spam shows up, add a phone-shaped trap field
   // and reject submissions that fill it.
 
-  const subject = `[JockShock Teams] ${data.organization} — ${data.sport}, ${data.roster_size}, ${data.timeline}`;
+  const subject = `[JockShock Gym Lead] ${data.organization} — ${data.sport}, ${data.roster_size}, ${data.timeline}`;
 
   const sendgridPayload = {
-    personalizations: [{ to: NOTIFY_RECIPIENTS, subject }],
+    personalizations: [
+      {
+        to: [PRIMARY_RECIPIENT],
+        cc: CC_RECIPIENTS,
+        subject,
+      },
+    ],
     from: {
       email: "noreply@southlandorganics.com",
       name: "JockShock Teams",

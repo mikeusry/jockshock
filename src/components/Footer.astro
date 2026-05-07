@@ -1,22 +1,94 @@
 ---
+import Logo from "./Logo.astro";
 const year = new Date().getFullYear();
 ---
 
 <footer class="js-footer">
+  <div class="footer-rule"></div>
+
+  {/* Lead-magnet capture — Gear Smell Field Guide.
+      Persona is read from the sl_persona cookie at submit time so a Pam
+      visitor gets the parents-flavored welcome flow, etc. The list_id +
+      flow live in Klaviyo. */}
+  <section class="lead-magnet" aria-labelledby="leadmag-headline">
+    <div class="lead-magnet-inner">
+      <div class="lead-magnet-cover" aria-hidden="true">
+        <div class="lead-magnet-cover-card">
+          <span class="lead-magnet-cover-eyebrow">Field guide</span>
+          <span class="lead-magnet-cover-title">The Gear Smell<br />Field Guide</span>
+          <span class="lead-magnet-cover-rule"></span>
+          <span class="lead-magnet-cover-foot">Free · 8 pages · PDF</span>
+        </div>
+      </div>
+      <div class="lead-magnet-copy">
+        <p class="lead-magnet-eyebrow">No spam. Just gear.</p>
+        <h2 id="leadmag-headline" class="lead-magnet-headline">
+          The free Gear Smell Field Guide.
+        </h2>
+        <p class="lead-magnet-sub">
+          What to do after every practice, every game, and every tournament
+          to keep gear from going septic. The 3 mistakes that make funk
+          worse. Written by athletes who've lived in a gear bag.
+        </p>
+        <form class="lead-magnet-form" id="leadmag-form" novalidate>
+          <label class="visually-hidden" for="leadmag-email">Your email</label>
+          <input
+            id="leadmag-email"
+            name="email"
+            type="email"
+            inputmode="email"
+            autocomplete="email"
+            required
+            placeholder="your@email.com"
+          />
+          {/* Honeypot — keep hidden from real users via CSS, bots will fill it. */}
+          <input
+            class="leadmag-hp"
+            type="text"
+            name="company_website"
+            tabindex="-1"
+            autocomplete="off"
+            aria-hidden="true"
+          />
+          <button type="submit" class="lead-magnet-submit">Send me the guide</button>
+        </form>
+        <p class="lead-magnet-note" id="leadmag-status" aria-live="polite">
+          We'll email it. One bottle hits like one bottle, but the routine
+          changes everything — that's what's in the guide.
+        </p>
+      </div>
+    </div>
+  </section>
+
   <div class="footer-inner">
     <div class="footer-brand">
-      <img src="/JockShock_Logo.png" alt="JockShock" class="footer-logo" width="180" height="50" />
-      <p class="footer-tagline">Performance Protection for Serious Athletes.</p>
-      <p class="footer-zeropoint">Powered by ZeroPoint Technology · Made in USA</p>
+      <Logo tone="yellow" />
+      <p class="footer-tagline">
+        Performance Protection<br />for Serious Athletes.
+      </p>
+      <div class="footer-attribution">
+        <span class="hero-trust-rule"></span>
+        <div>
+          <span class="footer-attribution-label">Powered by</span>
+          <span class="footer-attribution-detail">ZeroPoint Technology</span>
+        </div>
+      </div>
+      <div class="footer-attribution">
+        <span class="hero-trust-rule"></span>
+        <div>
+          <span class="footer-attribution-label">Built by</span>
+          <span class="footer-attribution-detail">D1 Athletes · Made in USA</span>
+        </div>
+      </div>
     </div>
 
     <nav class="footer-nav" aria-label="Footer">
       <div class="footer-col">
         <h4>Shop</h4>
         <ul>
-          <li><a href="/products/jockshock/">JockShock 32oz</a></li>
-          <li><a href="/products/jockshock/">Athlete Pack (3)</a></li>
-          <li><a href="/products/jockshock/">Team Pack (6)</a></li>
+          <li><a href="/products/jockshock/">Single — $24.99</a></li>
+          <li><a href="/products/jockshock/">Athlete Pack — $59.99</a></li>
+          <li><a href="/products/jockshock/">Team Pack — $99.99</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -29,9 +101,9 @@ const year = new Date().getFullYear();
       <div class="footer-col">
         <h4>Support</h4>
         <ul>
-          <li><a href="mailto:mike@southlandorganics.com">Contact</a></li>
           <li><a href="tel:8006083755">800-608-3755</a></li>
           <li><a href="/teams/">Wholesale &amp; teams</a></li>
+          <li><a href="#leadmag-form">Get the field guide</a></li>
         </ul>
       </div>
     </nav>
@@ -39,60 +111,358 @@ const year = new Date().getFullYear();
 
   <div class="footer-bar">
     <div class="footer-bar-inner">
-      <p>&copy; {year} JockShock. A Southland Organics brand.</p>
+      <p>&copy; {year} JockShock — A Southland Organics brand.</p>
       <p class="footer-bar-address">189 Luke Road, Bogart, GA 30622</p>
     </div>
   </div>
 </footer>
 
+<script>
+  // Lead-magnet submit. Reads sl_persona cookie so Klaviyo can fork the
+  // welcome flow by Aaron / Pam / Carmen. Optimistic UX — show success
+  // even if the API queues with `queued:false`, since the API will
+  // backfill via Sentry.
+  const form = document.getElementById('leadmag-form') as HTMLFormElement | null;
+  const status = document.getElementById('leadmag-status');
+  if (form && status) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(form);
+      const email = String(fd.get('email') || '').trim();
+      const honeypot = String(fd.get('company_website') || '');
+      if (!email) return;
+
+      const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending…';
+      }
+
+      const persona =
+        document.cookie
+          .split('; ')
+          .find((row) => row.startsWith('sl_persona='))
+          ?.split('=')[1] || 'aaron';
+
+      try {
+        const r = await fetch('/api/lead-magnet', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email,
+            persona,
+            source: 'jockshock-footer-field-guide',
+            company_website: honeypot,
+          }),
+        });
+        const payload = await r.json().catch(() => ({}));
+        if (r.ok) {
+          // Stamp sl_email cookie so /api/cart-event can attribute events
+          // to this profile in Klaviyo. 1-year expiry, lax samesite (so
+          // SSO / cross-subdomain works), secure on https.
+          const oneYear = 60 * 60 * 24 * 365;
+          const isSecure = location.protocol === 'https:';
+          document.cookie =
+            `sl_email=${encodeURIComponent(email)}; max-age=${oneYear}; path=/; samesite=lax${isSecure ? '; secure' : ''}`;
+
+          status.textContent =
+            "Check your inbox — the field guide is on the way. (Add us to your contacts so it doesn't end up in spam.)";
+          form.reset();
+          if (submitBtn) submitBtn.textContent = 'Sent ✓';
+          // Pixel event for the CDP. Pixel script is async-loaded in
+          // BaseLayout, so it might not be ready yet — guard with optional
+          // chaining and cast (window.pdPixel isn't typed globally).
+          const pixel = (window as unknown as { pdPixel?: { track?: (n: string, p: Record<string, unknown>) => void } }).pdPixel;
+          pixel?.track?.('lead_magnet_signup', {
+            source: 'jockshock-footer-field-guide',
+            persona,
+            klaviyo_queued: payload.queued !== false,
+          });
+        } else {
+          status.textContent = "Something went sideways on our end. Try again in a moment?";
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Send me the guide';
+          }
+        }
+      } catch {
+        status.textContent = "Network hiccup. Try again?";
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Send me the guide';
+        }
+      }
+    });
+  }
+</script>
+
 <style>
   .js-footer {
-    background: #0a0a0a;
+    /* Carbon-fiber pattern from Mike's label asset, layered under a
+     * dark gradient so content stays legible. The pattern image has a
+     * baked-in spotlight; positioning bottom-center anchors the bright
+     * spot below the content. */
+    background-color: var(--carbon-black, #0a0a0a);
+    background-image:
+      linear-gradient(180deg, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.78) 60%, rgba(10,10,10,0.96) 100%),
+      url("https://res.cloudinary.com/southland-organics/image/upload/c_fill,w_1800,h_900,g_auto,q_auto,f_jpg/v1778154580/JockShock/dark-abstract-texture-pattern-background-with-spot_rpsqte.jpg");
+    background-size: cover, cover;
+    background-position: center, center bottom;
+    background-repeat: no-repeat, no-repeat;
     color: #9ca3af;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    position: relative;
+  }
+  /* Yellow top rule — visual hand-off from any preceding section */
+  .footer-rule {
+    height: 4px;
+    background: var(--electric-yellow, #FFE500);
+  }
+
+  /* === Lead magnet (Gear Smell Field Guide) === */
+  .lead-magnet {
+    background:
+      linear-gradient(180deg, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.97) 100%),
+      url("https://res.cloudinary.com/southland-organics/image/upload/c_fill,w_1800,h_900,g_auto,q_auto,f_jpg/v1778154580/JockShock/dark-abstract-texture-pattern-background-with-spot_rpsqte.jpg");
+    background-size: cover;
+    background-position: center;
+    border-bottom: 1px solid rgba(255, 229, 0, 0.18);
+    padding: 80px 5%;
+  }
+  .lead-magnet-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 64px;
+    align-items: center;
+  }
+
+  .lead-magnet-cover {
+    perspective: 800px;
+  }
+  .lead-magnet-cover-card {
+    background: linear-gradient(145deg, #141414 0%, #0a0a0a 100%);
+    border: 1px solid rgba(255, 229, 0, 0.22);
+    border-left: 4px solid var(--electric-yellow, #FFE500);
+    box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+    padding: 36px 28px;
+    aspect-ratio: 8.5 / 11;
+    display: flex;
+    flex-direction: column;
+    transform: rotate(-3deg);
+    transition: transform 0.3s ease;
+    color: #f3f4f6;
+  }
+  .lead-magnet-cover-card:hover { transform: rotate(0deg); }
+  .lead-magnet-cover-eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--electric-yellow, #FFE500);
+    margin-bottom: auto;
+  }
+  .lead-magnet-cover-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.5rem, 2.5vw, 2.1rem);
+    line-height: 1.05;
+    letter-spacing: 0.02em;
+    color: #fff;
+    margin-bottom: 20px;
+  }
+  .lead-magnet-cover-rule {
+    width: 36px;
+    height: 3px;
+    background: var(--electric-yellow, #FFE500);
+    margin-bottom: 12px;
+  }
+  .lead-magnet-cover-foot {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #6b7280;
+  }
+
+  .lead-magnet-copy { color: #f3f4f6; }
+  .lead-magnet-eyebrow {
+    font-family: 'Inter', sans-serif;
+    color: var(--electric-yellow, #FFE500);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-weight: 700;
+    font-size: 11px;
+    margin: 0 0 14px;
+  }
+  .lead-magnet-headline {
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: clamp(1.75rem, 4vw, 2.6rem);
+    color: #fff;
+    line-height: 1.05;
+    letter-spacing: 0.02em;
+    margin: 0 0 16px;
+  }
+  .lead-magnet-sub {
+    margin: 0 0 24px;
+    color: #d1d5db;
+    line-height: 1.65;
+    font-size: 1rem;
+    max-width: 56ch;
+  }
+
+  .lead-magnet-form {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: stretch;
+  }
+  .lead-magnet-form input[type="email"] {
+    flex: 1 1 280px;
+    min-width: 0;
+    background: #0a0a0a;
+    border: 1px solid rgba(255,255,255,0.18);
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    padding: 14px 16px;
+    border-radius: 0;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .lead-magnet-form input[type="email"]::placeholder { color: #6b7280; }
+  .lead-magnet-form input[type="email"]:focus {
+    outline: none;
+    border-color: var(--electric-yellow, #FFE500);
+    box-shadow: 0 0 0 3px rgba(255, 229, 0, 0.16);
+  }
+  .lead-magnet-submit {
+    background: var(--electric-yellow, #FFE500);
+    color: #0a0a0a;
+    border: none;
+    padding: 14px 24px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 13px;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .lead-magnet-submit:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(255, 229, 0, 0.28);
+  }
+  .lead-magnet-submit:disabled { opacity: 0.7; cursor: default; }
+
+  .lead-magnet-note {
+    margin: 14px 0 0;
+    font-size: 12px;
+    color: #6b7280;
+    line-height: 1.5;
+    max-width: 56ch;
+  }
+
+  /* Honeypot — keep visually hidden but still in DOM */
+  .leadmag-hp {
+    position: absolute !important;
+    left: -10000px !important;
+    width: 1px !important;
+    height: 1px !important;
+    opacity: 0 !important;
+  }
+  .visually-hidden {
+    position: absolute !important;
+    width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+  }
+
+  @media (max-width: 768px) {
+    .lead-magnet { padding: 56px 5%; }
+    .lead-magnet-inner {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .lead-magnet-cover {
+      max-width: 220px;
+      margin: 0 auto;
+    }
+    .lead-magnet-form input[type="email"] { flex: 1 1 100%; }
+    .lead-magnet-submit { flex: 1 1 100%; }
   }
 
   .footer-inner {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 64px 5% 48px;
+    padding: 96px 5% 64px;
     display: grid;
     grid-template-columns: 1.2fr 2fr;
-    gap: 64px;
+    gap: 80px;
   }
 
-  .footer-brand .footer-logo {
-    height: 36px;
+  .footer-brand :global(.js-logo) {
+    height: 44px;
     width: auto;
-    margin-bottom: 16px;
+    margin-bottom: 24px;
   }
   .footer-tagline {
-    color: #f3f4f6;
-    font-weight: 700;
-    font-size: 0.875rem;
-    margin: 0 0 8px;
+    font-family: 'Bebas Neue', sans-serif;
+    color: #fff;
+    font-size: 22px;
+    line-height: 1.1;
+    letter-spacing: 0.04em;
+    margin: 0 0 32px;
   }
-  .footer-zeropoint {
-    color: #6b7280;
-    font-size: 0.75rem;
+  .footer-attribution {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .footer-attribution :global(.hero-trust-rule) {
+    width: 3px;
+    height: 28px;
+    background: var(--electric-yellow);
+    display: inline-block;
+  }
+  .footer-attribution > div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .footer-attribution-label {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin: 0;
+    color: #6b7280;
+    line-height: 1;
+  }
+  .footer-attribution-detail {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #f3f4f6;
+    line-height: 1;
   }
 
   .footer-nav {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 32px;
+    gap: 48px;
   }
   .footer-col h4 {
-    color: #facc15;
-    font-size: 0.75rem;
-    font-weight: 800;
-    text-transform: uppercase;
+    font-family: 'Bebas Neue', sans-serif;
+    color: var(--electric-yellow, #FFE500);
+    font-size: 18px;
     letter-spacing: 0.12em;
-    margin: 0 0 16px;
+    text-transform: uppercase;
+    margin: 0 0 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 229, 0, 0.18);
   }
   .footer-col ul {
     list-style: none;
@@ -100,16 +470,22 @@ const year = new Date().getFullYear();
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 4px;
   }
   .footer-col a {
     color: #d1d5db;
     text-decoration: none;
-    font-size: 0.875rem;
+    font-size: 14px;
+    /* Tap target — 44px min height per WCAG 2.5.5. Padding gives visual
+       breathing room and a real hit zone without changing label spacing. */
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 6px 0;
     transition: color 0.15s ease;
   }
   .footer-col a:hover {
-    color: #facc15;
+    color: var(--electric-yellow, #FFE500);
   }
 
   .footer-bar {
@@ -119,17 +495,18 @@ const year = new Date().getFullYear();
   .footer-bar-inner {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 20px 5%;
+    padding: 28px 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 12px;
   }
   .footer-bar p {
     margin: 0;
     color: #6b7280;
-    font-size: 0.75rem;
+    font-size: 12px;
+    letter-spacing: 0.04em;
   }
   .footer-bar-address {
     text-align: right;
@@ -138,17 +515,17 @@ const year = new Date().getFullYear();
   @media (max-width: 768px) {
     .footer-inner {
       grid-template-columns: 1fr;
-      gap: 40px;
-      padding: 48px 5% 32px;
+      gap: 56px;
+      padding: 64px 5% 40px;
     }
     .footer-nav {
       grid-template-columns: repeat(2, 1fr);
-      gap: 24px;
+      gap: 32px;
     }
     .footer-bar-inner {
       flex-direction: column;
       align-items: flex-start;
-      gap: 4px;
+      gap: 6px;
     }
     .footer-bar-address {
       text-align: left;

@@ -4,32 +4,55 @@ import CartIcon from "./CartIcon.svelte";
 ---
 
 <header class="sticky top-0 z-40">
-  <div class="border-b border-white/10 bg-[#0a0a0a]/95 py-3 backdrop-blur-2xl">
+  <div class="border-b border-white/10 bg-carbon-black/95 py-4 backdrop-blur-2xl">
     <nav class="container flex items-center justify-between">
-      <a href="/" aria-label="JockShock home">
+      <a href="/" aria-label="JockShock home" class="flex items-center min-h-11 py-1 -my-1">
         <Logo />
       </a>
-      <div class="flex items-center gap-4">
+      <div class="flex items-center gap-7">
         <a
           href="/products/jockshock/"
-          class="hidden text-xs font-bold uppercase tracking-widest text-white hover:text-[#facc15] sm:inline"
+          class="js-nav-link hidden sm:inline"
         >
           Shop
         </a>
         <a
           href="/parents/"
-          class="hidden text-xs font-bold uppercase tracking-widest text-white hover:text-[#facc15] sm:inline"
+          class="js-nav-link hidden sm:inline"
         >
           Parents
         </a>
         <a
           href="/teams/"
-          class="hidden text-xs font-bold uppercase tracking-widest text-white hover:text-[#facc15] sm:inline"
+          class="js-nav-link hidden sm:inline"
         >
           Teams
+        </a>
+        <a
+          href="/founders/"
+          class="js-nav-link hidden sm:inline"
+        >
+          Founders
         </a>
         <CartIcon client:load />
       </div>
     </nav>
   </div>
 </header>
+
+<style>
+  /* Nav links — Bebas Neue, larger, hover lifts to electric yellow */
+  :global(.js-nav-link) {
+    font-family: 'Bebas Neue', 'Impact', sans-serif;
+    font-size: 18px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #f3f4f6;
+    text-decoration: none;
+    transition: color 0.15s ease;
+    line-height: 1;
+  }
+  :global(.js-nav-link:hover) {
+    color: #FFE500;
+  }
+</style>
