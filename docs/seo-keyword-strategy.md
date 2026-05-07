@@ -8,16 +8,23 @@
 
 ---
 
-## TL;DR — what we're targeting
+## TL;DR — what we're targeting (v2, post-DFS)
+
+DFS validation flipped the priorities. Original strategy bet the homepage on category phrases ("equipment deodorizer," "gear deodorizer spray") — DFS confirmed those are ghost terms with zero search volume across 28 phrasings. Real SEO traffic lives in two places we now lead with: **shoe-deodorizer cluster** (~100K/mo, validated demand per Mike) and **mouthguard cleaning** (8,100/mo cluster, KD 0).
 
 | Tier | Term | Intent | Why |
 |---|---|---|---|
-| **Primary (homepage + PDP)** | **Equipment deodorizer** | Commercial / category | Owns the category. Crowded but no premium player wins. Whitespace. |
-| **Primary 2 (PDP + brand)** | **Pro-grade gear deodorizer** | Commercial / problem-aware | "Pro-grade" intent is split tactical-vs-athletic. No brand owns athletic side. We do. |
-| **Primary 3 (PDP variant)** | **32oz gear spray for athletes** | Commercial / format-specific | Format-specific buyers searching by ounce/bottle size — competitors are 8oz/16oz, our 32oz is differentiated. |
-| **Wedge — flagship content** | **How to clean a smelly mouthguard** | Informational / problem-aware | Owned entirely by dental clinics. ZERO sports brand presence. Highest-leverage gap in the entire SERP set. |
-| **Wedge — content hub** | **How to clean smelly [sport] gear** (×6 sports) | Informational / DIY | Replicates Clear Gear's sport-hub play but without their claims. Hockey, football, lacrosse, wrestling, MMA, soccer. |
-| **B2B** | **Gym equipment cleaning subscription** | Commercial / B2B | No brand owns "subscription program for facilities" content angle. Fred's gym-channel program. |
+| **Primary 1 — flagship hub** | **Shoe deodorizer spray** + cluster | Commercial / problem-aware | ~100K/mo cluster volume. Biggest SEO opportunity in the project. KD 0–14 across cluster, Vapor Fresh at pos 39 = wide-open SERP. Mike confirmed Southland has shipped real shoe-deodorizer results — validated demand, not hypothesis. |
+| **Primary 2 — flagship content** | **How to clean a mouthguard** | Informational / problem-aware | 8,100/mo cluster. Original strategy was right; DFS confirmed bigger than predicted. Dental clinics own the SERP, no athletic brand presence. Bruxism (nighttime teeth-grinding) intent dominates; copy must disambiguate athletic-mouthguard up front. |
+| **Primary 3 — DIY converter** | **Stop using baking soda** sneaker odor | Informational / DIY | 22,200/mo head term. Same content team as #1; converts DIY-curious users by contrast. |
+| **Sport hub** | How to clean [football pads / cleats / lacrosse gloves / wrestling headgear] | Informational / DIY | 50–320/mo each. KD 0, LOW competition. Real-volume sport-specific pages now ordered by DFS data, not gut. |
+| **Adjacent** | How to mold a mouthguard | Informational / pre-purchase | 2,400/mo. NEW page idea (not in v1). Parents pre-fitting mouthguards — supports the mouthguard hub. |
+| **Brand homepage** | (no SEO anchor — see Section "Homepage SEO" below) | — | DFS confirmed "equipment deodorizer / gear spray / sports gear deodorizer" have no Google Ads volume. Homepage anchors on brand + use case + sport, not category phrase. |
+| **B2B** | Gym equipment cleaning subscription | Commercial / B2B | No DFS volume. Build for sales-enablement, not organic traffic. Fred's gym channel uses this page; nobody is searching for it. |
+
+**Brand framing (locked 2026-05-06):** "athletic and athletic-adjacent gear and shoes." Captures shoe-deodorizer cluster without sub-line. See `project_brand_widening_athletic_adjacent.md`.
+
+**Demoted from v1:** "equipment deodorizer" / "pro-grade gear deodorizer" / "32oz gear spray" — confirmed ghost terms across 28 DFS pulls. Keep them in title/meta for brand framing only. They are NOT homepage SEO anchors.
 
 ---
 
@@ -40,71 +47,95 @@ Three things repeated across every SERP we pulled:
 
 ---
 
-## Tier 1 — Commercial keywords (own these on PDP + homepage)
+## Homepage SEO — accept that there's no anchor
 
-These are direct buy-intent queries. Goal: rank top 10 in 6–9 months for the brand pages.
+DFS validation across 28 phrasings (Round 1 + Round 2) confirmed the "equipment deodorizer / gear spray / sports gear deodorizer / athletic deodorizer" category does NOT have meaningful Google Ads search volume. People don't type the category by name. They type the problem ("smelly hockey gear"), the surface ("shoe deodorizer"), or the sport ("how to clean football pads").
 
-| Term | Page | Reason |
-|---|---|---|
-| **equipment deodorizer** | Homepage H1 / title | Category-owning term. "Built for gear, not for the kitchen." |
-| **gear deodorizer spray** | Homepage / PDP | Long-tail synonym. |
-| **sports gear deodorizer** | PDP | Crowded but uncontested by premium brands. |
-| **pro-grade gear deodorizer** | PDP secondary | Brand-aligned phrase, low competition for athletic side. |
-| **32oz gear spray** | PDP variant page | Format-specific. Most competitors don't sell 32oz. |
-| **athletic gear deodorizer made in usa** | About / PDP | Long-tail with high commercial intent. We have the proof. |
+**Strategic implication:** stop trying to make the homepage rank for a category phrase. The homepage's SEO job is brand framing, not organic traffic capture. The traffic capture happens on `/learn/` hubs (Tier 1 + Tier 2 below) that internal-link back to the homepage and PDP.
 
-### How to deploy
+### How to deploy on the homepage
 
-- **Homepage `<title>`:** Already strong: *"JockShock — Pro-Grade Equipment Deodorizer for Serious Athletes"*. Keep.
-- **Homepage H1:** *"Built for the locker room. Not for the laundry room."* — this is a brand line, not an SEO line. Add a Tier-1-keyword paragraph above the fold, e.g. an eyebrow + a single supporting sentence:
-    > **Pro-Grade Equipment Deodorizer · 32oz · Made in USA**
-    > Engineered for athletic gear. Powered by ZeroPoint Technology.
-- **PDP `<title>`:** Already strong: *"JockShock — Pro-Grade Equipment Deodorizer"*. Keep.
-- **Meta descriptions** (homepage + PDP): include "equipment deodorizer," "32oz," "ZeroPoint Technology," "made in USA" — naturally, not stuffed.
+- **`<title>`:** Already strong: *"JockShock — Pro-Grade Equipment Deodorizer for Serious Athletes"*. Keep — it's brand framing, not a ranking play.
+- **H1:** *"Built for the locker room. Not for the laundry room."* — keep. Brand line, not SEO.
+- **Body / above-fold paragraph:** can stay narrow ("for serious athletes") OR widen to mention shoes alongside gear. Per the 2026-05-06 brand-widening decision (`project_brand_widening_athletic_adjacent.md`), shoe / sneaker mentions are now native to the brand and can appear naturally in body copy.
+- **Meta description:** mention what we ARE in plain language — "pro-grade deodorizer for athletic gear and shoes, made in USA, powered by ZeroPoint Technology." Don't keyword-stuff a phrase nobody searches for.
+- **Internal links from homepage to /learn/ hubs:** mouthguard hub + shoe-deodorizer hub get above-the-fold internal links. Those hubs are the SEO bridge — they pull traffic, then funnel back to the homepage and PDP.
+
+### How to deploy on the PDP
+
+- **`<title>`:** Already strong. Keep.
+- **Body copy:** can mention shoes / sneakers / cleats explicitly as use cases alongside gear. Not the headline, but in the body. See item 3 of the rollout plan at the bottom of this doc.
+- **Schema.org Product:** already in place per the Astro template; no SEO change needed.
 
 ---
 
-## Tier 2 — Wedge content (the long-game flywheel)
+## Tier 1 — flagship content (ranking + traffic)
 
-These are informational queries where competitors are weak or absent. Each becomes its own SEO landing page on `/learn/<slug>/` or similar. **This is where most of the SEO value will come from over months 2–12.**
+These are the two highest-leverage SEO plays in the entire strategy. Both validated by DFS data (`docs/research/2026-05-06-dataforseo-keyword-validation.md`). Both should be among the first 3 content hubs published.
 
-### The mouthguard play (priority #1)
+### Tier 1a — Shoe / sneaker deodorizer hub (NEW; biggest opportunity)
 
-**Page:** `/learn/how-to-clean-a-mouthguard-and-keep-it-from-stinking/`
-**Target:** "how to get smell out of mouthguard" + "how to clean mouthguard" + "smelly mouthguard"
-**Why this is the highest-leverage page in the entire strategy:** dental clinics own this SERP and they recommend dishwashers / vinegar / replacement. Zero athletic brands have a presence. We have a 32oz spray that's safe on mouthguards and skin — we own this answer the moment we publish.
+**Page:** `/learn/shoe-deodorizer-spray/`
+**Target cluster:** "shoe deodorizer," "shoe deodorizer spray," "sneaker deodorizer," "spray for smelly shoes," "spray for stinky shoes," "how to deodorize shoes," "how to get smell out of shoes," "best shoe deodorizer," "foot odor spray," "cleat deodorizer."
+**Cluster volume:** ~100,000+/mo cumulative (Vapor Fresh competitor-gap data).
+**Difficulty:** KD 0–14 across the cluster. Vapor Fresh, the strongest content competitor in our space, ranks at position 39 for the head term — wide-open SERP.
+**Why this is now the priority:** Mike confirmed Southland has shipped real shoe-deodorizer results — validated demand, not hypothesis. Combined with the brand-widening to "athletic and athletic-adjacent gear AND shoes," this isn't a category extension; it's a native-fit content piece.
+**Voice:** Aaron-led, written for "athletes and athletic-adjacent" audience — cleats, gym shoes, training shoes, running shoes, kids' sneakers. Don't narrow it to athletes-only.
+**JSON-LD:** `Article` + `FAQPage` (PAA: "Why do my running shoes smell?", "Does spraying shoes actually work?", "Will shoe spray damage leather sneakers?", "Can I use this on my kid's cleats?", "What's the best way to dry shoes after spraying?")
+**Internal link:** to PDP, to Tier 1b mouthguard hub, to cleats sport hub.
+**Cross-link plan:** every sport hub references "and yes, this works on the cleats too — see [shoe deodorizer hub] for more."
+
+### Tier 1b — Mouthguard cleaning hub (validated; was v1 priority #1)
+
+**Page:** `/learn/how-to-clean-a-mouthguard/`
+**Target cluster:** "how to clean mouthguard," "how to get smell out of mouthguard," "smelly mouthguard," "how to clean my mouthguard," 22 close variants.
+**Cluster volume:** 8,100/mo (DFS confirmed).
+**Difficulty:** KD 0. Dental clinics own the SERP, no athletic brand presence.
+**Critical disambiguation:** the SERP is **dominantly bruxism intent** (nighttime teeth-grinding, dental retainers from dentists), not athletic mouthguards. Page intro and meta description must clearly position the page for athletes (boxing, football, hockey, lacrosse, wrestling, BJJ) within the first 80 words. Recommend an early "If you're here for a dental night guard…" sub-section that gracefully diverts the bruxism searcher to dental resources, then continues with the athletic-mouthguard answer for the right reader. Counter-intuitive but it improves dwell time and reduces SERP CTR-back.
 **Voice:** Aaron, with a "this is what your dentist won't tell you" angle.
-**JSON-LD:** `Article` + `FAQPage` (PAA: "Why does my mouthguard smell?", "Can I put a mouthguard in the dishwasher?", "How often should I replace a mouthguard?")
+**JSON-LD:** `Article` + `FAQPage` (PAA: "Why does my mouthguard smell?", "Can I put a mouthguard in the dishwasher?", "How often should I replace a mouthguard?", "Is it safe to use cleaning spray on a mouthguard?", "What's the difference between a sports mouthguard and a dental night guard?").
 **Internal link:** to PDP.
 
-### The sport hubs (priority #2 — content series)
+### Tier 1c — "Stop using baking soda" sneaker hub (NEW)
 
-One page per sport. Each is a 1,500–2,500-word how-to that covers *the routine* (the load-bearing strategic mechanism) for that sport's specific gear.
+**Page:** `/learn/baking-soda-doesnt-fix-sneaker-odor/` (or similar)
+**Target:** "baking soda for sneaker odor" (22,200/mo, head term).
+**Why:** DIY-curious users searching for a home remedy. Convert by contrast — show that baking soda absorbs odor temporarily but doesn't address the bacterial source, while JockShock does. Soft-sell, not aggressive.
+**Voice:** Aaron, slightly more educational. Not preachy.
+**Internal link:** to Tier 1a shoe-deodorizer hub.
 
-| Page | Slug | Target query | Notes |
-|---|---|---|---|
-| Hockey | `/learn/clean-smelly-hockey-gear/` | "how to clean smelly hockey gear" | Highest-volume sport-specific SERP. Clear Gear ranks here. |
-| Football | `/learn/clean-football-pads/` | "how to clean football pads" / "best spray for stinky football pads" | Matguard owns this with pro-team social proof — we counter with D1 athlete proof + the routine. |
-| Lacrosse | `/learn/clean-lacrosse-gear/` | "how to clean lacrosse gloves" | Mike's research suggests lacrosse parents are high-AOV — make it a featured hub. |
-| Wrestling | `/learn/clean-wrestling-gear-and-headgear/` | "how to clean wrestling headgear" | Skin-contact angle plays well here. |
-| MMA / BJJ | `/learn/clean-bjj-gi-and-mouthguard/` | "how to clean a smelly gi" | Adjacent; MMA gym channel matters for B2B. |
-| Soccer / cleats | `/learn/get-smell-out-of-soccer-cleats/` | "how to get smell out of cleats" | High-volume, parent-driven query. |
+---
 
-### The "gear bag" pages
+## Tier 2 — sport hubs (re-ranked by real DFS volume)
 
-**Page 1:** `/learn/gear-bag-smells-like-death/`
-**Target:** "gear bag smells like death" / "gym bag smells like" / "gear bag funk"
-**Why:** Forum threads + content farms own this. Outside Online has a thin piece. We can write the definitive guide in our voice. High emotional resonance — these are problem-aware buyers.
+One page per sport. Each is a 1,500–2,500-word how-to that covers the routine for that sport's specific gear. **Re-ranked from v1 by DFS-validated volume × competition.**
 
-**Page 2:** `/learn/why-gear-stinks-and-how-to-stop-it-permanently/`
-**Target:** mid-funnel "why does gear smell" / "what makes pads smell"
-**Why:** Sets up the routine + premise for the product without selling it. Trust-building.
+| Order | Page | Slug | Target query | Notes |
+|---|---|---|---|---|
+| 1 | Football | `/learn/clean-football-pads/` | "how to clean football pads" | 320/mo, KD 0, LOW comp. Highest sport-specific volume. Matguard owns the SERP with claims-language we can't follow — counter with D1 athlete proof + the routine. |
+| 2 | Cleats | `/learn/get-smell-out-of-cleats/` | "how to get smell out of cleats" | 210/mo, KD 0, HIGH comp. Cross-sport (soccer, lacrosse, baseball, football). Parent-driven. Cross-links to Tier 1a shoe-deodorizer hub. |
+| 3 | Lacrosse | `/learn/clean-lacrosse-gloves/` | "how to clean lacrosse gloves" | 110/mo, KD 0, LOW comp. High-AOV parent buyer. Near-zero competition makes this an easy win. |
+| 4 | Wrestling | `/learn/clean-wrestling-headgear/` | "how to clean wrestling headgear" | 50/mo, KD 0, LOW comp. Skin-contact angle resonates here. |
+| 5 | Hockey | `/learn/hockey-gear-smell/` | "hockey gear smell" | 40/mo, KD 0, MEDIUM comp. High CPC ($3.63) signals high commercial intent. |
+| 6 | BJJ / MMA | `/learn/clean-bjj-gi/` | "how to clean a smelly gi" | No DFS volume. Defer until first 5 hubs publish; revisit if MMA gym channel B2B activity warrants. |
 
-### The B2B page
+### Mouthguard-molding adjacency (NEW page idea, supports Tier 1b)
+
+**Page:** `/learn/how-to-mold-a-mouthguard/`
+**Target:** "how do i mold a mouthguard" — 2,400/mo, KD 0.
+**Why:** parents pre-fitting a kid's mouthguard before the season. Adjacent to Tier 1b but with pre-purchase intent. Page reviews the boil-and-bite process, links to JockShock as the post-fitting routine. Cross-link to Tier 1b for the cleaning side.
+
+### B2B / sales-enablement page
 
 **Page:** `/learn/gym-equipment-cleaning-program-for-facilities/`
-**Target:** "gym equipment cleaning subscription" / "facility cleaning program" / "athletic equipment care for gyms"
-**Why:** No brand owns the "subscription program for facilities" angle. This page becomes the SEO landing for Fred's gym-channel program — replaces / reinforces `/teams/`.
+**Target:** "gym equipment cleaning subscription" / "facility cleaning program."
+**Volume:** No DFS signal — these aren't real searches.
+**Build for:** Fred's gym channel sales-enablement, NOT organic traffic. Page exists so Fred can email a link, not so it ranks. Keeps `/teams/` lander narrow + persona-targeted.
+
+### Pages dropped from v1
+
+- ~~`/learn/gear-bag-smells-like-death/`~~ — DFS shows no volume on the head term. Kill or rewrite under a query that searches.
+- ~~Dedicated MMA/BJJ hub~~ — no DFS volume on "how to clean a smelly gi" or "bjj gi cleaning." Deferred until other hubs are live and B2B MMA gym data justifies revisiting.
 
 ---
 
@@ -148,32 +179,36 @@ For every new content page (Tier 2 + Tier 3):
 
 ---
 
-## Execution sequencing (what to write first)
+## Execution sequencing (v2, post-DFS)
 
 | Order | Page | Why first |
 |---|---|---|
-| 1 | Mouthguard cleaning hub | Largest SERP gap, highest publishable-immediately leverage |
-| 2 | Hockey gear cleaning hub | Largest sport-specific SERP, Clear Gear has direct presence (validates demand) |
-| 3 | Football pads cleaning hub | Mid-spring through fall, highest-traffic sport |
-| 4 | "Gear bag smells like death" hub | Emotional, viral-shareable on social |
-| 5 | Gym equipment cleaning subscription page | B2B SEO — supports gym channel sales |
-| 6 | Lacrosse gear cleaning | High-AOV parent buyer |
-| 7+ | Remaining sport hubs (wrestling / BJJ / soccer) | Long-tail catch-up after the leverage pages publish |
+| 1 | **Shoe / sneaker deodorizer hub** (Tier 1a) | Biggest SEO opportunity in the project — ~100K/mo cluster, KD 0–14, validated demand. |
+| 2 | **Mouthguard cleaning hub** (Tier 1b) | 8,100/mo cluster confirmed, KD 0. Original priority #1, still strong. |
+| 3 | **"Stop using baking soda" sneaker hub** (Tier 1c) | 22,200/mo head term. Same content team as #1; soft-sell DIY-curious converters. |
+| 4 | Football pads (Tier 2 #1) | 320/mo, LOW competition — highest sport-specific volume. |
+| 5 | Cleats (Tier 2 #2) | 210/mo, cross-sport, parent-driven. Cross-links to Tier 1a. |
+| 6 | Mouthguard molding (NEW) | 2,400/mo, KD 0. Pre-purchase parent intent, supports Tier 1b. |
+| 7 | Lacrosse gloves (Tier 2 #3) | 110/mo, near-zero competition. |
+| 8 | Wrestling, hockey (Tier 2 #4–5) | Low volume but specialty audiences. |
+| 9 | Gym equipment cleaning subscription | B2B sales-enablement, not organic. Lower priority since DFS shows no real volume. |
 
 Realistic cadence: 1 hub per 2 weeks if Mike or Fred drafts; 1 per week if a writer is involved.
 
+**Demoted from v1 sequencing:**
+- "Gear bag smells like death" — DFS shows no volume on the head term. Either kill or rewrite under a query that searches.
+- Hockey ranked #2 in v1 — DFS data dropped it to #5 (only 40/mo).
+- Standalone BJJ/MMA gi page — defer until other hubs are live.
+
 ---
 
-## Validation — what to check in DataForSEO
+## Validation — DONE
 
-Before committing to the long-tail content hubs (months 2–6), verify with DataForSEO:
+DataForSEO validation completed 2026-05-06. Findings in `docs/research/2026-05-06-dataforseo-keyword-validation.md`. Two rounds of pulls (Tier 1 commercial seeds, Tier 2 wedge informational seeds, Tier 1 alternates, shoe-deodorizer cluster expansion, competitor intel for all 5 registered competitors). This v2 strategy doc reflects what those pulls showed.
 
-1. Pull volume + KD (keyword difficulty) for each Tier 1 term to confirm priority.
-2. Pull top-ranking pages for each Tier 2 hub query — confirm SERP shape matches the research above.
-3. Pull the "Top 10 keywords" report on `cleargear.com`, `vaporfresh.com`, `medi-dyne.com` (2Toms section), and `matguardusa.com` — see what they actually rank for. Pick the gaps.
-4. Run "Content Gap" between `cleargear.com` + `jockshockspray.com` once we're indexed — see queries Clear Gear ranks for that we don't.
+**Content-gap analyzer is non-functional until GSC verifies `https://www.jockshockspray.com`** — site has zero indexed keywords today. Re-run gap analysis at 60 days post-launch (after pages have indexed) to identify queries competitors rank for that we still don't.
 
-If volume on the mouthguard query is low (under 500/mo), the PAGE still wins — it's a wedge that converts because anyone searching it has a real problem and zero athletic brand is answering them. Volume isn't the only metric.
+**SEO competitor list pruned:** Cleargear, Matguard, Medi-Dyne, Force of Nature dropped as content competitors (their SERP territory is disinfect/sanitize/medical/chemistry — none of which we follow). Vapor Fresh remains as the only meaningful content competitor in our space.
 
 ---
 

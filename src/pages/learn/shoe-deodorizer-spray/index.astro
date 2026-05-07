@@ -1,0 +1,837 @@
+---
+/**
+ * /learn/shoe-deodorizer-spray/ — Tier 1a flagship hub.
+ *
+ * SEO target cluster: "shoe deodorizer," "shoe deodorizer spray,"
+ * "sneaker deodorizer," "spray for smelly shoes," "spray for stinky
+ * shoes," "how to deodorize shoes," "how to get smell out of shoes,"
+ * "best shoe deodorizer," "foot odor spray," "cleat deodorizer."
+ * Cluster volume ~100,000+/mo per DFS Labs (2026-05-06 validation).
+ * KD 0–14 across the cluster, Vapor Fresh at pos 39 = wide-open SERP.
+ *
+ * Audience: per the 2026-05-06 brand-widening decision
+ * (project_brand_widening_athletic_adjacent.md), this page speaks to
+ * "athletic and athletic-adjacent" — cleats, gym shoes, training
+ * shoes, running shoes, kids' sneakers. Aaron-led voice but written
+ * for a wider audience than the homepage. Pam (sports parent) is also
+ * the right reader.
+ *
+ * CLAIMS COMPLIANCE — re-read before editing:
+ *   FORBIDDEN here as everywhere: kill claims, EPA-registered,
+ *   disinfectant, sanitizer, antimicrobial, antibacterial, 24-hour,
+ *   hospital-grade, FDA-approved, HOCl, hypochlorous acid, prevents
+ *   staph/MRSA. JockShock is a deodorizer. Stay there.
+ *   Trust attribution is "ZeroPoint Technology" only.
+ *   Mechanism described via the immune-system metaphor, never the
+ *   molecule name.
+ *
+ * SCHEMA: Article + FAQPage JSON-LD. PAA-bait questions in the FAQ.
+ */
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const title = "Shoe Deodorizer Spray for Athletes (and the Gear Bag, the Cleats, and the Kids' Sneakers)";
+const description =
+  "Pro-grade shoe deodorizer spray — engineered for athletic shoes, cleats, sneakers, and the gear bag. Built around the same chemistry your immune system uses. Powered by ZeroPoint Technology, made in USA.";
+
+const HERO_BG =
+  "https://res.cloudinary.com/southland-organics/image/upload/c_fill,w_2400,h_1200,g_auto,q_auto,f_auto/JockShock/dark-abstract-texture-pattern-background-with-spot_rpsqte";
+const HERO_BOTTLE =
+  "https://res.cloudinary.com/southland-organics/image/upload/c_fit,w_700,q_auto,f_auto,dpr_auto/JockShock/jockshock-32oz-single-2026.png";
+
+// FAQ items target People Also Ask queries surfaced via DFS competitor
+// gap analysis. Each answer stays under 60 words for featured-snippet
+// eligibility. Claims compliance reviewed per item.
+const FAQ_ITEMS = [
+  {
+    q: "Why do my shoes smell so bad?",
+    a: "Shoes smell because the inside of every shoe is a warm, moist, dark environment — exactly what odor-producing bacteria need to grow. Sweat feeds them, the lining traps the moisture, and the smell intensifies every time you wear them. Drying alone doesn't fix it. The bacteria stay in the shoe between wears.",
+  },
+  {
+    q: "Does spraying shoes actually work?",
+    a: "Yes — when the spray goes after the source instead of just adding fragrance. Most drugstore shoe sprays are perfumes that mask smell for an hour or two. JockShock is built on a different model: chemistry that targets the bacteria producing the odor, then dries clean without leaving a film or fragrance.",
+  },
+  {
+    q: "Can I use a shoe deodorizer on cleats, hockey skates, and athletic shoes?",
+    a: "Yes. JockShock was built for athletic gear — including the inside of cleats, hockey skates, training shoes, gym shoes, and running shoes. It's engineered to be safe on the materials athletic shoes are actually made of: foam, mesh, leather, padding, and synthetic uppers.",
+  },
+  {
+    q: "Will shoe deodorizer damage leather or stain my sneakers?",
+    a: "JockShock won't. It contains no bleach, no abrasives, and no fragrance dyes that stain. It's safe on leather, mesh, suede, canvas, and synthetic uppers when sprayed lightly and allowed to air dry. The exception worth flagging: any product can leave a watermark on untreated suede if oversprayed — light mist, then air dry.",
+  },
+  {
+    q: "Is shoe spray safe for my kid's sneakers?",
+    a: "Yes. JockShock is fragrance-free and built on the same chemistry family used in the saline sprays a pediatrician uses on a cut. It's safe for use on a child's sneakers, cleats, and gym shoes. Spray inside, air for two minutes, done — no rinse, no residue.",
+  },
+  {
+    q: "What's the best way to dry shoes after spraying?",
+    a: "Spray inside the shoe (not the outside upper), then air dry uncovered for at least 10 minutes. If you're in a hurry, stuff the shoe with newspaper or a clean dry towel for 30 minutes — it pulls moisture out faster and lets the chemistry finish working. Don't put wet shoes in a closed bag.",
+  },
+  {
+    q: "How often should I spray shoes for odor?",
+    a: "After every wear is the routine that actually works. The 32oz bottle is sized for that — it lasts a single athlete 6–10 weeks at after-every-practice cadence, and most committed users go through 4–6 bottles per year. Occasional rescue use stretches the bottle further but doesn't address the underlying smell.",
+  },
+];
+
+const ARTICLE_LD = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: title,
+  description,
+  author: { "@type": "Organization", name: "JockShock" },
+  publisher: {
+    "@type": "Organization",
+    name: "JockShock",
+    "@id": "https://www.jockshockspray.com/#org",
+  },
+  datePublished: "2026-05-06",
+};
+
+const FAQ_LD = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQ_ITEMS.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: { "@type": "Answer", text: item.a },
+  })),
+};
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  jsonLd={[ARTICLE_LD, FAQ_LD]}
+>
+  <div class="js-learn">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">The Shoe Deodorizer Hub</p>
+          <h1 class="hero-headline">
+            The shoes are the source.<br />Spray inside. Walk away.
+          </h1>
+          <p class="hero-sub">
+            Cleats, hockey skates, gym shoes, training shoes, your kid's
+            sneakers — every athletic shoe is a sealed bacterial incubator
+            after the first wear. Drying doesn't fix it. Fragrance covers
+            it for an hour. The fix is going after the source.
+          </p>
+          <p class="hero-promise">
+            JockShock is a pro-grade shoe and gear deodorizer built around the
+            same family of chemistry your immune system makes. Powered by
+            ZeroPoint Technology. Spray inside the shoe, let it air, walk away.
+          </p>
+          <div class="hero-cta-row">
+            <a href="/products/jockshock/" class="cta-primary">Get JockShock — $24.99</a>
+            <a href="#routine" class="cta-secondary">See the routine</a>
+          </div>
+          <ul class="hero-trust">
+            <li>ZeroPoint Technology</li>
+            <li>Safe on skin contact</li>
+            <li>Won't stain leather or mesh</li>
+            <li>Made in USA</li>
+          </ul>
+        </div>
+        <div class="hero-product">
+          <img
+            src={HERO_BOTTLE}
+            alt="JockShock 32oz pro-grade shoe and gear deodorizer"
+            width="700"
+            height="700"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- WHY SHOES SMELL — problem framing without claims -->
+    <section class="why">
+      <div class="why-inner">
+        <p class="section-eyebrow">Why shoes smell</p>
+        <h2 class="section-headline">
+          The smell isn't on the surface. It's living inside the shoe.
+        </h2>
+        <p class="section-sub">
+          Every athletic shoe traps two things: heat and moisture. The combination
+          creates a perfect environment for the odor-producing bacteria that
+          live on skin to multiply. The lining holds the moisture. The next wear
+          adds more sweat. The smell compounds.
+        </p>
+        <p class="section-sub">
+          That's why nothing surface-level fixes it. Stuffing them with newspaper
+          dries them out — for now. Spraying Febreze on the outside masks it
+          with fragrance — for an hour. Throwing them in the wash damages the
+          structure and rarely reaches the lining where the bacteria actually
+          live. The fix has to go where the smell does: inside the shoe, into
+          the materials, on the surfaces the bacteria are using.
+        </p>
+        <div class="why-grid">
+          <div class="why-card">
+            <h3>The lining</h3>
+            <p>
+              Shoe linings are foam, mesh, or fabric — every material that
+              holds moisture. After 6–8 wears, the lining becomes a reservoir.
+              That's the source.
+            </p>
+          </div>
+          <div class="why-card">
+            <h3>The footbed</h3>
+            <p>
+              Insoles and footbeds absorb the most sweat per square inch of
+              the entire shoe. Replacing them helps temporarily. Treating them
+              fixes the loop.
+            </p>
+          </div>
+          <div class="why-card">
+            <h3>The bag effect</h3>
+            <p>
+              A pair of damp athletic shoes sealed in a gym bag overnight
+              concentrates everything. By morning, the bag and the shoes both
+              smell. The cure is air, then spray, before the seal.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- THE 60-SECOND ROUTINE -->
+    <section class="how" id="routine">
+      <div class="how-inner">
+        <p class="section-eyebrow">The 60-second routine</p>
+        <h2 class="section-headline">
+          Spray after every wear. The smell never sets in.
+        </h2>
+        <p class="section-sub">
+          The mistake is treating shoe odor like an emergency — waiting until
+          they reek, then trying to rescue them. Once the lining is saturated,
+          you're playing catch-up for weeks. The fix is making it a 60-second
+          habit on the way in the door.
+        </p>
+        <ol class="steps">
+          <li>
+            <span class="step-num">1</span>
+            <h3>Loosen the laces</h3>
+            <p>
+              Pull the tongue forward so the inside of the shoe is open. You
+              want spray reaching the lining, not bouncing off the laces.
+            </p>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <h3>Spray inside</h3>
+            <p>
+              Two pumps into the toe box, two into the heel cup, one along
+              the footbed. Don't overspray — JockShock is concentrated
+              chemistry, not fragrance to be reapplied.
+            </p>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <h3>Air for two minutes</h3>
+            <p>
+              Set the shoes somewhere ventilated — not stuffed in a bag.
+              Two minutes is enough for the chemistry to do its work and
+              the moisture to evaporate. Then store normally.
+            </p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- WHAT IT WORKS ON -->
+    <section class="works-on">
+      <div class="works-on-inner">
+        <p class="section-eyebrow">What it works on</p>
+        <h2 class="section-headline">Cleats. Sneakers. Skates. The whole gear bag.</h2>
+        <p class="section-sub">
+          JockShock is built for athletic shoes and athletic-adjacent shoes.
+          If it lives in a gear bag, a mudroom, or a locker, it's in scope.
+        </p>
+        <div class="works-on-grid">
+          <div class="works-on-card">
+            <h3>Cleats</h3>
+            <p>Soccer, football, lacrosse, baseball — every cleat ends up in a bag damp. See also the <a href="/learn/get-smell-out-of-cleats/" class="inline-link">cleats hub</a>.</p>
+          </div>
+          <div class="works-on-card">
+            <h3>Hockey skates</h3>
+            <p>The single worst-smelling object in the gear bag. Spray inside immediately after the game while the boot is still warm — when the chemistry penetrates best.</p>
+          </div>
+          <div class="works-on-card">
+            <h3>Training & gym shoes</h3>
+            <p>CrossFit, lifting, BJJ mat shoes, MMA training. The shoes that go from gym to gear bag to gym again.</p>
+          </div>
+          <div class="works-on-card">
+            <h3>Running shoes</h3>
+            <p>Mileage shoes pile up moisture faster than any drying schedule keeps up with. Spray, air, rotate to the next pair.</p>
+          </div>
+          <div class="works-on-card">
+            <h3>Kids' sneakers</h3>
+            <p>Fragrance-free, safe for skin contact, won't stain laces or mesh. Built for the part of parenting where the shoe is the problem.</p>
+          </div>
+          <div class="works-on-card">
+            <h3>The gear bag itself</h3>
+            <p>The shoes carry the smell, the bag holds it. After spraying the shoes, two pumps into the bag interior keeps it from becoming the next reservoir.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BAKING SODA AND OTHER WORKAROUNDS -->
+    <section class="workarounds">
+      <div class="workarounds-inner">
+        <p class="section-eyebrow">Why the home remedies fall short</p>
+        <h2 class="section-headline">
+          Baking soda absorbs. JockShock fixes.
+        </h2>
+        <p class="section-sub">
+          Most of what's online about shoe odor is variations on the same
+          three home remedies. They each do something. None of them do enough.
+        </p>
+        <div class="wo-grid">
+          <div class="wo-card">
+            <h3>Baking soda</h3>
+            <p>
+              Absorbs moisture and some odor — temporarily. The bacteria
+              producing the odor are still in the lining. Once the baking
+              soda is dumped, the smell returns. Buys you a day or two.
+            </p>
+          </div>
+          <div class="wo-card">
+            <h3>Dryer sheets</h3>
+            <p>
+              Adds fragrance. Doesn't address the source. Often makes the
+              smell worse over time as fragrance and bacteria mix into a
+              new, more pervasive odor.
+            </p>
+          </div>
+          <div class="wo-card">
+            <h3>The freezer trick</h3>
+            <p>
+              Slows bacterial growth temporarily. Doesn't kill what's already
+              there. Bacteria reactivate within minutes of the shoes coming
+              back to room temperature. Buys you nothing.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ — PAA bait, schema-rendered -->
+    <section class="faq">
+      <div class="faq-inner">
+        <p class="section-eyebrow">Common questions</p>
+        <h2 class="section-headline">Quick answers.</h2>
+        <div class="faq-list">
+          {
+            FAQ_ITEMS.map((item) => (
+              <details class="faq-item">
+                <summary>
+                  <span class="faq-q">{item.q}</span>
+                  <span class="faq-icon" aria-hidden="true">+</span>
+                </summary>
+                <p class="faq-a">{item.a}</p>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- TIERS / CTA -->
+    <section class="tiers">
+      <div class="tiers-inner">
+        <p class="section-eyebrow">Get yours</p>
+        <h2 class="section-headline">Most start with the 3-pack.</h2>
+        <p class="section-sub center">
+          One bottle for the gear bag, one for the mudroom, one for the car.
+          Lasts most of a season at after-every-wear cadence.
+        </p>
+        <div class="tier-grid">
+          <a href="/products/jockshock/" class="tier">
+            <div class="tier-label">Single</div>
+            <div class="tier-detail">1 × 32oz</div>
+            <div class="tier-price">$24.99</div>
+            <div class="tier-bottom">Get it →</div>
+          </a>
+          <a href="/products/jockshock/" class="tier featured">
+            <span class="tier-badge">Most Pick This</span>
+            <div class="tier-label">3-Pack</div>
+            <div class="tier-detail">3 × 32oz</div>
+            <div class="tier-price">$59.99</div>
+            <div class="tier-bottom">Get it →</div>
+          </a>
+          <a href="/products/jockshock/" class="tier">
+            <div class="tier-label">6-Pack</div>
+            <div class="tier-detail">6 × 32oz</div>
+            <div class="tier-price">$99.99</div>
+            <div class="tier-bottom">Get it →</div>
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .js-learn {
+    --jockshock-black: #0a0a0a;
+    --jockshock-yellow: #ffe500;
+    --jockshock-yellow-warm: #fbbf24;
+    --jockshock-text: #f3f4f6;
+    --jockshock-muted: #9ca3af;
+    background: var(--jockshock-black);
+    color: var(--jockshock-text);
+    font-family:
+      -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  }
+  .js-learn h1,
+  .js-learn h2,
+  .js-learn h3 {
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  .eyebrow,
+  .section-eyebrow {
+    color: var(--jockshock-yellow);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 700;
+    font-size: 0.8125rem;
+    margin: 0 0 16px;
+  }
+
+  .section-headline {
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: #fff;
+    margin: 0 0 16px;
+    line-height: 1.15;
+  }
+  .section-sub {
+    font-size: 1.125rem;
+    color: var(--jockshock-muted);
+    line-height: 1.65;
+    margin: 0 0 24px;
+    max-width: 720px;
+  }
+  .section-sub.center {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+
+  /* === HERO === */
+  .hero {
+    position: relative;
+    background: var(--jockshock-black);
+    padding: 100px 5% 80px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url("https://res.cloudinary.com/southland-organics/image/upload/c_fill,w_2400,h_1200,g_auto,q_auto,f_auto/JockShock/dark-abstract-texture-pattern-background-with-spot_rpsqte");
+    background-size: cover;
+    background-position: center;
+    opacity: 0.5;
+    z-index: -2;
+  }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(
+        ellipse at 80% 30%,
+        rgba(255, 229, 0, 0.10) 0%,
+        transparent 55%
+      ),
+      linear-gradient(
+        135deg,
+        rgba(10, 10, 10, 0.55) 0%,
+        rgba(10, 10, 10, 0.85) 65%,
+        rgba(10, 10, 10, 0.95) 100%
+      );
+    z-index: -1;
+  }
+  .hero-grid {
+    position: relative;
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 64px;
+    align-items: center;
+  }
+  .hero-copy {
+    max-width: 640px;
+  }
+  .hero-headline {
+    font-size: clamp(2.25rem, 4.5vw, 3.75rem);
+    color: #fff;
+    line-height: 1.1;
+    margin: 0 0 24px;
+  }
+  .hero-sub {
+    font-size: 1.125rem;
+    color: #d1d5db;
+    line-height: 1.65;
+    margin-bottom: 16px;
+  }
+  .hero-promise {
+    font-size: 1.0625rem;
+    color: var(--jockshock-text);
+    line-height: 1.65;
+    margin-bottom: 32px;
+    padding: 16px 20px;
+    background: rgba(255, 229, 0, 0.06);
+    border-left: 3px solid var(--jockshock-yellow);
+  }
+  .hero-cta-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .cta-primary,
+  .cta-secondary {
+    display: inline-block;
+    padding: 14px 28px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition:
+      transform 0.15s,
+      box-shadow 0.15s,
+      background 0.15s;
+  }
+  .cta-primary {
+    background: var(--jockshock-yellow);
+    color: var(--jockshock-black);
+  }
+  .cta-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px -8px rgba(255, 229, 0, 0.4);
+  }
+  .cta-secondary {
+    background: transparent;
+    color: var(--jockshock-yellow);
+    border: 1px solid rgba(255, 229, 0, 0.5);
+  }
+  .cta-secondary:hover {
+    background: rgba(255, 229, 0, 0.08);
+  }
+  .hero-trust {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 24px;
+    color: var(--jockshock-muted);
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .hero-trust li {
+    position: relative;
+    padding-left: 12px;
+  }
+  .hero-trust li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.45em;
+    width: 4px;
+    height: 4px;
+    background: var(--jockshock-yellow);
+  }
+  .hero-product {
+    display: flex;
+    justify-content: center;
+  }
+  .hero-product img {
+    max-width: 100%;
+    height: auto;
+    filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.5));
+  }
+
+  /* === Section base === */
+  section {
+    padding: 80px 5%;
+  }
+  .why-inner,
+  .how-inner,
+  .works-on-inner,
+  .workarounds-inner,
+  .faq-inner,
+  .tiers-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* === WHY === */
+  .why {
+    background: #111;
+  }
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 32px;
+  }
+  .why-card {
+    background: var(--jockshock-black);
+    border: 1px solid rgba(255, 229, 0, 0.18);
+    border-radius: 6px;
+    padding: 24px;
+  }
+  .why-card h3 {
+    color: var(--jockshock-yellow-warm);
+    font-size: 1.125rem;
+    margin: 0 0 12px;
+  }
+  .why-card p {
+    color: var(--jockshock-muted);
+    line-height: 1.65;
+    margin: 0;
+    font-size: 0.95rem;
+  }
+
+  /* === HOW (steps) === */
+  .how {
+    background: var(--jockshock-black);
+  }
+  .steps {
+    list-style: none;
+    padding: 0;
+    margin: 32px 0 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .steps li {
+    background: #111;
+    border: 1px solid rgba(255, 229, 0, 0.18);
+    border-radius: 6px;
+    padding: 24px;
+    position: relative;
+  }
+  .steps li h3 {
+    color: #fff;
+    font-size: 1.25rem;
+    margin: 0 0 8px;
+  }
+  .steps li p {
+    color: var(--jockshock-muted);
+    margin: 0;
+    line-height: 1.6;
+    font-size: 0.95rem;
+  }
+  .step-num {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    background: var(--jockshock-yellow);
+    color: var(--jockshock-black);
+    border-radius: 999px;
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+
+  /* === WORKS-ON === */
+  .works-on {
+    background: #111;
+  }
+  .works-on-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 32px;
+  }
+  .works-on-card {
+    background: var(--jockshock-black);
+    border: 1px solid rgba(255, 229, 0, 0.18);
+    border-radius: 6px;
+    padding: 20px;
+  }
+  .works-on-card h3 {
+    color: var(--jockshock-yellow-warm);
+    font-size: 1rem;
+    margin: 0 0 8px;
+  }
+  .works-on-card p {
+    color: var(--jockshock-muted);
+    margin: 0;
+    line-height: 1.6;
+    font-size: 0.9rem;
+  }
+  .inline-link {
+    color: var(--jockshock-yellow);
+    text-decoration: underline;
+    text-decoration-color: rgba(255, 229, 0, 0.4);
+  }
+
+  /* === WORKAROUNDS === */
+  .workarounds {
+    background: var(--jockshock-black);
+  }
+  .wo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 32px;
+  }
+  .wo-card {
+    background: #111;
+    border: 1px solid rgba(255, 229, 0, 0.18);
+    border-radius: 6px;
+    padding: 24px;
+  }
+  .wo-card h3 {
+    color: var(--jockshock-yellow-warm);
+    font-size: 1.125rem;
+    margin: 0 0 12px;
+  }
+  .wo-card p {
+    color: var(--jockshock-muted);
+    margin: 0;
+    line-height: 1.6;
+    font-size: 0.95rem;
+  }
+
+  /* === FAQ === */
+  .faq {
+    background: #111;
+  }
+  .faq-list {
+    margin-top: 32px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .faq-item {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .faq-item summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 20px 0;
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.0625rem;
+  }
+  .faq-item summary:hover {
+    color: var(--jockshock-yellow);
+  }
+  .faq-icon {
+    color: var(--jockshock-yellow);
+    font-size: 1.5rem;
+    line-height: 1;
+    transition: transform 0.15s;
+  }
+  .faq-item[open] .faq-icon {
+    transform: rotate(45deg);
+  }
+  .faq-a {
+    color: var(--jockshock-muted);
+    line-height: 1.65;
+    margin: 0 0 24px;
+    max-width: 720px;
+  }
+
+  /* === TIERS === */
+  .tiers {
+    background: var(--jockshock-black);
+  }
+  .tier-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 32px;
+  }
+  .tier {
+    background: #111;
+    border: 1px solid rgba(255, 229, 0, 0.25);
+    border-radius: 8px;
+    padding: 32px 24px;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    position: relative;
+    transition:
+      transform 0.15s,
+      border-color 0.15s;
+  }
+  .tier:hover {
+    transform: translateY(-2px);
+    border-color: var(--jockshock-yellow);
+  }
+  .tier.featured {
+    border-color: var(--jockshock-yellow);
+    background: linear-gradient(180deg, #1a1612, #111);
+  }
+  .tier-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--jockshock-yellow);
+    color: var(--jockshock-black);
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 4px 12px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .tier-label {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+  .tier-detail {
+    color: var(--jockshock-muted);
+    margin-bottom: 16px;
+    font-size: 0.95rem;
+  }
+  .tier-price {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--jockshock-yellow);
+    margin-bottom: 16px;
+  }
+  .tier-bottom {
+    color: var(--jockshock-yellow);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.875rem;
+  }
+
+  @media (max-width: 880px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .why-grid,
+    .steps,
+    .works-on-grid,
+    .wo-grid,
+    .tier-grid {
+      grid-template-columns: 1fr;
+    }
+    section {
+      padding: 56px 5%;
+    }
+  }
+</style>
