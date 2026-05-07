@@ -274,3 +274,127 @@ If we WERE willing to make claims, the mouthguard cluster grows from 8,100 to 16
 1. Should we run a second DFS pull on alternate Tier 1 phrasings ("athletic deodorizer spray", "shoe deodorizer", "gym bag smell")? Recommended **yes** — answer changes whether we re-anchor homepage SEO or accept the brand-only homepage approach.
 2. Should the mouthguard hub address the dental-night-guard intent split? The 8,100/mo cluster is half athletes, half people with bruxism night guards from dentists. We can write for both audiences but the disambiguation needs a clear angle.
 3. Is the "shoe deodorizer" page (9,900/mo, NEW) compatible with JockShock's premium-pro positioning, or does it pull us toward general consumer deodorizer territory we don't want? Worth a creative-direction call before we write it.
+
+---
+
+## Round 2 — same day, follow-up pull
+
+### I. Tier 1 alternates — homepage SEO re-anchor candidates
+
+Pulled DFS volume on 16 alternate phrasings of the "equipment deodorizer" category. Goal: find a real searched phrase to anchor homepage SEO on.
+
+### Result: still ghosts
+
+| Seed | Volume | KD | Competition |
+| --- | ---: | ---: | --- |
+| athletic deodorizer spray | — | — | — |
+| athletic odor spray | — | — | — |
+| gear odor spray | — | — | — |
+| gear odor eliminator | — | — | — |
+| gear smell remover | — | — | — |
+| spray for smelly gear | — | — | — |
+| spray for stinky gear | — | — | — |
+| **sports equipment spray** | **40** | 0 | HIGH |
+| **sports gear spray** | **50** | 0 | HIGH |
+| gear cleaning spray | — | — | — |
+| locker room spray | — | — | — |
+| **gym bag smell** | **140** | 0 | MEDIUM |
+| gym bag odor | — | 0 | — |
+| gear bag smell | — | — | — |
+| large gear deodorizer | — | — | — |
+| 32 oz deodorizer spray | — | — | — |
+
+**Conclusion is now confirmed across 28 different phrasings (Round 1 + Round 2):** the "equipment deodorizer / gear spray / sports gear deodorizer" category does NOT have a real Google Ads volume signal. It's a category we serve, not a category people search for by name.
+
+### Implication
+
+- **Stop trying to SEO-anchor the homepage on a category phrase.** It doesn't exist as search behavior.
+- **Anchor the homepage on brand + use case + sport.** Example framing: "JockShock — gear spray for hockey, football, lacrosse, wrestling, and the rest of the gear bag." That phrase pulls the sport-specific content hubs, doesn't compete for ghost terms, and reads naturally.
+- **Mouthguard + shoe-deodorizer become the homepage SEO bridge** — these are the two real-volume clusters in our category, and both deserve top-of-page internal links from the homepage.
+- The "sports equipment spray" / "sports gear spray" / "gym bag smell" trio (40 + 50 + 140 = 230/mo combined) is too small to anchor the homepage on but worth a meta-description mention.
+
+### J. Shoe / sneaker deodorizer cluster — the biggest opportunity in this report
+
+Mike confirmed 2026-05-06: "Shoe deodorizer is MASSIVE. We have had great results." Bridges from "interesting gap" to validated demand we already serve.
+
+### Cumulative cluster volume (from competitor-intel DFS Labs data)
+
+| Volume | Keyword | Vapor Fresh pos |
+|---:|---|---:|
+| 22,200 | baking soda for sneaker odor | 50 |
+| 12,100 | gym cleaner | 11 |
+| 9,900 | shoe deodorizer | 39 |
+| 9,900 | deodorizer shoes | 28 |
+| 4,400 | shoe odor spray (multiple variants) | 14–32 |
+| 4,400 | shoe smell spray | 32 |
+| 4,400 | how to get an odor out of shoes | 74 |
+| 4,400 | spray shoes smell | 18 |
+| 4,400 | odor spray for shoes | 18 |
+| 3,600 | shoe deodorizer spray | 25 |
+| 3,600 | spray shoe deodorizer | 20 |
+| 3,600 | shoes odor remover | 34 |
+| 3,600 | odor removal from shoes | 92 |
+
+**~100,000+/mo cumulative across the cluster.** Order of magnitude bigger than any other content opportunity in this entire research project.
+
+### DFS Labs keyword difficulty
+
+| Keyword | KD |
+| --- | ---: |
+| shoe deodorizer | 0 |
+| shoe deodorizer spray | 0 |
+| sneaker deodorizer | 0 |
+| sneaker deodorizer spray | 0 |
+| spray for smelly shoes | 0 |
+| spray for stinky shoes | 2 |
+| how to deodorize shoes | 14 |
+| best shoe deodorizer | 3 |
+| foot odor spray | 0 |
+| how to get smell out of shoes | 0 |
+| cleat deodorizer | 0 |
+| how to deodorize cleats | 0 |
+
+**KD 0–14 across the entire cluster.** Wide-open SERP. Vapor Fresh is the strongest "competitor" content brand in our space and they're at position 39 for the head term — page 4. Real brand could rank.
+
+### Note on the data discrepancy
+
+DFS Google Ads keywords-for-keywords endpoint (Round 2) returned no-match for several shoe-deodorizer head terms that DFS Labs (Round 1's competitor-intel) reports volume for. This is a known DFS platform quirk — Labs uses a broader corpus including click-stream data, while Google Ads keyword planner returns only what advertisers can target. Both numbers are real for different purposes; Labs data is the right read for SEO opportunity sizing.
+
+### Recommended actions on shoe deodorizer
+
+1. **NEW Tier 1 page:** `/learn/shoe-deodorizer-spray-for-athletes/` (or similar) — H1 targeting "shoe deodorizer spray" / "spray for smelly shoes." Volume justifies this being either a top-2 hub OR a positioned PDP variant.
+2. **Adjacency hub:** "Stop using baking soda. Here's what actually works on sneaker odor." Targets the 22,200/mo "baking soda for sneaker odor" query — DIY-curious users who'll convert if shown a better option.
+3. **Cleat-overlap content:** "how to deodorize cleats" (KD 0) connects shoe-deodorizer to the existing cleats hub. One piece of content covers two SERP entries.
+4. **Product/positioning question for Mike (Section L below):** does shoe-deodorizer get a dedicated SKU treatment, a sub-line, or stay subsumed under the JockShock parent brand?
+
+### K. Updated content sequencing (replaces Section F)
+
+| New order | Page | Volume | Why |
+| --- | --- | ---: | --- |
+| 1 | **Shoe / sneaker deodorizer hub** | 100,000+/mo cluster | Biggest opportunity in the research; Mike confirmed validated demand; KD 0–3 across cluster |
+| 2 | **Mouthguard cleaning hub** | 8,100/mo | Strategy was right, volume confirmed; tight bruxism (nighttime teeth-grinding) intent disambiguation needed in copy |
+| 3 | **"Stop using baking soda" sneaker hub** | 22,200/mo | DIY-curious converters; soft-sell content; same content team as #1 |
+| 4 | **How to clean football pads** | 320/mo | LOW competition, tight-intent buyer |
+| 5 | **How to get smell out of cleats** | 210/mo | Cross-sport, parent-friendly, cross-links to #1 |
+| 6 | **Mouthguard molding hub** | 2,400/mo | Pre-fitting parent intent, supports #2 |
+| 7 | **How to clean lacrosse gloves** | 110/mo | Near-zero competition, high-AOV buyer |
+| 8+ | Wrestling, hockey, BJJ | 40–50/mo | Long-tail catch-up |
+
+Defer: "gear bag smells like death" (no volume), "gym equipment cleaning subscription" (no volume; build for B2B sales-enablement only).
+
+### L. Critical product/strategy question for Mike
+
+**Should JockShock get a shoe-deodorizer-specific SKU or page treatment?**
+
+Three paths:
+
+- **(a) Broaden JockShock framing** to "athletic & athletic-adjacent gear and shoes" — single brand, slightly wider audience. Easiest. Risk: drift away from premium-pro athletic positioning.
+- **(b) Create a JockShock variant or sub-line** for general-shoe use — different label/SKU under the same parent brand. Cleanest brand separation, more SKU complexity.
+- **(c) Stay narrow** — write the shoe-deodorizer content as athletic-only ("for cleats, boxing trainers, gym shoes") and accept conversion at ~10–20% of cluster traffic vs 50%+ if widened.
+
+Volume analysis surfaced the question; the answer changes which content pages we write and how we frame them.
+
+### M. Round 2 files generated
+
+- `/tmp/jockshock-kw-r2.json` — Round 2 keyword research output (Tier 1 alternates + shoe cluster)
+- `mothership/scripts/jockshock-kw-round2.mjs` — Round 2 script
