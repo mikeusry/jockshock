@@ -254,38 +254,59 @@ const $ = (n: number) =>
 
   <h2>What this looks like in real money</h2>
   <p>
-    Three scenarios. Each gym subscribes to <strong>one JockShock 3-pack +
-    one ZeroPoint 4×1G Case per month</strong> (the standard paired-program
-    starter). Numbers below are <em>your monthly commission</em>, every month,
-    for as long as the subs stay active.
+    The gym subscription is the <em>anchor</em> — every gym you sign produces
+    paired-program revenue every month, forever. But the real upside is the
+    athletes <strong>inside</strong> those gyms. Every gym you bring on gets
+    its own referral code (something like <code>FRED-GYMNAME20</code>) — gym
+    members use it for <strong>20% off</strong> their personal JockShock
+    orders, and you earn 20% commission on every one of those too.
   </p>
+  <p>
+    Sign a gym, the gym anchors. The members compound. Both pay you, recurring,
+    every month.
+  </p>
+
+  <h3>The full picture — gym subs + athlete pull-through</h3>
 
   {(() => {
     const jsSub = commission(jockshock[1], 0.10).fred;
     const zpSub = commission(zeropoint[0], 0.10).fred;
-    const perGymMonthly = jsSub + zpSub;
+    const perGymBase = jsSub + zpSub; // ~$17.60/mo per gym from the paired sub
+    const memberDtc = commission(jockshock[1], 0.20).fred; // ~$6.39 per member 3-pack at 20% off
     const scenarios = [
-      { label: "1 gym", count: 1 },
-      { label: "5 gyms", count: 5 },
-      { label: "20 gyms", count: 20 },
+      { gyms: 5,   members: 150, conv: 0.05, note: "Pilot — first 90 days" },
+      { gyms: 20,  members: 150, conv: 0.05, note: "Year-1 base case" },
+      { gyms: 50,  members: 200, conv: 0.07, note: "Stretch — Year 1 finish" },
+      { gyms: 100, members: 200, conv: 0.08, note: "Year 2 — full network" },
+      { gyms: 250, members: 200, conv: 0.10, note: "What this can become" },
     ];
     return (
       <table class="table">
         <thead>
           <tr>
             <th>Scenario</th>
-            <th class="r">Per month</th>
-            <th class="r yellow">Per year</th>
+            <th class="r">Sub residual / mo</th>
+            <th class="r">Athlete sales / mo</th>
+            <th class="r yellow">Total per year</th>
           </tr>
         </thead>
         <tbody>
           {scenarios.map((s) => {
-            const monthly = perGymMonthly * s.count;
+            const subIncome = perGymBase * s.gyms;
+            const athletesBuying = s.gyms * s.members * s.conv;
+            const athleteIncome = athletesBuying * memberDtc;
+            const totalMonthly = subIncome + athleteIncome;
             return (
               <tr>
-                <td>{s.label} on the paired sub</td>
-                <td class="r">{$(monthly)}</td>
-                <td class="r yellow"><strong>{$(monthly * 12)}</strong></td>
+                <td>
+                  <strong>{s.gyms} gyms</strong>
+                  <span class="row-note">
+                    {" "}· {s.members} members · {Math.round(s.conv * 100)}% buy/mo · {s.note}
+                  </span>
+                </td>
+                <td class="r">{$(subIncome)}</td>
+                <td class="r">{$(athleteIncome)}</td>
+                <td class="r yellow"><strong>{$(totalMonthly * 12)}</strong></td>
               </tr>
             );
           })}
@@ -295,10 +316,46 @@ const $ = (n: number) =>
   })()}
 
   <p class="micro">
-    Doesn't include any one-time orders, ZeroPoint upgrades to 2×2.5G, gym
-    additions throughout the year, athletes on the gym's roster buying their
-    own JockShock with the gym's referral code, or any non-gym DTC sales you
-    drive. This is just the pure paired-program subscription floor.
+    Member counts are conservative. A real CrossFit box has 200–400 members. A
+    BJJ academy has 150–300. A D1 Training franchise — your home turf — runs
+    bigger. The 5–10% monthly purchase rate is a low bar: these are athletes
+    already paying $200+/month for gym access. They drop $60 on gear spray
+    without thinking about it once they see the trainer using it.
+  </p>
+
+  <h3>What drives the athlete-sales line</h3>
+  <p>
+    The bigger your network, the bigger the multiplier. At 250 gyms with 200
+    members each averaging 10% monthly purchase rate, the athlete-sales
+    line alone is over <strong>{$(commission(jockshock[1], 0.20).fred * 250 * 200 * 0.10)}</strong>
+    per month — every month, recurring as long as those gyms stay active. That's
+    not the ceiling either. Some scenarios that aren't in the table:
+  </p>
+  <ul class="bullets">
+    <li>
+      <strong>Athlete subscriptions.</strong> Once a member buys their first
+      3-pack with the gym's code, they get pulled into the same 60-day reorder
+      flow as everyone else. The conversion to subscription means recurring
+      commission on athletes, not just one-time pops.
+    </li>
+    <li>
+      <strong>ZeroPoint upgrades.</strong> A growing gym graduates from 4×1G
+      to 2×2.5G to a 275-gallon tote ($3,600 retail). Your commission scales
+      with that.
+    </li>
+    <li>
+      <strong>One-time bulk orders.</strong> Pre-season for a high school
+      football program, season-start for a club soccer org, a college team
+      buyer — these are large single-PO sales on top of the recurring base.
+    </li>
+    <li>
+      <strong>Direct DTC sales you drive personally.</strong> Anything you
+      bring in through your own audience, posts, or events — full commission,
+      same rate.
+    </li>
+  </ul>
+  <p>
+    The table above is the gym channel <em>floor</em>. Add everything else on top.
   </p>
 
   <h2>How leads route</h2>
@@ -464,6 +521,11 @@ const $ = (n: number) =>
     }
     .table .yellow {
       color: var(--accent);
+    }
+    .row-note {
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 400;
     }
     .micro {
       font-size: 13px;
