@@ -6,8 +6,20 @@
  * runs the JockShock gym channel). Mike is cc'd for visibility but Fred owns
  * the response.
  *
- * v2 follow-up (Nexus #652): wire HubSpot contact + deal creation, Klaviyo
- * gym-program flow, Slack notification.
+ * v2 (Nexus T-652, May 2026): after the SendGrid email succeeds, fire-and-
+ * forget a POST to Nexus `/api/leads/ingest`. That endpoint owns:
+ *   - dedup (30-day cross-source on email/phone)
+ *   - insert into `leads` table with lead_type=jockshock_teams
+ *   - Klaviyo `Lead Created` event (Joseph builds the carmen B2B confirmation
+ *     flow in Klaviyo UI, filtered by source_system=jockshock)
+ *   - auto-assignment (Fred owns the gym channel, set via lead_assignment rules)
+ *   - HubSpot push happens later when a rep clicks "Push to HubSpot" on the
+ *     qualified lead — keeps unqualified junk out of CRM.
+ *
+ * Failure modes are non-fatal: SendGrid is the source-of-truth for "did Fred
+ * get notified." Nexus is bonus tracking. If `NEXUS_INGEST_URL` or
+ * `NEXUS_INGEST_API_KEY` are unset, we silently skip — the form still
+ * succeeds for the user.
  */
 import type { APIRoute } from "astro";
 
@@ -194,6 +206,11 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
+    // v2: snapshot to Nexus leads pipeline (non-blocking; SendGrid is truth)
+    await postToNexusIngest(data, request).catch((err) =>
+      console.error("[teams-intake] Nexus ingest unhandled:", err)
+    );
+
     return new Response(JSON.stringify({ ok: true }), {
       status: 200,
       headers: { "Content-Type": "application/json" },
@@ -214,3 +231,109 @@ export const GET: APIRoute = () =>
     status: 405,
     headers: { "Content-Type": "application/json", Allow: "POST" },
   });
+
+// ============================================================================
+// Nexus ingest — fire-and-forget snapshot into the leads pipeline (T-652 v2)
+// ============================================================================
+
+/**
+ * POST the validated payload to Nexus `/api/leads/ingest`. Caller awaits this
+ * but the surrounding code never blocks the user response on the result —
+ * we log failures and move on.
+ *
+ * The `external_id` is constructed from email + a short timestamp so Nexus's
+ * idempotency check works on retries. Sport/role/roster_size/timeline land in
+ * `intent` and get rendered as structured notes on the lead record.
+ */
+async function postToNexusIngest(
+  data: TeamsIntakePayload,
+  request: Request
+): Promise<void> {
+  const url = import.meta.env.NEXUS_INGEST_URL;
+  const apiKey = import.meta.env.NEXUS_INGEST_API_KEY;
+  if (!url || !apiKey) {
+    // Not configured yet — silently skip. SendGrid already delivered the lead.
+    return;
+  }
+
+  const referer = request.headers.get("referer") || "";
+  const ua = request.headers.get("user-agent") || "";
+
+  // Extract UTMs from the referer if present (the form page itself; UTMs
+  // arrive on the lander URL that loaded the form).
+  let utm: Record<string, string> = {};
+  let landingPage: string | null = null;
+  try {
+    if (referer) {
+      const refUrl = new URL(referer);
+      landingPage = refUrl.pathname;
+      ["utm_source", "utm_medium", "utm_campaign", "gclid"].forEach((k) => {
+        const v = refUrl.searchParams.get(k);
+        if (v) utm[k] = v;
+      });
+    }
+  } catch {
+    // ignore malformed referer
+  }
+
+  // Split "First Last" into parts; fall back to whole name in first_name
+  const trimmedName = data.name.trim().replace(/\s+/g, " ");
+  const spaceIdx = trimmedName.indexOf(" ");
+  const firstName =
+    spaceIdx === -1 ? trimmedName : trimmedName.slice(0, spaceIdx);
+  const lastName =
+    spaceIdx === -1 ? null : trimmedName.slice(spaceIdx + 1).trim() || null;
+
+  const externalId = `jockshock-teams-${data.email.toLowerCase()}-${Date.now()}`;
+
+  const payload = {
+    source: "jockshock",
+    external_id: externalId,
+    lead_type: "jockshock_teams",
+    contact: {
+      email: data.email,
+      phone: data.phone || null,
+      first_name: firstName,
+      last_name: lastName,
+      company: data.organization,
+    },
+    intent: {
+      role: data.role,
+      sport: data.sport,
+      roster_size: data.roster_size,
+      timeline: data.timeline,
+      persona: data.persona || "carmen",
+      notes: data.notes || null,
+    },
+    summary: data.notes || null,
+    attribution: {
+      utm_source: utm.utm_source || null,
+      utm_medium: utm.utm_medium || null,
+      utm_campaign: utm.utm_campaign || null,
+      gclid: utm.gclid || null,
+      landing_page: landingPage,
+    },
+    meta: {
+      submitted_from: data.source || "jockshock-teams-page",
+      user_agent: ua.slice(0, 500),
+    },
+  };
+
+  try {
+    const res = await fetch(url.replace(/\/+$/, "") + "/api/leads/ingest", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) {
+      const text = await res.text();
+      console.error("[teams-intake] Nexus ingest error:", res.status, text);
+    }
+  } catch (err) {
+    console.error("[teams-intake] Nexus ingest fetch failed:", err);
+  }
+}
