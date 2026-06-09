@@ -19,6 +19,89 @@ import type { APIRoute } from "astro";
 
 const KLAVIYO_REVISION = "2024-02-15";
 const KLAVIYO_API = "https://a.klaviyo.com/api";
+const SENDGRID_API = "https://api.sendgrid.com/v3/mail/send";
+
+// Public Cloudinary URL of the Field Guide PDF. The PDF asset does NOT exist
+// yet (verified 2026-06-09: Cloudinary returns 404, no raw asset). Until
+// Joseph produces it and uploads to JockShock/gear-smell-field-guide.pdf,
+// leave this null — the confirmation email omits the download button and sends
+// an honest "your guide is on the way" instead of linking a dead PDF. Set the
+// URL string here the moment the asset is live; the email upgrades itself.
+const FIELD_GUIDE_PDF_URL: string | null = null;
+
+/**
+ * Immediate confirmation email via SendGrid — Aaron voice, deodorizer-only
+ * (no kill-microbe / EPA / sanitize claims). Mirrors the teams-intake.ts
+ * SendGrid pattern. Fire-and-forget: a failure here never fails the signup
+ * (Klaviyo already has the profile), it's just logged.
+ */
+async function sendConfirmation(email: string): Promise<boolean> {
+  const sendgridKey = import.meta.env.SENDGRID_API_KEY;
+  if (!sendgridKey) {
+    console.error(
+      "[lead-magnet] SENDGRID_API_KEY not configured — skipping confirmation email",
+    );
+    return false;
+  }
+
+  // The guide block depends on whether the PDF asset exists yet.
+  const guideBlock = FIELD_GUIDE_PDF_URL
+    ? `<p style="margin:24px 0;">
+        <a href="${FIELD_GUIDE_PDF_URL}"
+           style="background:#FFE500;color:#111;font-weight:700;text-decoration:none;padding:12px 22px;border-radius:6px;display:inline-block;">
+          Download the Field Guide (PDF)
+        </a>
+      </p>`
+    : `<p style="font-size:15px;line-height:1.5;">
+        We're putting the finishing touches on it — your copy lands in this
+        inbox within a couple of days. Keep an eye out.
+      </p>`;
+
+  const html = `
+    <div style="font-family:system-ui,-apple-system,sans-serif;max-width:520px;margin:0 auto;color:#111;">
+      <h1 style="font-size:22px;margin:0 0 12px;">You're on the list for the Gear Smell Field Guide.</h1>
+      <p style="font-size:15px;line-height:1.5;">
+        It breaks down why gear, shoes, and feet actually smell — and the
+        routine that goes after it at the source instead of masking it.
+      </p>
+      ${guideBlock}
+      <p style="font-size:15px;line-height:1.5;">
+        When you're ready to handle the funk for real:
+        <a href="https://www.jockshockspray.com/products/jockshock/" style="color:#111;font-weight:600;">grab a bottle</a>.
+      </p>
+      <p style="font-size:13px;color:#666;margin-top:28px;">
+        JockShock — a Southland Organics brand. 189 Luke Road, Bogart, GA 30622.
+      </p>
+    </div>`;
+
+  const payload = {
+    personalizations: [
+      { to: [{ email }], subject: "Your Gear Smell Field Guide is here 🏒" },
+    ],
+    from: { email: "noreply@southlandorganics.com", name: "JockShock" },
+    reply_to: { email: "hello@southlandorganics.com", name: "JockShock" },
+    content: [{ type: "text/html", value: html }],
+  };
+
+  try {
+    const r = await fetch(SENDGRID_API, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${sendgridKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+    if (!r.ok) {
+      console.error("[lead-magnet] SendGrid error:", r.status, await r.text());
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.error("[lead-magnet] SendGrid fetch error:", err);
+    return false;
+  }
+}
 
 interface LeadMagnetPayload {
   email: string;
@@ -36,10 +119,13 @@ export const POST: APIRoute = async ({ request }) => {
 
   if (!apiKey || !listId) {
     console.error("[lead-magnet] Klaviyo env not configured");
-    return new Response(JSON.stringify({ error: "Server configuration error" }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+    return new Response(
+      JSON.stringify({ error: "Server configuration error" }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
   }
 
   let data: LeadMagnetPayload;
@@ -109,7 +195,11 @@ export const POST: APIRoute = async ({ request }) => {
     });
     if (!profRes.ok) {
       const errorText = await profRes.text();
-      console.error("[lead-magnet] Klaviyo profile-import error:", profRes.status, errorText);
+      console.error(
+        "[lead-magnet] Klaviyo profile-import error:",
+        profRes.status,
+        errorText,
+      );
       // Continue to subscribe anyway — we'd rather have an unsubscribed
       // profile with properties than fail the whole request.
     }
@@ -141,26 +231,47 @@ export const POST: APIRoute = async ({ request }) => {
       },
     };
 
-    const subRes = await fetch(`${KLAVIYO_API}/profile-subscription-bulk-create-jobs/`, {
-      method: "POST",
-      headers: baseHeaders,
-      body: JSON.stringify(subPayload),
-    });
+    const subRes = await fetch(
+      `${KLAVIYO_API}/profile-subscription-bulk-create-jobs/`,
+      {
+        method: "POST",
+        headers: baseHeaders,
+        body: JSON.stringify(subPayload),
+      },
+    );
 
     if (!subRes.ok) {
       const errorText = await subRes.text();
-      console.error("[lead-magnet] Klaviyo subscribe error:", subRes.status, errorText);
+      console.error(
+        "[lead-magnet] Klaviyo subscribe error:",
+        subRes.status,
+        errorText,
+      );
       // Don't 500 the user — profile may still have been imported in step 1.
-      return new Response(JSON.stringify({ ok: true, queued: false }), { status: 200 });
+      // Still send the confirmation so they get the guide regardless.
+      const sent = await sendConfirmation(email);
+      return new Response(
+        JSON.stringify({ ok: true, queued: false, emailed: sent }),
+        { status: 200 },
+      );
     }
 
-    return new Response(JSON.stringify({ ok: true, queued: true }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+    // Immediate SendGrid thank-you with the guide. Independent of the Klaviyo
+    // welcome flow (which may lag) — guarantees the reader gets a response now.
+    const sent = await sendConfirmation(email);
+
+    return new Response(
+      JSON.stringify({ ok: true, queued: true, emailed: sent }),
+      {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
   } catch (err) {
     console.error("[lead-magnet] fetch error:", err);
-    return new Response(JSON.stringify({ ok: true, queued: false }), { status: 200 });
+    return new Response(JSON.stringify({ ok: true, queued: false }), {
+      status: 200,
+    });
   }
 };
 

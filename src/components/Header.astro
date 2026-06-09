@@ -4,36 +4,25 @@ import CartIcon from "./CartIcon.svelte";
 ---
 
 <header class="sticky top-0 z-40">
-  <div class="border-b border-white/10 bg-carbon-black/95 py-4 backdrop-blur-2xl">
+  <div
+    class="bg-carbon-black/95 border-b border-white/10 py-4 backdrop-blur-2xl"
+  >
     <nav class="container flex items-center justify-between">
-      <a href="/" aria-label="JockShock home" class="flex items-center min-h-11 py-1 -my-1">
+      <a
+        href="/"
+        aria-label="JockShock home"
+        class="-my-1 flex min-h-11 items-center py-1"
+      >
         <Logo />
       </a>
       <div class="flex items-center gap-7">
-        <a
-          href="/products/jockshock/"
-          class="js-nav-link hidden sm:inline"
-        >
+        <a href="/products/jockshock/" class="js-nav-link hidden sm:inline">
           Shop
         </a>
-        <a
-          href="/parents/"
-          class="js-nav-link hidden sm:inline"
-        >
-          Parents
-        </a>
-        <a
-          href="/teams/"
-          class="js-nav-link hidden sm:inline"
-        >
-          Teams
-        </a>
-        <a
-          href="/founders/"
-          class="js-nav-link hidden sm:inline"
-        >
-          Founders
-        </a>
+        <a href="/learn/" class="js-nav-link hidden sm:inline"> Learn </a>
+        <a href="/parents/" class="js-nav-link hidden sm:inline"> Parents </a>
+        <a href="/teams/" class="js-nav-link hidden sm:inline"> Teams </a>
+        <a href="/founders/" class="js-nav-link hidden sm:inline"> Founders </a>
         <CartIcon client:load />
       </div>
     </nav>
@@ -43,7 +32,7 @@ import CartIcon from "./CartIcon.svelte";
 <style>
   /* Nav links — Bebas Neue, larger, hover lifts to electric yellow */
   :global(.js-nav-link) {
-    font-family: 'Bebas Neue', 'Impact', sans-serif;
+    font-family: "Bebas Neue", "Impact", sans-serif;
     font-size: 18px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -53,6 +42,6 @@ import CartIcon from "./CartIcon.svelte";
     line-height: 1;
   }
   :global(.js-nav-link:hover) {
-    color: #FFE500;
+    color: #ffe500;
   }
 </style>
