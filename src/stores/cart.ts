@@ -7,6 +7,7 @@ import {
   createCart,
   removeCartLines,
 } from "../utils/shopify";
+import { getAttributionAttributes } from "../utils/attribution";
 import type { CartResult } from "../utils/schemas";
 
 // Cart drawer state (open or closed) with initial value (false) and no persistent state (local storage)
@@ -30,7 +31,7 @@ export const cart = persistentAtom<z.infer<typeof CartResult>>(
   {
     encode: JSON.stringify,
     decode: JSON.parse,
-  }
+  },
 );
 
 // Fetch cart data if a cart exists in local storage, this is called during session start only
@@ -70,7 +71,14 @@ export async function addCartItem(item: { id: string; quantity: number }) {
   isCartUpdating.set(true);
 
   if (!cartId) {
-    const cartData = await createCart(item.id, item.quantity);
+    // Stamp cross-origin attribution (_pd_gclid / utm / persona) onto the cart
+    // at create — persists onto the order so the Search-campaign click survives
+    // the Shopify checkout jump. See utils/attribution.ts.
+    const cartData = await createCart(
+      item.id,
+      item.quantity,
+      getAttributionAttributes(),
+    );
 
     if (cartData) {
       cart.set({

@@ -15,7 +15,7 @@ import {
 const makeShopifyRequest = async (
   query: string,
   variables: Record<string, unknown> = {},
-  buyerIP: string = ""
+  buyerIP: string = "",
 ) => {
   const isSSR = import.meta.env.SSR;
   const apiUrl = `https://${config.shopifyShop}/api/${config.apiVersion}/graphql.json`;
@@ -25,7 +25,7 @@ const makeShopifyRequest = async (
     isSSR &&
       !buyerIP &&
       console.error(
-        `🔴 No buyer IP provided => make sure to pass the buyer IP when making a server side Shopify request.`
+        `🔴 No buyer IP provided => make sure to pass the buyer IP when making a server side Shopify request.`,
       );
 
     const { privateShopifyAccessToken, publicShopifyAccessToken } = config;
@@ -76,7 +76,7 @@ export const getProducts = async (options: {
   const data = await makeShopifyRequest(
     ProductsQuery,
     { first: limit },
-    buyerIP
+    buyerIP,
   );
   const { products } = data;
 
@@ -101,7 +101,7 @@ export const getProductByHandle = async (options: {
   const data = await makeShopifyRequest(
     ProductByHandleQuery,
     { handle },
-    buyerIP
+    buyerIP,
   );
   const { product } = data;
 
@@ -120,7 +120,7 @@ export const getProductRecommendations = async (options: {
     {
       productId,
     },
-    buyerIP
+    buyerIP,
   );
   const { productRecommendations } = data;
 
@@ -130,9 +130,21 @@ export const getProductRecommendations = async (options: {
   return parsedProducts;
 };
 
-// Create a cart and add a line item to it and return the cart object
-export const createCart = async (id: string, quantity: number) => {
-  const data = await makeShopifyRequest(CreateCartMutation, { id, quantity });
+// Create a cart and add a line item to it and return the cart object.
+// `attributes` carries cross-origin attribution (_pd_gclid etc.) onto the cart
+// so it survives the Shopify checkout jump and lands on the order — see
+// src/utils/attribution.ts. Optional + defaulted so server-side callers (no
+// localStorage) and existing call sites keep working.
+export const createCart = async (
+  id: string,
+  quantity: number,
+  attributes: Array<{ key: string; value: string }> = [],
+) => {
+  const data = await makeShopifyRequest(CreateCartMutation, {
+    id,
+    quantity,
+    attributes: attributes.length ? attributes : undefined,
+  });
   const { cartCreate } = data;
   const { cart } = cartCreate;
   const parsedCart = CartResult.parse(cart);
@@ -144,7 +156,7 @@ export const createCart = async (id: string, quantity: number) => {
 export const addCartLines = async (
   id: string,
   merchandiseId: string,
-  quantity: number
+  quantity: number,
 ) => {
   const data = await makeShopifyRequest(AddCartLinesMutation, {
     cartId: id,

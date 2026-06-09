@@ -87,13 +87,19 @@ const ORGANIZATION_LD = {
       "@type": "Person",
       name: "Mike Usry",
       jobTitle: "Co-founder",
-      alumniOf: { "@type": "CollegeOrUniversity", name: "University of Georgia" },
+      alumniOf: {
+        "@type": "CollegeOrUniversity",
+        name: "University of Georgia",
+      },
     },
     {
       "@type": "Person",
       name: "Karin Lichey Usry",
       jobTitle: "Co-founder",
-      alumniOf: { "@type": "CollegeOrUniversity", name: "University of Georgia" },
+      alumniOf: {
+        "@type": "CollegeOrUniversity",
+        name: "University of Georgia",
+      },
       sameAs: ["https://en.wikipedia.org/wiki/Karin_Lichey"],
       description:
         "11-time NCAA All-American gymnast. 1999 Honda Sports Award. First collegiate gymnast to score a perfect 40.0.",
@@ -102,15 +108,22 @@ const ORGANIZATION_LD = {
       "@type": "Person",
       name: "Fred Munzenmaier",
       jobTitle: "Gym Channel Lead",
-      alumniOf: { "@type": "CollegeOrUniversity", name: "University of Georgia" },
+      alumniOf: {
+        "@type": "CollegeOrUniversity",
+        name: "University of Georgia",
+      },
       sameAs: ["https://247sports.com/player/fred-munzenmaier-5073/"],
-      description: "UGA football running back 2007–2009. Owner of a D1 Training franchise.",
+      description:
+        "UGA football running back 2007–2009. Owner of a D1 Training franchise.",
     },
     {
       "@type": "Person",
       name: "Anna Watson Munzenmaier",
       jobTitle: "Co-founder",
-      alumniOf: { "@type": "CollegeOrUniversity", name: "University of Georgia" },
+      alumniOf: {
+        "@type": "CollegeOrUniversity",
+        name: "University of Georgia",
+      },
       sameAs: ["https://en.wikipedia.org/wiki/Anna_Watson_(cheerleader)"],
       description:
         "UGA cheerleader. Strength coach at D1 Training Athens. Featured on Good Morning America and Inside Edition.",
@@ -137,7 +150,8 @@ const allJsonLd = [ORGANIZATION_LD, WEBSITE_LD, ...extraJsonLd];
 // at event time, not at the pixel level.
 const pixelBrandId = import.meta.env.PUBLIC_PIXEL_BRAND_ID || "southland";
 const pixelEndpoint =
-  import.meta.env.PUBLIC_PIXEL_ENDPOINT || "https://pixel.southlandorganics.com/collect";
+  import.meta.env.PUBLIC_PIXEL_ENDPOINT ||
+  "https://pixel.southlandorganics.com/collect";
 ---
 
 <html lang="en">
@@ -177,7 +191,10 @@ const pixelEndpoint =
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="JockShock — pro-grade equipment deodorizer" />
+    <meta
+      property="og:image:alt"
+      content="JockShock — pro-grade equipment deodorizer"
+    />
     <meta property="og:locale" content="en_US" />
 
     <!-- Twitter / X -->
@@ -185,17 +202,24 @@ const pixelEndpoint =
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
-    <meta name="twitter:image:alt" content="JockShock — pro-grade equipment deodorizer" />
+    <meta
+      name="twitter:image:alt"
+      content="JockShock — pro-grade equipment deodorizer"
+    />
 
-    {/* JSON-LD structured data — Organization + WebSite globally; pages can
-        contribute additional schemas (e.g., Product on PDP) via the jsonLd prop. */}
-    {allJsonLd.map((schema) => (
-      <script
-        type="application/ld+json"
-        is:inline
-        set:html={JSON.stringify(schema)}
-      />
-    ))}
+    {
+      /* JSON-LD structured data — Organization + WebSite globally; pages can
+        contribute additional schemas (e.g., Product on PDP) via the jsonLd prop. */
+    }
+    {
+      allJsonLd.map((schema) => (
+        <script
+          type="application/ld+json"
+          is:inline
+          set:html={JSON.stringify(schema)}
+        />
+      ))
+    }
 
     <!-- point.dog Pixel -->
     <script is:inline define:vars={{ pixelBrandId, pixelEndpoint }}>
@@ -207,7 +231,17 @@ const pixelEndpoint =
         defaultProperties: { sub_brand: "jockshock" },
       };
     </script>
-    <script is:inline src="https://cdn.point.dog/pixel/pd-pixel.min.js" async></script>
+    <script is:inline src="https://cdn.point.dog/pixel/pd-pixel.min.js" async
+    ></script>
+
+    <!-- Cross-origin attribution capture: persist gclid/fbclid/utm from the
+         landing URL so a Google Ads click survives the Shopify checkout jump
+         and lands on the order (utils/attribution.ts). Without this the JS
+         Search campaign spends blind — same gap as D2's two-origin break. -->
+    <script>
+      import { captureAttribution } from "../utils/attribution";
+      captureAttribution();
+    </script>
 
     <style is:global>
       @import "../styles/global.css";
