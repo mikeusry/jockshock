@@ -123,8 +123,8 @@ export const GetCartQuery = `#graphql
 `;
 
 export const CreateCartMutation = `#graphql
-  mutation ($id: ID!, $quantity: Int!) {
-    cartCreate (input: { lines: [{ merchandiseId: $id, quantity: $quantity }] }) {
+  mutation ($id: ID!, $quantity: Int!, $attributes: [AttributeInput!]) {
+    cartCreate (input: { lines: [{ merchandiseId: $id, quantity: $quantity }], attributes: $attributes }) {
       cart {
         ...cartFragment
       }
