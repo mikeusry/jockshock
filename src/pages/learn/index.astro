@@ -1,0 +1,380 @@
+---
+/**
+ * /learn/ — content hub index page.
+ *
+ * Lists all the /learn/<slug>/ articles with imagery + short descriptions.
+ * This is the entry point that internal navigation, the footer, and
+ * organic search pull users into the article ecosystem.
+ *
+ * Visual register: matches the /founders/ and /parents/ hero treatment
+ * (carbon-black bg, electric-yellow accent, dark abstract texture
+ * background image with a yellow heat-spot overlay).
+ *
+ * Articles ordered by SEO priority (per docs/seo-keyword-strategy.md
+ * v2): shoe-deodorizer flagship → mouthguard cleaning → baking soda
+ * converter → football pads → cleats → lacrosse → mouthguard molding.
+ *
+ * The CollectionPage JSON-LD lists every article so Google can crawl
+ * the hub-and-spoke relationship. Each article also has its own Article
+ * + FAQPage JSON-LD on its own page.
+ */
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import "../../styles/learn-hub.css";
+
+const title = "JockShock Learn — How to Clean Athletic Gear, Shoes, and Mouthguards";
+const description =
+  "Field guides for cleaning athletic gear, sports shoes, mouthguards, and the bags that hold them. Pro-grade routines from D1 athletes who lived in this gear. Powered by ZeroPoint Technology.";
+
+interface Article {
+  slug: string;
+  title: string;
+  blurb: string;
+  category: string;
+  image: string;
+  imageAlt: string;
+}
+
+const ARTICLES: Article[] = [
+  {
+    slug: "/learn/shoe-deodorizer-spray/",
+    title: "Shoe Deodorizer Spray for Athletes",
+    blurb:
+      "Cleats, hockey skates, training shoes, running shoes, kids' sneakers — every athletic shoe is a sealed bacterial incubator after the first wear. Here's the routine that actually works.",
+    category: "Shoes",
+    image:
+      "https://res.cloudinary.com/southland-organics/image/upload/c_fill,w_900,h_600,g_auto,q_auto,f_auto/JockShock/beckham4.jpg",
+    imageAlt: "Athlete with gear bag — shoe deodorizer hub",
+  },
+  {
+    slug: "/learn/how-to-clean-a-mouthguard/",
+    title: "How to Clean a Mouthguard",
+    blurb:
+      "For athletes — boxing, football, hockey, lacrosse, wrestling, BJJ, MMA. The 60-second post-practice routine that keeps a mouthguard usable for an entire season instead of a month. Plus the dental-night-guard pivot for non-athletic readers.",
+    category: "Mouthguards",
+    image:
+      "https://res.cloudinary.com/southland-organics/image/upload/c_fill,w_900,h_600,g_auto,q_auto,f_auto/JockShock/beckham.jpg",
+    imageAlt: "Athlete close-up — mouthguard cleaning hub",
+  },
+  {
+    slug: "/learn/baking-soda-doesnt-fix-sneaker-odor/",
+    title: "Baking Soda Doesn't Fix Sneaker Odor",
+    blurb:
+      "The internet's most-recommended fix for shoe smell works for about 24 hours, then the bacteria still living in the lining go right back to work. Here's why baking soda taps out, and what fixes the source instead.",
+    category: "Shoes",
+    image:
+      "https://res.cloudinary.com/southland-organics/image/upload/c_fill,w_900,h_600,g_auto,q_auto,f_auto/JockShock/beckham1.jpg",
+    imageAlt: "Athletic shoes — baking soda alternative hub",
+  },
+  {
+    slug: "/learn/clean-football-pads/",
+    title: "How to Clean Football Pads",
+    blurb:
+      "Shoulder pads, rib protector, girdle, helmet liner, the bag — football has the worst-case scenario for gear smell, and it's not close. The full kit walk-through, piece by piece, claims-clean.",
+    category: "Football",
+    image:
+      "https://res.cloudinary.com/southland-organics/image/upload/c_fill,w_900,h_600,g_auto,q_auto,f_auto/JockShock/beckham2_t9b1zk.jpg",
+    imageAlt: "Football gear — pad cleaning hub",
+  },
+  {
+    slug: "/learn/get-smell-out-of-cleats/",
+    title: "Get the Smell Out of Cleats",
+    blurb:
+      "Soccer, football, lacrosse, baseball — every cleat ends up at the bottom of a bag, damp, mixed with shin guards. The cross-sport playbook for the worst-smelling shoe in athletics.",
+    category: "Cleats",
+    image:
+      "https://res.cloudinary.com/southland-organics/image/upload/c_fill,w_900,h_600,g_auto,q_auto,f_auto/JockShock/beckham3.jpg",
+    imageAlt: "Cleats on the field — cleat odor hub",
+  },
+  {
+    slug: "/learn/clean-lacrosse-gloves/",
+    title: "How to Clean Lacrosse Gloves",
+    blurb:
+      "$200 gloves shouldn't be one-season gear. The full lacrosse kit — gloves, helmet, pads, mouthguard, cleats, bag — and the routine that makes a serious club kid's gear last 2–3 seasons instead of one.",
+    category: "Lacrosse",
+    image:
+      "https://res.cloudinary.com/southland-organics/image/upload/c_fill,w_900,h_600,g_auto,q_auto,f_auto/JockShock/beckham4.jpg",
+    imageAlt: "Lacrosse gear — glove cleaning hub",
+  },
+  {
+    slug: "/learn/how-to-mold-a-mouthguard/",
+    title: "How to Mold a Mouthguard",
+    blurb:
+      "The pre-season parent guide. Boil-and-bite the right way for football, hockey, lacrosse, wrestling, BJJ, boxing — including the five steps most brands won't print on the package.",
+    category: "Mouthguards",
+    image:
+      "https://res.cloudinary.com/southland-organics/image/upload/c_fill,w_900,h_600,g_auto,q_auto,f_auto/JockShock/beckham.jpg",
+    imageAlt: "Mouthguard molding — pre-season parent hub",
+  },
+];
+
+const COLLECTION_LD = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: title,
+  description,
+  url: "https://www.jockshockspray.com/learn/",
+  hasPart: ARTICLES.map((a) => ({
+    "@type": "Article",
+    headline: a.title,
+    description: a.blurb,
+    url: `https://www.jockshockspray.com${a.slug}`,
+  })),
+};
+---
+
+<BaseLayout title={title} description={description} jsonLd={[COLLECTION_LD]}>
+  <div class="js-learn">
+    <section class="hero">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="hero-grid hero-grid--centered">
+        <div class="hero-copy hero-copy--centered">
+          <p class="eyebrow">JockShock Learn</p>
+          <h1 class="hero-headline">
+            Field guides for the gear bag.
+          </h1>
+          <p class="hero-sub">
+            How to actually clean athletic gear, sports shoes, mouthguards,
+            cleats, and the bag that holds them. Written by people who lived
+            in this gear. No fragrance-bomb workarounds, no magic-wash
+            promises — just the routines that work.
+          </p>
+          <ul class="hero-trust hero-trust--centered">
+            <li>ZeroPoint Technology</li>
+            <li>Built by D1 athletes</li>
+            <li>Made in USA</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="article-grid-section">
+      <div class="article-grid-inner">
+        <p class="section-eyebrow">All articles</p>
+        <h2 class="section-headline">{ARTICLES.length} guides, ranked by what most people need first.</h2>
+        <p class="section-sub">
+          Start with the shoe deodorizer hub if your kid's gear bag smells
+          like a locker room. Start with the mouthguard hub if your athlete
+          plays a contact sport. Start with the football pads hub if you're
+          knee-deep in fall season already.
+        </p>
+
+        <div class="article-grid">
+          {
+            ARTICLES.map((a, i) => (
+              <a href={a.slug} class={`article-card ${i === 0 ? "article-card--featured" : ""}`}>
+                <div class="article-card-image" style={`background-image: url('${a.image}')`} aria-hidden="true"></div>
+                <div class="article-card-body">
+                  <p class="article-card-category">{a.category}</p>
+                  <h3 class="article-card-title">{a.title}</h3>
+                  <p class="article-card-blurb">{a.blurb}</p>
+                  <p class="article-card-cta">Read it →</p>
+                </div>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="cta-inner">
+        <p class="section-eyebrow">Ready when you are</p>
+        <h2 class="section-headline">All these routines need one bottle.</h2>
+        <p class="section-sub center">
+          Pro-grade equipment deodorizer engineered for athletic materials.
+          One 32oz bottle covers a single athlete on a real after-every-wear
+          routine for 6–10 weeks. The 3-pack is the household standard.
+        </p>
+        <div class="cta-row">
+          <a href="/products/jockshock/" class="cta-primary">Get JockShock — $24.99</a>
+          <a href="/founders/" class="cta-secondary">Meet the founders</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  /* Index-specific tweaks on top of the shared learn-hub.css */
+  .hero-grid--centered {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .hero-copy--centered {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .hero-trust--centered {
+    justify-content: center;
+  }
+
+  .article-grid-section {
+    background: #111;
+    padding: 80px 5%;
+  }
+  .article-grid-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .article-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-top: 40px;
+  }
+  .article-card {
+    background: #0a0a0a;
+    border: 1px solid rgba(255, 229, 0, 0.18);
+    border-radius: 8px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+  }
+  .article-card:hover {
+    transform: translateY(-3px);
+    border-color: #ffe500;
+    box-shadow: 0 12px 32px -12px rgba(255, 229, 0, 0.25);
+  }
+  .article-card--featured {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    border-color: rgba(255, 229, 0, 0.4);
+    background: linear-gradient(135deg, #1a1612 0%, #0a0a0a 100%);
+  }
+  .article-card--featured .article-card-image {
+    flex: 0 0 50%;
+    min-height: 320px;
+  }
+  .article-card--featured .article-card-body {
+    flex: 1;
+    padding: 40px;
+    justify-content: center;
+  }
+  .article-card--featured .article-card-title {
+    font-size: 2rem;
+    line-height: 1.1;
+  }
+
+  .article-card-image {
+    aspect-ratio: 16 / 9;
+    background-size: cover;
+    background-position: center;
+    background-color: #1a1a1a;
+    border-bottom: 1px solid rgba(255, 229, 0, 0.18);
+  }
+  .article-card--featured .article-card-image {
+    aspect-ratio: auto;
+    border-bottom: none;
+    border-right: 1px solid rgba(255, 229, 0, 0.18);
+  }
+
+  .article-card-body {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .article-card-category {
+    color: #fbbf24;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-weight: 700;
+    font-size: 0.7rem;
+    margin: 0;
+  }
+  .article-card-title {
+    color: #fff;
+    font-size: 1.375rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    margin: 0;
+  }
+  .article-card-blurb {
+    color: #9ca3af;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    margin: 8px 0 0;
+  }
+  .article-card-cta {
+    color: #ffe500;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.875rem;
+    margin: 16px 0 0;
+  }
+
+  .cta {
+    background: #0a0a0a;
+    padding: 80px 5%;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .cta-inner {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .cta-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 32px;
+  }
+  .cta-primary,
+  .cta-secondary {
+    display: inline-block;
+    padding: 14px 28px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+  }
+  .cta-primary {
+    background: #ffe500;
+    color: #0a0a0a;
+  }
+  .cta-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px -8px rgba(255, 229, 0, 0.4);
+  }
+  .cta-secondary {
+    background: transparent;
+    color: #ffe500;
+    border: 1px solid rgba(255, 229, 0, 0.5);
+  }
+  .cta-secondary:hover {
+    background: rgba(255, 229, 0, 0.08);
+  }
+
+  @media (max-width: 880px) {
+    .article-grid {
+      grid-template-columns: 1fr;
+    }
+    .article-card--featured {
+      flex-direction: column;
+      grid-column: auto;
+    }
+    .article-card--featured .article-card-image {
+      flex: 1;
+      min-height: 220px;
+      border-right: none;
+      border-bottom: 1px solid rgba(255, 229, 0, 0.18);
+    }
+    .article-card--featured .article-card-body {
+      padding: 24px;
+    }
+    .article-card--featured .article-card-title {
+      font-size: 1.5rem;
+    }
+  }
+</style>

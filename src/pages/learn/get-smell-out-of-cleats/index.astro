@@ -1,0 +1,317 @@
+---
+/**
+ * /learn/get-smell-out-of-cleats/ — Tier 2 #2 hub.
+ *
+ * SEO target: "how to get smell out of cleats." DFS confirmed 210/mo,
+ * KD 0, HIGH commercial competition. Cross-sport (soccer, lacrosse,
+ * football, baseball) — parent-driven query.
+ *
+ * Cross-links to /learn/shoe-deodorizer-spray/ (broader audience) and
+ * to football pads hub (sport-specific).
+ *
+ * Audience: sports parents (Pam) and athletes (Aaron). Cleats live in
+ * the same emotional zone as shoes — the dad opening the bag in the
+ * back of the car at 6 AM.
+ *
+ * CLAIMS COMPLIANCE: deodorizer-only. ZeroPoint Technology trust line.
+ */
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import "../../../styles/learn-hub.css";
+
+const title = "How to Get the Smell Out of Cleats — Soccer, Football, Lacrosse, Baseball";
+const description =
+  "How to get the smell out of cleats — for soccer, football, lacrosse, baseball. Pro-grade deodorizer engineered for athletic materials. Powered by ZeroPoint Technology. Made in USA.";
+
+const HERO_BOTTLE =
+  "https://res.cloudinary.com/southland-organics/image/upload/c_fit,w_700,q_auto,f_auto,dpr_auto/JockShock/jockshock-32oz-single-2026.png";
+
+const FAQ_ITEMS = [
+  {
+    q: "Why do cleats smell so much worse than regular shoes?",
+    a: "Cleats trap more moisture than almost any other athletic shoe. The synthetic uppers don't breathe, the studded sole prevents proper drying, and they spend the day at the bottom of a bag with damp socks and shin guards. Add grass, dirt, and turf rubber pellets, and you have a perfect environment for the odor-producing bacteria that produce the smell.",
+  },
+  {
+    q: "Will JockShock damage cleats or stain the upper?",
+    a: "No. JockShock is engineered for athletic materials — synthetic uppers, mesh, leather, foam liners. Won't crack the synthetic, won't stain colors, won't soften the structure. Spray inside the cleat (where the smell actually lives), not on the outside upper.",
+  },
+  {
+    q: "Can I machine wash cleats?",
+    a: "Generally no. The agitation can damage the synthetic upper and weaken the seams between the upper and the sole. Soak-and-scrub the outside if they're caked, but the inside is where the smell lives — and machine washing rarely reaches the foam liner where the bacteria are.",
+  },
+  {
+    q: "How fast does the smell come back?",
+    a: "If you don't address the source, within 1–2 wears. The bacteria producing the smell are still in the foam liner. Surface treatments — Lysol, Febreze, dryer sheets — buy you a few hours, not days. The fix is a routine: spray inside after every use, air dry, store away from the rest of the gear.",
+  },
+  {
+    q: "What about cleats that are already destroyed by smell?",
+    a: "Worst-case rescue: spray inside generously, let sit 60 seconds, rinse with cool water, stuff with newspaper, air-dry overnight in a ventilated space. Repeat the next day. Most cleats people think are 'beyond saving' come back with two passes. After that, the after-every-use routine keeps them fresh.",
+  },
+  {
+    q: "My kid leaves their cleats in the bag overnight. Now what?",
+    a: "That's the worst-case scenario for smell — sealed bag plus damp shoes plus damp shin guards equals concentrated reservoir. Get the cleats OUT of the bag, spray inside generously, and air-dry them on the porch overnight. Treat the bag interior too. If this is a recurring battle, the answer isn't reminding the kid; it's stationing a bottle next to where the bag lives so the spray happens in the same motion as taking the cleats off.",
+  },
+  {
+    q: "Different sport, same cleat problem?",
+    a: "The fix is identical for soccer, football, lacrosse, and baseball cleats. The materials are the same family, the moisture problem is the same, the routine is the same. Spray inside, wait, air dry, store. Football cleats hold the most moisture (heavier sock, longer practices); baseball cleats often have the worst leather damage from sliding. Same routine fixes both.",
+  },
+];
+
+const ARTICLE_LD = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: title,
+  description,
+  author: { "@type": "Organization", name: "JockShock" },
+  publisher: {
+    "@type": "Organization",
+    name: "JockShock",
+    "@id": "https://www.jockshockspray.com/#org",
+  },
+  datePublished: "2026-05-06",
+};
+
+const FAQ_LD = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQ_ITEMS.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: { "@type": "Answer", text: item.a },
+  })),
+};
+---
+
+<BaseLayout title={title} description={description} jsonLd={[ARTICLE_LD, FAQ_LD]}>
+  <div class="js-learn">
+    <section class="hero">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">The cleats hub</p>
+          <h1 class="hero-headline">
+            The smell isn't on the cleats.<br />It's in the cleats.
+          </h1>
+          <p class="hero-sub">
+            Soccer, football, lacrosse, baseball — every cleat ends up at the
+            bottom of a bag, damp, mixed with shin guards and socks, sealed
+            shut. By the next practice, it's a chemistry experiment. The
+            outside-upper sprays don't fix it. The inside is where the smell
+            lives.
+          </p>
+          <p class="hero-promise">
+            JockShock is a pro-grade deodorizer engineered for athletic
+            materials. Spray inside the cleat, let it air, walk away. Powered
+            by ZeroPoint Technology.
+          </p>
+          <div class="hero-cta-row">
+            <a href="/products/jockshock/" class="cta-primary">Get JockShock — $24.99</a>
+            <a href="#routine" class="cta-secondary">See the routine</a>
+          </div>
+          <ul class="hero-trust">
+            <li>ZeroPoint Technology</li>
+            <li>Safe on synthetic + leather</li>
+            <li>Won't fade colors</li>
+            <li>Made in USA</li>
+          </ul>
+        </div>
+        <div class="hero-product">
+          <img src={HERO_BOTTLE} alt="JockShock 32oz pro-grade equipment deodorizer" width="700" height="700" />
+        </div>
+      </div>
+    </section>
+
+    <section class="why">
+      <div class="why-inner">
+        <p class="section-eyebrow">Why cleats smell worse than regular shoes</p>
+        <h2 class="section-headline">
+          The combination is uniquely bad: damp, sealed, mixed with bacteria-laden gear.
+        </h2>
+        <p class="section-sub">
+          Cleats are an athletic shoe optimized for performance, not for
+          breathing. The synthetic upper is built for water resistance, the
+          studded sole means they can't lay flat to dry, and the foam liner
+          is the most absorbent material in the entire kit. After a 90-minute
+          practice or game, the cleat is fully saturated — and then it goes
+          into a bag with shin guards (more moisture), damp socks (more
+          bacteria), and stays sealed for 18 hours until next use.
+        </p>
+        <p class="section-sub">
+          Cleats are also the gear item most likely to live in the car after
+          practice. Trunk, garage, mudroom — anywhere not their owner's
+          bedroom. Out of sight, out of mind, out of routine. Most cleat
+          smell isn't a cleaning problem; it's an absent-routine problem.
+        </p>
+      </div>
+    </section>
+
+    <section class="how" id="routine">
+      <div class="how-inner">
+        <p class="section-eyebrow">The 60-second cleat routine</p>
+        <h2 class="section-headline">
+          Spray in the parking lot. Air at home. Done.
+        </h2>
+        <p class="section-sub">
+          The trick is doing this in the few minutes between the field and the
+          car ride home, while the gear is still off and the cleats are
+          accessible. Stash a bottle in the bag pocket. Spray, zip, drive
+          home. Two minutes total.
+        </p>
+        <ol class="steps">
+          <li>
+            <span class="step-num">1</span>
+            <h3>Knock off the dirt</h3>
+            <p>Hit the cleats together to dislodge grass, mud, turf pellets. Don't bother washing — that's a different problem from the smell.</p>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <h3>Spray inside, generously</h3>
+            <p>Three pumps into each cleat — toe box, instep, heel cup. Get into the foam liner where the smell actually lives. Don't waste spray on the upper.</p>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <h3>Air, then store separately</h3>
+            <p>Set the cleats outside the bag for 5–10 minutes before storing. If they're going in a bag, store in a side pocket — not mixed in with the rest of the kit.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="works-on">
+      <div class="works-on-inner">
+        <p class="section-eyebrow">Sport-specific notes</p>
+        <h2 class="section-headline">Same routine, different cleats.</h2>
+        <p class="section-sub">
+          The chemistry doesn't care what sport you play. The routine is
+          identical. But the gear's failure modes differ — here's what to
+          watch for in each.
+        </p>
+        <div class="works-on-grid">
+          <div class="works-on-card">
+            <h3>Soccer cleats</h3>
+            <p>
+              Highest moisture exposure (wet grass, water on the field).
+              Synthetic uppers most likely to crack from improper drying.
+              Air-dry before storing, never near direct heat.
+            </p>
+          </div>
+          <div class="works-on-card">
+            <h3>Football cleats</h3>
+            <p>
+              Heaviest socks, longest practices, most concentrated smell. The
+              cleats are also the most likely to be left in the helmet bag
+              with the rest of the gear — separate them.
+            </p>
+          </div>
+          <div class="works-on-card">
+            <h3>Lacrosse cleats</h3>
+            <p>
+              Lacrosse parents are usually high-AOV gear buyers — so cleats
+              are quality leather + synthetic blends. Treat them well: spray
+              inside, never machine wash, don't soak the leather.
+            </p>
+          </div>
+          <div class="works-on-card">
+            <h3>Baseball cleats</h3>
+            <p>
+              Sliding damages the upper leather; the inside smell is from
+              dirt-clay mix combined with the heel cup. Brush off the dirt,
+              then spray inside. Conditioning the leather monthly helps the
+              outside.
+            </p>
+          </div>
+          <div class="works-on-card">
+            <h3>Turf shoes / trainers</h3>
+            <p>
+              The hybrid cleat-trainer category — used for practice + travel
+              ball. Often the most-worn shoe in the bag. Spray every wear,
+              not just after games.
+            </p>
+          </div>
+          <div class="works-on-card">
+            <h3>Youth cleats</h3>
+            <p>
+              Same materials, smaller volume, same problem. JockShock is
+              fragrance-free and skin-safe at use concentration — fine for
+              kids' cleats. Make it part of their post-practice routine.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq">
+      <div class="faq-inner">
+        <p class="section-eyebrow">Common questions</p>
+        <h2 class="section-headline">Quick answers.</h2>
+        <div class="faq-list">
+          {
+            FAQ_ITEMS.map((item) => (
+              <details class="faq-item">
+                <summary>
+                  <span class="faq-q">{item.q}</span>
+                  <span class="faq-icon" aria-hidden="true">+</span>
+                </summary>
+                <p class="faq-a">{item.a}</p>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="tiers">
+      <div class="tiers-inner">
+        <p class="section-eyebrow">Get yours</p>
+        <h2 class="section-headline">Most start with the 3-pack.</h2>
+        <p class="section-sub center">
+          One bottle for the gear bag. One for the car. One for the mudroom.
+          A 3-pack lasts a youth athlete most of a season.
+        </p>
+        <div class="tier-grid">
+          <a href="/products/jockshock/" class="tier">
+            <div class="tier-label">Single</div>
+            <div class="tier-detail">1 × 32oz</div>
+            <div class="tier-price">$24.99</div>
+            <div class="tier-bottom">Get it →</div>
+          </a>
+          <a href="/products/jockshock/" class="tier featured">
+            <span class="tier-badge">Most Pick This</span>
+            <div class="tier-label">3-Pack</div>
+            <div class="tier-detail">3 × 32oz</div>
+            <div class="tier-price">$59.99</div>
+            <div class="tier-bottom">Get it →</div>
+          </a>
+          <a href="/products/jockshock/" class="tier">
+            <div class="tier-label">6-Pack</div>
+            <div class="tier-detail">6 × 32oz</div>
+            <div class="tier-price">$99.99</div>
+            <div class="tier-bottom">Get it →</div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="related">
+      <div class="related-inner">
+        <p class="section-eyebrow">Related</p>
+        <h2 class="section-headline">More from the gear bag.</h2>
+        <div class="related-grid">
+          <a href="/learn/shoe-deodorizer-spray/" class="related-card">
+            <h3>Shoe deodorizer for athletes</h3>
+            <p>The training shoes, the gym shoes, the running shoes, the kids' sneakers.</p>
+          </a>
+          <a href="/learn/clean-football-pads/" class="related-card">
+            <h3>How to clean football pads</h3>
+            <p>The pads are the rest of the smell-source. Same chemistry, different routine.</p>
+          </a>
+          <a href="/learn/how-to-clean-a-mouthguard/" class="related-card">
+            <h3>How to clean a mouthguard</h3>
+            <p>The other thing in the bag athletes never clean enough.</p>
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+

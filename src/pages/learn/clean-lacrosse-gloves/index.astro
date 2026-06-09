@@ -1,0 +1,311 @@
+---
+/**
+ * /learn/clean-lacrosse-gloves/ — Tier 2 #3 sport hub.
+ *
+ * SEO target: "how to clean lacrosse gloves" (110/mo, KD 0, LOW
+ * competition per DFS). Near-zero competition makes this an easy win.
+ *
+ * High-AOV parent buyer demographic — lacrosse parents tend to be
+ * higher-income gear buyers. Tone the page accordingly: serious about
+ * gear care, respectful of the investment, no value-play framing.
+ *
+ * Audience: lacrosse parents primarily, players secondarily.
+ *
+ * CLAIMS COMPLIANCE: deodorizer-only. ZeroPoint Technology trust line.
+ */
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import "../../../styles/learn-hub.css";
+
+const title = "How to Clean Lacrosse Gloves (Without Wrecking Them)";
+const description =
+  "How to clean expensive lacrosse gloves, the complete kit, and the bag — without damaging the leather palm or fading the cuff. Pro-grade deodorizer engineered for athletic materials. Powered by ZeroPoint Technology.";
+
+const HERO_BOTTLE =
+  "https://res.cloudinary.com/southland-organics/image/upload/c_fit,w_700,q_auto,f_auto,dpr_auto/JockShock/jockshock-32oz-single-2026.png";
+
+const FAQ_ITEMS = [
+  {
+    q: "Why do lacrosse gloves smell so bad?",
+    a: "Because they're sealed leather palms over absorbent foam liners, worn for hours of high-exertion practice, then thrown into a bag damp. The leather palm holds moisture against the foam, and the foam holds bacterial reservoir for days. The smell isn't a hygiene failure — it's the gloves doing exactly what their construction encourages.",
+  },
+  {
+    q: "Can I machine wash lacrosse gloves?",
+    a: "No. The leather palm cracks when machine-washed, the foam padding loses density, and the cuff stitching weakens. A $100–$200 pair of gloves becomes a $25 pair after one wash. Spot-clean and spray instead.",
+  },
+  {
+    q: "Will JockShock damage the leather palm or fade the cuff?",
+    a: "No. JockShock is engineered for athletic materials including leather, synthetic uppers, foam, and mesh. No bleach, no abrasives, no fragrance dyes that stain. Light spray on the inside of the glove — leather palm gets the lightest mist; the foam interior gets the bulk of the spray.",
+  },
+  {
+    q: "How often should I clean lacrosse gloves?",
+    a: "After every practice and every game. Lacrosse gloves are some of the highest-investment athletic gear in any sport — a $100+ pair at the club level, $200+ at college. Treating them like part of the routine instead of an afterthought is what makes them last 2–3 seasons instead of one.",
+  },
+  {
+    q: "What about the rest of the lacrosse kit?",
+    a: "Same routine for the helmet (spray the foam liner, wipe the shell), the shoulder pads (spray inside, hang to dry), the rib pads (closest to the body, most-soaked, treat carefully), the cleats (their own thing — see the cleats hub), the mouthguard (also its own thing — see the mouthguard hub), and the bag itself.",
+  },
+  {
+    q: "Why is the cleat-and-glove smell different from football?",
+    a: "Lacrosse gear is generally lighter and more breathable than football gear, but it's also worn for similar durations under similar exertion. The smell is concentrated in fewer pieces — gloves and helmet liner are the worst offenders. Football has more total stink-volume; lacrosse has more concentrated stink-density per piece.",
+  },
+  {
+    q: "What about goalkeeper gear?",
+    a: "Same routine, same chemistry, more bottles. Goalkeeper gear has more padding (chest protector, throat guard, leg pads), holds more moisture, and goes through the same gear-bag cycle. A 6-pack is the right size for a goalkeeper household. Spray inside every piece, hang to dry, treat the bag interior.",
+  },
+];
+
+const ARTICLE_LD = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: title,
+  description,
+  author: { "@type": "Organization", name: "JockShock" },
+  publisher: {
+    "@type": "Organization",
+    name: "JockShock",
+    "@id": "https://www.jockshockspray.com/#org",
+  },
+  datePublished: "2026-05-06",
+};
+
+const FAQ_LD = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQ_ITEMS.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: { "@type": "Answer", text: item.a },
+  })),
+};
+---
+
+<BaseLayout title={title} description={description} jsonLd={[ARTICLE_LD, FAQ_LD]}>
+  <div class="js-learn">
+    <section class="hero">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">The lacrosse hub</p>
+          <h1 class="hero-headline">
+            $200 gloves shouldn't be one-season gear.
+          </h1>
+          <p class="hero-sub">
+            Lacrosse parents know the math: a serious club kid goes through
+            a pair of gloves, a helmet liner, a stick wrap, and probably new
+            cleats every season. Most of that replacement isn't from impact —
+            it's from smell. The gear is fine; nobody can stand to wear it
+            anymore. There's a fix that doesn't involve a wash cycle.
+          </p>
+          <p class="hero-promise">
+            JockShock is engineered for the leather, foam, and mesh in
+            high-end lacrosse gear. Spray inside, air dry, store. Powered by
+            ZeroPoint Technology. Made in USA.
+          </p>
+          <div class="hero-cta-row">
+            <a href="/products/jockshock/" class="cta-primary">Get JockShock — $24.99</a>
+            <a href="#routine" class="cta-secondary">See the routine</a>
+          </div>
+          <ul class="hero-trust">
+            <li>ZeroPoint Technology</li>
+            <li>Safe on leather palms</li>
+            <li>Won't fade cuffs</li>
+            <li>Made in USA</li>
+          </ul>
+        </div>
+        <div class="hero-product">
+          <img src={HERO_BOTTLE} alt="JockShock 32oz pro-grade equipment deodorizer" width="700" height="700" />
+        </div>
+      </div>
+    </section>
+
+    <section class="why">
+      <div class="why-inner">
+        <p class="section-eyebrow">Why lacrosse gloves are uniquely awful</p>
+        <h2 class="section-headline">
+          Leather over foam, in a sealed palm, used for two hours straight.
+        </h2>
+        <p class="section-sub">
+          A lacrosse glove is engineered for grip and impact protection — not
+          for ventilation. The leather palm seals moisture against an
+          absorbent foam liner. The cuff and back of the hand have decent
+          airflow, but the palm — where the smell concentrates — has almost
+          none. Two hours of practice in late spring, plus 22 hours in a bag
+          in the garage, and the gloves are reaching peak smell by mid-week.
+        </p>
+        <p class="section-sub">
+          Replacement isn't really the answer. A new pair of senior-level
+          gloves is $150–$250. The gear is doing exactly what it's designed
+          to do; the smell is a side effect of the design, not a defect.
+          Treating it directly is more economical than replacing.
+        </p>
+      </div>
+    </section>
+
+    <section class="how" id="routine">
+      <div class="how-inner">
+        <p class="section-eyebrow">The post-practice glove routine</p>
+        <h2 class="section-headline">
+          Two minutes after practice. Six weeks of fresh gear later.
+        </h2>
+        <p class="section-sub">
+          The trick is doing this before the gloves go in the bag. Once they
+          go in damp, you've already lost. Pull the gloves out of the bag in
+          the parking lot, do the routine, then bag them.
+        </p>
+        <ol class="steps">
+          <li>
+            <span class="step-num">1</span>
+            <h3>Pull the cuff back</h3>
+            <p>Open the cuff so the inside of the glove is accessible. Wipe any visible dirt off the leather palm with a dry cloth — don't wet it.</p>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <h3>Spray inside</h3>
+            <p>Three pumps inside each glove — toward the palm, toward the fingers. The leather will get a light overspray, that's fine. Don't soak it.</p>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <h3>Air, then store</h3>
+            <p>Set gloves cuff-down on a rack or hang from a hook. 10 minutes of airing before they go in the bag is enough. Spray the inside of the bag too — the bag is the next reservoir.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="works-on">
+      <div class="works-on-inner">
+        <p class="section-eyebrow">The full lacrosse kit</p>
+        <h2 class="section-headline">Same routine, every piece.</h2>
+        <p class="section-sub">
+          Gloves are the worst offender, but they're not alone. Here's the
+          rest of the kit and the relevant variations.
+        </p>
+        <div class="works-on-grid">
+          <div class="works-on-card">
+            <h3>Helmet liner</h3>
+            <p>
+              The foam liner inside the polycarbonate shell traps heat and
+              moisture. Spray the foam, wipe the shell with a damp cloth (no
+              alcohol, no bleach — they degrade polycarbonate), store with
+              the chinstrap loose so the liner can air.
+            </p>
+          </div>
+          <div class="works-on-card">
+            <h3>Shoulder pads</h3>
+            <p>
+              Lacrosse pads are lighter than football, but the foam-and-shell
+              construction is similar. Spray inside between the foam and the
+              shell, hang to dry, never store rolled up wet.
+            </p>
+          </div>
+          <div class="works-on-card">
+            <h3>Rib protector</h3>
+            <p>
+              Closest to the body, most-soaked. Spray inside and out, drape
+              flat to dry, never wad up in the bag.
+            </p>
+          </div>
+          <div class="works-on-card">
+            <h3>Mouthguard</h3>
+            <p>
+              See the dedicated <a href="/learn/how-to-clean-a-mouthguard/" class="inline-link">mouthguard hub</a>.
+              Spray, 30-second wait, rinse with cool water, vented case.
+            </p>
+          </div>
+          <div class="works-on-card">
+            <h3>Cleats</h3>
+            <p>
+              See the dedicated <a href="/learn/get-smell-out-of-cleats/" class="inline-link">cleats hub</a>.
+              Lacrosse cleats are the same construction as soccer cleats, same
+              routine.
+            </p>
+          </div>
+          <div class="works-on-card">
+            <h3>The bag</h3>
+            <p>
+              After 30+ wears, the bag interior holds enough bacterial
+              reservoir to re-contaminate clean gear within a day. Spray
+              inside the bag too — three pumps main compartment, two side
+              pockets.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq">
+      <div class="faq-inner">
+        <p class="section-eyebrow">Common questions</p>
+        <h2 class="section-headline">Quick answers.</h2>
+        <div class="faq-list">
+          {
+            FAQ_ITEMS.map((item) => (
+              <details class="faq-item">
+                <summary>
+                  <span class="faq-q">{item.q}</span>
+                  <span class="faq-icon" aria-hidden="true">+</span>
+                </summary>
+                <p class="faq-a">{item.a}</p>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="tiers">
+      <div class="tiers-inner">
+        <p class="section-eyebrow">Get yours</p>
+        <h2 class="section-headline">For lacrosse, the 3-pack is the standard.</h2>
+        <p class="section-sub center">
+          One bottle in the gear bag, one at home, one at the club.
+          A 3-pack covers most travel-club seasons. Goalkeeper households
+          need the 6.
+        </p>
+        <div class="tier-grid">
+          <a href="/products/jockshock/" class="tier">
+            <div class="tier-label">Single</div>
+            <div class="tier-detail">1 × 32oz</div>
+            <div class="tier-price">$24.99</div>
+            <div class="tier-bottom">Get it →</div>
+          </a>
+          <a href="/products/jockshock/" class="tier featured">
+            <span class="tier-badge">Most Pick This</span>
+            <div class="tier-label">3-Pack</div>
+            <div class="tier-detail">3 × 32oz</div>
+            <div class="tier-price">$59.99</div>
+            <div class="tier-bottom">Get it →</div>
+          </a>
+          <a href="/products/jockshock/" class="tier">
+            <div class="tier-label">6-Pack</div>
+            <div class="tier-detail">6 × 32oz</div>
+            <div class="tier-price">$99.99</div>
+            <div class="tier-bottom">Get it →</div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="related">
+      <div class="related-inner">
+        <p class="section-eyebrow">Related</p>
+        <h2 class="section-headline">More from the gear bag.</h2>
+        <div class="related-grid">
+          <a href="/learn/clean-football-pads/" class="related-card">
+            <h3>How to clean football pads</h3>
+            <p>The other major-pad sport. Same chemistry, more pieces.</p>
+          </a>
+          <a href="/learn/get-smell-out-of-cleats/" class="related-card">
+            <h3>Get the smell out of cleats</h3>
+            <p>Lacrosse, soccer, football, baseball — same cleat construction, same routine.</p>
+          </a>
+          <a href="/learn/how-to-clean-a-mouthguard/" class="related-card">
+            <h3>How to clean a mouthguard</h3>
+            <p>The other thing in the bag athletes never clean enough.</p>
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

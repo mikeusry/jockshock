@@ -1,0 +1,311 @@
+---
+/**
+ * /learn/baking-soda-doesnt-fix-sneaker-odor/ — Tier 1c hub.
+ *
+ * SEO target: "baking soda for sneaker odor" (22,200/mo head term).
+ * DIY-curious converters — searchers looking for a home remedy who'll
+ * convert if shown a better option.
+ *
+ * Voice: educational, not preachy. Don't punch down on baking soda.
+ * Frame as "here's what it does, here's the limit, here's what
+ * actually fixes it." Aaron + Pam audience overlap.
+ *
+ * CLAIMS COMPLIANCE: deodorizer-only. No kill / disinfect /
+ * antimicrobial. ZeroPoint Technology trust attribution.
+ */
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import "../../../styles/learn-hub.css";
+
+const title = "Baking Soda Doesn't Fix Sneaker Odor (Here's What Does)";
+const description =
+  "Why baking soda only works for a few hours on sneaker odor — and what to do instead. Pro-grade deodorizer for athletic shoes, sneakers, and gear bags. Powered by ZeroPoint Technology.";
+
+const HERO_BOTTLE =
+  "https://res.cloudinary.com/southland-organics/image/upload/c_fit,w_700,q_auto,f_auto,dpr_auto/JockShock/jockshock-32oz-single-2026.png";
+
+const FAQ_ITEMS = [
+  {
+    q: "Does baking soda actually do anything for sneaker odor?",
+    a: "Yes — it absorbs moisture and some odor molecules for a short window. That's why it works for a day or two and then stops. The bacteria producing the odor in the lining are still there. Once the baking soda is dumped out, the smell returns within a wear or two.",
+  },
+  {
+    q: "How long does baking soda last in shoes?",
+    a: "Practical effect lasts 12–24 hours, sometimes a couple of days if you're lucky. After that, the absorbed moisture saturates the baking soda and it stops working. Most people don't realize this and assume the smell coming back means they need MORE baking soda — not a different approach.",
+  },
+  {
+    q: "What works better than baking soda for sneaker odor?",
+    a: "A spray engineered for athletic materials that goes after the source of the smell, not just the moisture. JockShock targets the bacterial source in the lining — not just absorbing what's already there. Spray inside, air for two minutes, and the routine breaks the cycle baking soda alone can't.",
+  },
+  {
+    q: "Can I use baking soda AND a spray together?",
+    a: "Sure, if you want. Baking soda is fine as a moisture-control tool — useful for shoes that get wet from rain or snow. JockShock targets the bacterial source. They're complementary, not competing. Most people who switch to a real routine find they don't need the baking soda anymore, but it doesn't hurt anything.",
+  },
+  {
+    q: "What about other home remedies — vinegar, alcohol, dryer sheets?",
+    a: "Vinegar works briefly, smells worse than the shoe, and can damage some adhesives. Rubbing alcohol kills bacteria but also degrades EVA foam over time, shortening shoe life. Dryer sheets just add fragrance. None of them address the source the way a spray engineered for athletic materials does.",
+  },
+  {
+    q: "Why is sneaker odor so hard to get rid of?",
+    a: "Because the odor-producing bacteria live in the lining and footbed — not on the surface. Most home remedies treat the surface (where the smell is) instead of the source (where the bacteria are). Once you understand that, the fix becomes obvious: get a treatment into the lining, not just on top of it.",
+  },
+  {
+    q: "Will JockShock work on running shoes, training shoes, gym shoes, kids' sneakers?",
+    a: "Yes — JockShock is built for athletic and athletic-adjacent shoes. Running shoes (highest mileage, fastest moisture buildup), training shoes (gym-to-bag rotation), gym shoes, kids' sneakers. Spray inside, air for two minutes, store. Made in USA, fragrance-free, won't stain laces or mesh.",
+  },
+];
+
+const ARTICLE_LD = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: title,
+  description,
+  author: { "@type": "Organization", name: "JockShock" },
+  publisher: {
+    "@type": "Organization",
+    name: "JockShock",
+    "@id": "https://www.jockshockspray.com/#org",
+  },
+  datePublished: "2026-05-06",
+};
+
+const FAQ_LD = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQ_ITEMS.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: { "@type": "Answer", text: item.a },
+  })),
+};
+---
+
+<BaseLayout title={title} description={description} jsonLd={[ARTICLE_LD, FAQ_LD]}>
+  <div class="js-learn">
+    <section class="hero">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">The honest answer</p>
+          <h1 class="hero-headline">
+            Baking soda buys you a day.<br />Then the smell comes back.
+          </h1>
+          <p class="hero-sub">
+            The internet's most-recommended fix for sneaker odor is to dump
+            baking soda in your shoes overnight. It works — for about 24 hours.
+            Then the bacteria still living in the lining go right back to
+            work. You're not crazy; the home remedy just isn't the right tool.
+          </p>
+          <p class="hero-promise">
+            Here's what baking soda actually does, why it tops out, and what
+            fixes the problem at the source instead of buying you another
+            day. Powered by ZeroPoint Technology.
+          </p>
+          <div class="hero-cta-row">
+            <a href="/products/jockshock/" class="cta-primary">Get JockShock — $24.99</a>
+            <a href="#why" class="cta-secondary">Read the breakdown</a>
+          </div>
+          <ul class="hero-trust">
+            <li>ZeroPoint Technology</li>
+            <li>Safe on skin contact</li>
+            <li>Won't stain laces or mesh</li>
+            <li>Made in USA</li>
+          </ul>
+        </div>
+        <div class="hero-product">
+          <img src={HERO_BOTTLE} alt="JockShock 32oz pro-grade equipment deodorizer" width="700" height="700" />
+        </div>
+      </div>
+    </section>
+
+    <section class="why" id="why">
+      <div class="why-inner">
+        <p class="section-eyebrow">What baking soda actually does</p>
+        <h2 class="section-headline">
+          It absorbs moisture. It doesn't address the bacteria.
+        </h2>
+        <p class="section-sub">
+          Baking soda is sodium bicarbonate. In a shoe, it does two things:
+          (1) absorbs moisture, and (2) neutralizes some acidic odor molecules
+          on contact. It does not address the bacteria producing those odor
+          molecules — which live in the lining of the shoe and continue
+          producing more the moment moisture returns. That's why baking soda
+          works on day one and is useless by day three.
+        </p>
+        <p class="section-sub">
+          Think of it like a sponge for what's already in the air, not a
+          fix for what's making the smell in the first place. As long as the
+          source is alive in the lining, the smell will keep generating. That's
+          not a baking-soda problem; that's a tool-mismatch problem.
+        </p>
+      </div>
+    </section>
+
+    <section class="how">
+      <div class="how-inner">
+        <p class="section-eyebrow">What actually fixes it</p>
+        <h2 class="section-headline">
+          Source-targeting chemistry, in a 60-second routine.
+        </h2>
+        <p class="section-sub">
+          The fix is something engineered to target the bacteria producing the
+          odor — and to be safe enough on the materials your shoes are made
+          of that you can use it after every wear. Most home remedies fail
+          one or both tests.
+        </p>
+        <ol class="steps">
+          <li>
+            <span class="step-num">1</span>
+            <h3>Open the shoe</h3>
+            <p>Loosen laces, pull tongue forward. Spray needs to reach the lining and footbed where the bacteria actually live.</p>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <h3>Spray inside</h3>
+            <p>Two pumps in the toe box, two in the heel cup, one along the footbed. Don't overspray — JockShock is concentrated chemistry, not perfume.</p>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <h3>Air, then wear</h3>
+            <p>Two minutes uncovered. Then wear them or store them — but not in a sealed bag. Sealed-bag storage is what makes shoes smell. The routine breaks the cycle.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="works-on">
+      <div class="works-on-inner">
+        <p class="section-eyebrow">Why home remedies plateau</p>
+        <h2 class="section-headline">Each one does something. None do enough.</h2>
+        <p class="section-sub">
+          Almost every internet recommendation has a kernel of truth in it.
+          Here's the honest read on each — what they do, why they tap out.
+        </p>
+        <div class="works-on-grid">
+          <div class="works-on-card">
+            <h3>Baking soda</h3>
+            <p>
+              Absorbs moisture and some odor for 12–24 hours. Doesn't reach
+              the bacteria in the lining. Useful as a moisture-control tool;
+              not useful as a long-term fix.
+            </p>
+          </div>
+          <div class="works-on-card">
+            <h3>Vinegar</h3>
+            <p>
+              Acidic enough to interfere with bacterial growth temporarily.
+              Smells worse than the shoe. Can degrade adhesives in some
+              athletic shoes over time.
+            </p>
+          </div>
+          <div class="works-on-card">
+            <h3>Rubbing alcohol</h3>
+            <p>
+              Effective short-term, but degrades EVA foam (the material in
+              most modern athletic shoe insoles) with repeated use. Shortens
+              shoe life.
+            </p>
+          </div>
+          <div class="works-on-card">
+            <h3>Dryer sheets</h3>
+            <p>
+              Adds fragrance. Doesn't address the source. The fragrance + the
+              underlying smell mix into a worse, more pervasive odor over a
+              few weeks.
+            </p>
+          </div>
+          <div class="works-on-card">
+            <h3>The freezer</h3>
+            <p>
+              Slows bacterial growth temporarily. The bacteria reactivate
+              within minutes of returning to room temperature. Functionally
+              changes nothing.
+            </p>
+          </div>
+          <div class="works-on-card">
+            <h3>Spray engineered for athletic materials</h3>
+            <p>
+              Targets the source, safe on the materials, fast enough to
+              actually use after every wear. The thing baking soda was a
+              proxy for.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq">
+      <div class="faq-inner">
+        <p class="section-eyebrow">Common questions</p>
+        <h2 class="section-headline">Quick answers.</h2>
+        <div class="faq-list">
+          {
+            FAQ_ITEMS.map((item) => (
+              <details class="faq-item">
+                <summary>
+                  <span class="faq-q">{item.q}</span>
+                  <span class="faq-icon" aria-hidden="true">+</span>
+                </summary>
+                <p class="faq-a">{item.a}</p>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="tiers">
+      <div class="tiers-inner">
+        <p class="section-eyebrow">Try it</p>
+        <h2 class="section-headline">Start small. The 32oz handles a full season.</h2>
+        <p class="section-sub center">
+          One bottle covers an athlete on a real after-every-wear routine for
+          6–10 weeks. The 3-pack lasts most of a season; the 6-pack is for
+          households with multiple kids or full football kits.
+        </p>
+        <div class="tier-grid">
+          <a href="/products/jockshock/" class="tier featured">
+            <span class="tier-badge">Try First</span>
+            <div class="tier-label">Single</div>
+            <div class="tier-detail">1 × 32oz</div>
+            <div class="tier-price">$24.99</div>
+            <div class="tier-bottom">Get it →</div>
+          </a>
+          <a href="/products/jockshock/" class="tier">
+            <div class="tier-label">3-Pack</div>
+            <div class="tier-detail">3 × 32oz</div>
+            <div class="tier-price">$59.99</div>
+            <div class="tier-bottom">Get it →</div>
+          </a>
+          <a href="/products/jockshock/" class="tier">
+            <div class="tier-label">6-Pack</div>
+            <div class="tier-detail">6 × 32oz</div>
+            <div class="tier-price">$99.99</div>
+            <div class="tier-bottom">Get it →</div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="related">
+      <div class="related-inner">
+        <p class="section-eyebrow">Related</p>
+        <h2 class="section-headline">More from the gear bag.</h2>
+        <div class="related-grid">
+          <a href="/learn/shoe-deodorizer-spray/" class="related-card">
+            <h3>Shoe deodorizer for athletes</h3>
+            <p>The complete shoe-and-sneaker breakdown — every athletic shoe in scope.</p>
+          </a>
+          <a href="/learn/get-smell-out-of-cleats/" class="related-card">
+            <h3>Get the smell out of cleats</h3>
+            <p>The cleat-specific cousin of this article. Same tool, different routine.</p>
+          </a>
+          <a href="/learn/how-to-clean-a-mouthguard/" class="related-card">
+            <h3>How to clean a mouthguard</h3>
+            <p>The other thing in the gear bag that nobody addresses correctly.</p>
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

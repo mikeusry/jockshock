@@ -1,0 +1,385 @@
+---
+/**
+ * /learn/how-to-clean-a-mouthguard/ — Tier 1b flagship hub.
+ *
+ * SEO target cluster: "how to clean mouthguard," "smelly mouthguard,"
+ * "how to get smell out of mouthguard," 22 close variants. Cluster
+ * volume 8,100/mo per DFS Labs (2026-05-06 validation). KD 0.
+ *
+ * CRITICAL DISAMBIGUATION: the SERP is dominantly bruxism intent
+ * (nighttime teeth-grinding patients with dental night guards), NOT
+ * athletic mouthguards. Page intro must position for athletes within
+ * the first 80 words. "If you're here for a dental night guard…"
+ * sub-section diverts the bruxism searcher gracefully so dwell-time
+ * stays high for the right reader.
+ *
+ * Audience: athletes (boxing, football, hockey, lacrosse, wrestling,
+ * BJJ) + sports parents shopping for their kid's mouthguard. Aaron
+ * voice but Pam-friendly.
+ *
+ * CLAIMS COMPLIANCE: deodorizer-only language. Forbidden: kill / EPA /
+ * disinfect / sanitize / antimicrobial / antibacterial / 24-hour /
+ * hospital-grade / FDA / HOCl / hypochlorous / staph / MRSA. Trust
+ * attribution is "ZeroPoint Technology" only.
+ */
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import "../../../styles/learn-hub.css";
+
+const title = "How to Clean a Mouthguard (and Keep It from Smelling Like Death)";
+const description =
+  "How to clean a smelly athletic mouthguard, the right way. Pro-grade chemistry, gear-safe, skin-safe at use concentration. Powered by ZeroPoint Technology. For boxing, football, hockey, lacrosse, wrestling, BJJ.";
+
+const HERO_BOTTLE =
+  "https://res.cloudinary.com/southland-organics/image/upload/c_fit,w_700,q_auto,f_auto,dpr_auto/JockShock/jockshock-32oz-single-2026.png";
+
+const FAQ_ITEMS = [
+  {
+    q: "Why does my mouthguard smell so bad?",
+    a: "Mouthguards smell because they spend hours sealed against your gums in a wet, warm environment — exactly what odor-producing bacteria need to grow. Saliva, food particles, and sweat get trapped between the guard and your teeth, then sit in a closed case after practice. Rinsing with water alone barely dents it. The bacteria stay on the surface and inside any micro-grooves in the material.",
+  },
+  {
+    q: "Can I put a mouthguard in the dishwasher?",
+    a: "No. Dishwasher heat warps the thermoplastic material that boil-and-bite mouthguards are molded from, ruining the custom fit. Custom-fitted mouthguards from a dentist or orthodontist are even more heat-sensitive and will deform permanently. Hand-clean only.",
+  },
+  {
+    q: "Is mouthwash a good way to clean a mouthguard?",
+    a: "Mouthwash with alcohol can dry out and stiffen the mouthguard material over time, leading to cracks. Hydrogen peroxide diluted with water works better in a pinch but doesn't address the bacteria living in the porous surface. The right tool is a spray engineered for athletic gear: spray, wait 30 seconds, rinse with cool water, air dry. Done in under a minute.",
+  },
+  {
+    q: "How often should I clean my mouthguard?",
+    a: "After every single use. The window between rinsing and bacterial regrowth is short — under an hour in the case after practice is enough for the smell to set in. Athletes who clean after every wear have mouthguards that last full seasons; athletes who only clean weekly replace mouthguards every 4–6 weeks because they reek beyond rescue.",
+  },
+  {
+    q: "How often should I replace my mouthguard?",
+    a: "A clean mouthguard lasts an entire season — sometimes two for non-contact sports. A neglected mouthguard becomes unusable in 4–6 weeks because the smell, taste, and visible discoloration make the athlete refuse to wear it. The replacement cycle isn't really about wear; it's about hygiene-loss.",
+  },
+  {
+    q: "Will JockShock damage a mouthguard or affect the fit?",
+    a: "No. JockShock is engineered for athletic materials and is safe on the EVA, silicone, and thermoplastic blends used in athletic mouthguards. It won't soften the material, won't affect a custom mold, and won't stain. Spray, 30-second wait, rinse, air dry, store in a vented case.",
+  },
+  {
+    q: "Is it safe to put cleaning spray in my mouth?",
+    a: "JockShock is rinsed off the mouthguard before the next use — it's a cleaning product, not a swallowed product. The chemistry family is the same one used in saline sprays for wound care, and the use concentration is gentle enough to be skin-safe at contact, but you don't drink it. Spray, rinse, air dry.",
+  },
+  {
+    q: "What's the difference between a sports mouthguard and a dental night guard?",
+    a: "A sports mouthguard cushions the teeth from impact during football, hockey, lacrosse, boxing, and similar sports. A dental night guard is a custom acrylic appliance prescribed by a dentist for nighttime teeth-grinding (bruxism). They look similar but the materials, fit, and care are different. JockShock is built for athletic mouthguards. If you're cleaning a dental night guard, follow your dentist's care guidance — most recommend brushing with non-abrasive toothpaste plus periodic soaking in a denture-cleaner solution.",
+  },
+];
+
+const ARTICLE_LD = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: title,
+  description,
+  author: { "@type": "Organization", name: "JockShock" },
+  publisher: {
+    "@type": "Organization",
+    name: "JockShock",
+    "@id": "https://www.jockshockspray.com/#org",
+  },
+  datePublished: "2026-05-06",
+};
+
+const FAQ_LD = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQ_ITEMS.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: { "@type": "Answer", text: item.a },
+  })),
+};
+---
+
+<BaseLayout title={title} description={description} jsonLd={[ARTICLE_LD, FAQ_LD]}>
+  <div class="js-learn">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">The mouthguard hub</p>
+          <h1 class="hero-headline">
+            Your mouthguard is the worst-smelling thing<br />in the bag.
+          </h1>
+          <p class="hero-sub">
+            For athletes — boxing, football, hockey, lacrosse, wrestling, BJJ, MMA.
+            If you're here for a dental night guard for nighttime teeth-grinding,
+            <a href="#dental-note" class="inline-link">jump to the note for you</a>.
+            For everyone else: here's how to actually clean an athletic mouthguard
+            so it doesn't taste like the locker room.
+          </p>
+          <p class="hero-promise">
+            JockShock is a pro-grade equipment deodorizer engineered for the
+            materials athletic mouthguards are made of. Built around the same
+            family of chemistry your immune system makes. Powered by ZeroPoint
+            Technology.
+          </p>
+          <div class="hero-cta-row">
+            <a href="/products/jockshock/" class="cta-primary">Get JockShock — $24.99</a>
+            <a href="#routine" class="cta-secondary">See the routine</a>
+          </div>
+          <ul class="hero-trust">
+            <li>ZeroPoint Technology</li>
+            <li>Safe on skin contact</li>
+            <li>Won't damage thermoplastic</li>
+            <li>Made in USA</li>
+          </ul>
+        </div>
+        <div class="hero-product">
+          <img
+            src={HERO_BOTTLE}
+            alt="JockShock 32oz pro-grade equipment deodorizer"
+            width="700"
+            height="700"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- WHY -->
+    <section class="why">
+      <div class="why-inner">
+        <p class="section-eyebrow">Why mouthguards smell</p>
+        <h2 class="section-headline">
+          The mouthguard sits at the worst intersection of warm, wet, and sealed.
+        </h2>
+        <p class="section-sub">
+          Your mouthguard spends 60–120 minutes a day pressed against your gums
+          in a sealed environment, soaked in saliva. Then it goes into a closed
+          plastic case, often still damp, and sits there for 22 hours until next
+          use. That's not a cleaning problem — that's a perfect bacterial
+          incubator. By the third practice without proper cleaning, the smell
+          and taste are unbearable. By the sixth, athletes start refusing to
+          wear them.
+        </p>
+        <p class="section-sub">
+          The lack of an athletic-brand answer in this space is wild. Search
+          for "how to clean a mouthguard" and you'll get dental clinics
+          recommending dishwashers (which warp the material), denture tabs
+          (designed for acrylic, not thermoplastic), and "buy a new one" (the
+          most-replaced piece of athletic gear that exists). Nobody's writing
+          this from the athlete side.
+        </p>
+      </div>
+    </section>
+
+    <!-- THE 60-SECOND ROUTINE -->
+    <section class="how" id="routine">
+      <div class="how-inner">
+        <p class="section-eyebrow">The 60-second routine</p>
+        <h2 class="section-headline">
+          Spray, wait, rinse, store. Every practice. No exceptions.
+        </h2>
+        <p class="section-sub">
+          The trick is doing this in the locker room before the mouthguard goes
+          in the case — not three days later when you remember it's still in
+          there. Make it the last thing you do before you zip the bag.
+        </p>
+        <ol class="steps">
+          <li>
+            <span class="step-num">1</span>
+            <h3>Rinse off the obvious</h3>
+            <p>
+              Cool tap water for five seconds. Knocks loose food particles
+              and surface saliva. Do not use hot water — it can soften the
+              material and ruin the fit.
+            </p>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <h3>Spray every surface</h3>
+            <p>
+              Two pumps of JockShock on the tray side, one on the gum side.
+              Get into the bite indentations where the bacteria actually
+              live. Wait 30 seconds — chemistry needs contact time.
+            </p>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <h3>Rinse, air, store</h3>
+            <p>
+              Rinse off with cool water, shake off the excess, and let it
+              air dry on the locker shelf for 60 seconds before going into
+              the case. Use a vented case — sealed cases re-trap moisture.
+            </p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- WHAT WORKS, WHAT DOESN'T -->
+    <section class="works-on">
+      <div class="works-on-inner">
+        <p class="section-eyebrow">What actually works</p>
+        <h2 class="section-headline">The "fixes" that aren't fixes.</h2>
+        <p class="section-sub">
+          The internet has a lot to say about mouthguard cleaning. Most of it
+          is from sources who've never been an athlete with a stinking
+          mouthguard at 6:00 AM practice.
+        </p>
+        <div class="works-on-grid">
+          <div class="works-on-card">
+            <h3>Dishwasher</h3>
+            <p>
+              Don't. The heat warps thermoplastic, ruining the custom fit
+              from your boil-and-bite or your dentist-fitted guard. Cost
+              of replacing a fitted mouthguard: $30–$300. Don't.
+            </p>
+          </div>
+          <div class="works-on-card">
+            <h3>Mouthwash soak</h3>
+            <p>
+              Alcohol-based mouthwash dries out and stiffens the material
+              over time, leading to cracks. Doesn't reach bacteria in the
+              porous surface anyway.
+            </p>
+          </div>
+          <div class="works-on-card">
+            <h3>Denture tabs</h3>
+            <p>
+              Designed for the acrylic dentures live in. The chemistry isn't
+              optimal for athletic thermoplastic, and dunking the guard in
+              a glass of fizzy water doesn't reach the bite-impression
+              grooves where the smell lives.
+            </p>
+          </div>
+          <div class="works-on-card">
+            <h3>Toothpaste + brush</h3>
+            <p>
+              The abrasives in toothpaste create micro-scratches in the
+              guard surface. Each scratch becomes a new pocket for bacteria
+              to colonize. You're trading a short-term win for a faster
+              decline.
+            </p>
+          </div>
+          <div class="works-on-card">
+            <h3>Hydrogen peroxide</h3>
+            <p>
+              Works in a pinch, but oxidative chemistry slowly degrades the
+              material. Fine occasionally; not a daily protocol.
+            </p>
+          </div>
+          <div class="works-on-card">
+            <h3>Spray + 30 seconds + rinse</h3>
+            <p>
+              The actual answer. Engineered for the material, fast enough
+              to be a real routine, gentle enough to use every practice for
+              a full season.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DENTAL NIGHT GUARD NOTE -->
+    <section class="dental-note" id="dental-note">
+      <div class="dental-note-inner">
+        <p class="section-eyebrow">If you landed here for a dental night guard</p>
+        <h2 class="section-headline">
+          The honest pivot — JockShock is not for bruxism guards.
+        </h2>
+        <p class="section-sub">
+          A lot of people who search "how to clean a mouthguard" are wearing
+          a custom-fitted dental appliance for nighttime teeth-grinding —
+          bruxism. Different problem, different material, different care.
+        </p>
+        <p class="section-sub">
+          Bruxism night guards are typically made of harder dental acrylic
+          or specific dental-grade thermoplastics. Most dental practices
+          recommend a daily brushing with a soft-bristle brush and
+          non-abrasive toothpaste, plus a weekly soak in a denture-cleaner
+          solution or vinegar-water. Talk to your dentist about your specific
+          appliance — they made it, they know what holds up best.
+        </p>
+        <p class="section-sub">
+          We're not going to pretend JockShock is the right tool for your
+          night guard. It's built for athletic mouthguards used during
+          contact sports — different material, different bacterial load,
+          different routine. If you're shopping for a sports mouthguard
+          tomorrow, we've got you. Tonight's grinding guard, see your
+          dentist.
+        </p>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq">
+      <div class="faq-inner">
+        <p class="section-eyebrow">Common questions</p>
+        <h2 class="section-headline">Quick answers.</h2>
+        <div class="faq-list">
+          {
+            FAQ_ITEMS.map((item) => (
+              <details class="faq-item">
+                <summary>
+                  <span class="faq-q">{item.q}</span>
+                  <span class="faq-icon" aria-hidden="true">+</span>
+                </summary>
+                <p class="faq-a">{item.a}</p>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- TIERS -->
+    <section class="tiers">
+      <div class="tiers-inner">
+        <p class="section-eyebrow">Get yours</p>
+        <h2 class="section-headline">Most start with the 3-pack.</h2>
+        <p class="section-sub center">
+          One bottle for the gear bag, one for the locker, one for home. A
+          3-pack lasts most of a season at after-every-practice cadence.
+        </p>
+        <div class="tier-grid">
+          <a href="/products/jockshock/" class="tier">
+            <div class="tier-label">Single</div>
+            <div class="tier-detail">1 × 32oz</div>
+            <div class="tier-price">$24.99</div>
+            <div class="tier-bottom">Get it →</div>
+          </a>
+          <a href="/products/jockshock/" class="tier featured">
+            <span class="tier-badge">Most Pick This</span>
+            <div class="tier-label">3-Pack</div>
+            <div class="tier-detail">3 × 32oz</div>
+            <div class="tier-price">$59.99</div>
+            <div class="tier-bottom">Get it →</div>
+          </a>
+          <a href="/products/jockshock/" class="tier">
+            <div class="tier-label">6-Pack</div>
+            <div class="tier-detail">6 × 32oz</div>
+            <div class="tier-price">$99.99</div>
+            <div class="tier-bottom">Get it →</div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- RELATED -->
+    <section class="related">
+      <div class="related-inner">
+        <p class="section-eyebrow">Related</p>
+        <h2 class="section-headline">More from the gear bag.</h2>
+        <div class="related-grid">
+          <a href="/learn/shoe-deodorizer-spray/" class="related-card">
+            <h3>Shoe deodorizer spray</h3>
+            <p>The cleats, the training shoes, the kid's sneakers. Same routine, different gear.</p>
+          </a>
+          <a href="/learn/get-smell-out-of-cleats/" class="related-card">
+            <h3>Get the smell out of cleats</h3>
+            <p>Soccer, football, lacrosse, baseball. The cross-sport cleat playbook.</p>
+          </a>
+          <a href="/learn/how-to-mold-a-mouthguard/" class="related-card">
+            <h3>How to mold a mouthguard</h3>
+            <p>The pre-fitting parent guide. Boil-and-bite, custom fit, what the kid needs.</p>
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+

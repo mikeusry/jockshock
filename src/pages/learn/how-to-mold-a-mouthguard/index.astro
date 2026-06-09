@@ -1,0 +1,344 @@
+---
+/**
+ * /learn/how-to-mold-a-mouthguard/ — adjacency hub for the mouthguard
+ * cleaning page (Tier 1b). NEW page idea (not in v1 strategy) — DFS
+ * surfaced "how do i mold a mouthguard" at 2,400/mo, KD 0.
+ *
+ * Audience: parents pre-fitting a kid's mouthguard before season starts.
+ * Pre-purchase intent. Page reviews the boil-and-bite process correctly,
+ * notes when to go custom-fitted (orthodontist), and threads JockShock
+ * in as the post-fitting routine — soft-sell, educational first.
+ *
+ * Cross-links to /learn/how-to-clean-a-mouthguard/ for the cleaning
+ * follow-up.
+ *
+ * CLAIMS COMPLIANCE: deodorizer-only. ZeroPoint Technology trust line.
+ */
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import "../../../styles/learn-hub.css";
+
+const title = "How to Mold a Mouthguard (the Boil-and-Bite Guide)";
+const description =
+  "How to properly mold a boil-and-bite mouthguard for football, hockey, lacrosse, wrestling, BJJ, or boxing. Step-by-step fitting + when to go custom-fitted. Plus the post-fitting routine that keeps it from smelling.";
+
+const HERO_BOTTLE =
+  "https://res.cloudinary.com/southland-organics/image/upload/c_fit,w_700,q_auto,f_auto,dpr_auto/JockShock/jockshock-32oz-single-2026.png";
+
+const FAQ_ITEMS = [
+  {
+    q: "How do you mold a boil-and-bite mouthguard?",
+    a: "Boil water, drop the mouthguard in for 30–60 seconds (check the package — some brands specify exact timing), remove, dip briefly in cold water (1 second), then bite down firmly while pressing the front of the guard against your teeth and using your tongue to pull the back upward. Hold 30 seconds. Inspect the fit; if it looks loose, repeat the boil step.",
+  },
+  {
+    q: "How long do you boil a mouthguard?",
+    a: "30–60 seconds in just-boiling water (not vigorously boiling — bubbles, not rolling). Most brands specify 30 seconds; some thicker mouthguards need a full minute. Don't exceed the package time — over-softened material won't hold a fit. Read the package carefully; it's the most-skipped instruction in athletic gear.",
+  },
+  {
+    q: "Why doesn't my mouthguard fit right after molding?",
+    a: "Almost always because the bite was rushed. The window between dipping in cold water and biting down is short — about 5 seconds. If you wait too long, the material starts setting before your teeth are in. The fix: re-boil and try again. Most brands allow 2–3 re-molds before the material loses its memory.",
+  },
+  {
+    q: "When should I get a custom-fitted mouthguard from an orthodontist?",
+    a: "Three scenarios: (1) you wear braces — boil-and-bite doesn't fit around brackets correctly; (2) you've had repeated mouth/jaw injuries with standard guards; (3) you're playing a contact sport at a level where the cost of a chipped tooth exceeds the cost of a $150–$300 custom fit. For most rec / club / HS athletes, a $20 boil-and-bite is the right answer if molded correctly.",
+  },
+  {
+    q: "Should kids and adults use different mouthguards?",
+    a: "Yes — youth-sized mouthguards are smaller and thinner. Adult mouthguards in a kid's mouth fit poorly and can interfere with breathing during play. Most brands make youth, junior, and adult sizes. Check the age range on the package before buying.",
+  },
+  {
+    q: "How long does a properly-molded mouthguard last?",
+    a: "If kept clean, a full season — sometimes two for non-contact sports. If neglected (not cleaned, stored damp, exposed to heat), it's unwearable in 4–6 weeks. The replacement cycle isn't really about wear; it's about the smell, taste, and visible discoloration making the athlete refuse to wear it. The cleaning routine matters more than the mouthguard brand.",
+  },
+  {
+    q: "What do I do AFTER molding to keep the mouthguard fresh?",
+    a: "Spray, 30-second wait, rinse with cool water, vented case. After every practice, every scrimmage, every game. See the dedicated mouthguard cleaning hub for the full routine. Cleaning consistency is the difference between a one-season mouthguard and a one-month mouthguard.",
+  },
+];
+
+const ARTICLE_LD = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: title,
+  description,
+  author: { "@type": "Organization", name: "JockShock" },
+  publisher: {
+    "@type": "Organization",
+    name: "JockShock",
+    "@id": "https://www.jockshockspray.com/#org",
+  },
+  datePublished: "2026-05-06",
+};
+
+const FAQ_LD = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQ_ITEMS.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: { "@type": "Answer", text: item.a },
+  })),
+};
+---
+
+<BaseLayout title={title} description={description} jsonLd={[ARTICLE_LD, FAQ_LD]}>
+  <div class="js-learn">
+    <section class="hero">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">The pre-season parent guide</p>
+          <h1 class="hero-headline">
+            Boil. Bite. Done.<br />The mouthguard fitting in five minutes.
+          </h1>
+          <p class="hero-sub">
+            Football, hockey, lacrosse, wrestling, BJJ, boxing — the season
+            starts with a mouthguard fitting on the kitchen counter. Most
+            mouthguards arrive in the package un-fitted; the molding step is
+            on you. Done right, it lasts the season. Done wrong, the kid
+            chews through it by week three.
+          </p>
+          <p class="hero-promise">
+            Step-by-step fitting, what most brands won't tell you on the
+            package, and the post-fitting routine that keeps the mouthguard
+            from becoming the worst-smelling thing in the bag.
+          </p>
+          <div class="hero-cta-row">
+            <a href="/learn/how-to-clean-a-mouthguard/" class="cta-primary">After Molding: The Cleaning Hub</a>
+            <a href="#routine" class="cta-secondary">See the steps</a>
+          </div>
+          <ul class="hero-trust">
+            <li>For boil-and-bite + custom guards</li>
+            <li>Football · Hockey · Lacrosse</li>
+            <li>Wrestling · BJJ · Boxing</li>
+            <li>Youth + Adult</li>
+          </ul>
+        </div>
+        <div class="hero-product">
+          <img src={HERO_BOTTLE} alt="JockShock 32oz pro-grade equipment deodorizer" width="700" height="700" />
+        </div>
+      </div>
+    </section>
+
+    <section class="why">
+      <div class="why-inner">
+        <p class="section-eyebrow">Why molding matters</p>
+        <h2 class="section-headline">
+          A bad fit is worse than no mouthguard.
+        </h2>
+        <p class="section-sub">
+          A poorly-molded mouthguard rocks against the teeth during play,
+          works loose during exertion, and gets chewed through within weeks
+          because the kid is constantly biting it back into position. A
+          well-molded one stays put, doesn't interfere with breathing, and
+          lasts a full season.
+        </p>
+        <p class="section-sub">
+          The difference is 60 seconds of attention at the kitchen counter.
+          Done right once, you're done. Done wrong, you'll be re-buying
+          mouthguards and the kid will complain about the fit at every
+          practice.
+        </p>
+      </div>
+    </section>
+
+    <section class="how" id="routine">
+      <div class="how-inner">
+        <p class="section-eyebrow">The boil-and-bite routine</p>
+        <h2 class="section-headline">
+          The five steps. Don't skip any of them.
+        </h2>
+        <p class="section-sub">
+          Read your specific mouthguard's package — boil times vary by brand
+          (Shock Doctor is different from Battle is different from SISU).
+          The general flow is the same; specifics matter.
+        </p>
+        <ol class="steps">
+          <li>
+            <span class="step-num">1</span>
+            <h3>Bring water to a soft boil</h3>
+            <p>You want bubbles, not a rolling boil. Take the pan off the heat once it starts bubbling. Have a bowl of cold water ready next to it.</p>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <h3>Submerge the mouthguard</h3>
+            <p>Drop the mouthguard in. Most brands say 30–60 seconds — check the package. Use a slotted spoon or tongs to flip it once mid-soak so both sides soften evenly.</p>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <h3>Quick cold dip (1 second)</h3>
+            <p>Pull the mouthguard out, dip in cold water for ONE second — long enough that it doesn't burn the mouth, short enough that it stays moldable.</p>
+          </li>
+          <li>
+            <span class="step-num">4</span>
+            <h3>Bite + suck + push</h3>
+            <p>Insert into mouth, bite down firmly. Use the tongue to push the back of the guard upward against the roof of the mouth. Use the cheeks to suck inward. Press with index fingers against the front of the teeth. Hold 30–45 seconds.</p>
+          </li>
+          <li>
+            <span class="step-num">5</span>
+            <h3>Cold rinse, inspect</h3>
+            <p>Run under cold water for 10 seconds to set the shape. Pull out and inspect — the guard should sit flush against the teeth with no gaps, no rocking. If it's loose, you can re-boil up to 2–3 times before the material loses memory.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="works-on">
+      <div class="works-on-inner">
+        <p class="section-eyebrow">By sport, by age</p>
+        <h2 class="section-headline">Different sports, different mouthguard choices.</h2>
+        <p class="section-sub">
+          The right mouthguard depends on the sport's contact level and the
+          athlete's age. A few notes per category:
+        </p>
+        <div class="works-on-grid">
+          <div class="works-on-card">
+            <h3>Football / hockey / lacrosse</h3>
+            <p>
+              Heavy-duty mouthguard, often with a strap that attaches to the
+              helmet. Boil-and-bite is fine at HS level; consider custom for
+              college and above.
+            </p>
+          </div>
+          <div class="works-on-card">
+            <h3>Wrestling</h3>
+            <p>
+              Lighter-duty mouthguard, no strap. Wrestling guards see less
+              direct impact than football but more overall wear from constant
+              repositioning. Replace each season.
+            </p>
+          </div>
+          <div class="works-on-card">
+            <h3>BJJ / MMA / boxing</h3>
+            <p>
+              Heaviest-duty + tightest fit. Combat sports take direct strikes;
+              fit matters more than any other sport. Many serious adults skip
+              boil-and-bite for custom from a sports dentist.
+            </p>
+          </div>
+          <div class="works-on-card">
+            <h3>Youth (under 12)</h3>
+            <p>
+              Youth-sized mouthguard. Adult-sized in a kid's mouth fits
+              poorly and can interfere with breathing during exertion. Check
+              the age range on the package.
+            </p>
+          </div>
+          <div class="works-on-card">
+            <h3>With braces</h3>
+            <p>
+              Standard boil-and-bite doesn't fit around brackets. Special
+              orthodontic mouthguards exist (no boiling required, designed
+              to flex around braces). Check with the orthodontist.
+            </p>
+          </div>
+          <div class="works-on-card">
+            <h3>Custom-fitted (dental)</h3>
+            <p>
+              Made by a dentist or orthodontist via dental impression, $150–
+              $300+. Best fit, longest life, best protection. Worth it for
+              serious athletes; overkill for most rec / club kids.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="dental-note">
+      <div class="dental-note-inner">
+        <p class="section-eyebrow">After the molding: keeping it from reeking</p>
+        <h2 class="section-headline">
+          A clean mouthguard lasts a season. A neglected one lasts a month.
+        </h2>
+        <p class="section-sub">
+          Mouthguards spend hours pressed against gums in a sealed
+          environment, then get tossed in a closed case damp. Within a week
+          of practice, the smell sets in. Within a month, it's the worst
+          thing in the bag. Most "the mouthguard is destroyed" replacements
+          aren't from wear — they're from smell-driven refusal to wear them.
+        </p>
+        <p class="section-sub">
+          The fix is the same routine that fixes the rest of the gear: spray,
+          30-second wait, cool-water rinse, vented case. After every
+          practice, every game. Two minutes total. See the
+          <a href="/learn/how-to-clean-a-mouthguard/" class="inline-link">mouthguard cleaning hub</a>
+          for the full routine, including the dishwasher / mouthwash / denture
+          tab false-fixes that can damage the mouthguard.
+        </p>
+      </div>
+    </section>
+
+    <section class="faq">
+      <div class="faq-inner">
+        <p class="section-eyebrow">Common questions</p>
+        <h2 class="section-headline">Quick answers.</h2>
+        <div class="faq-list">
+          {
+            FAQ_ITEMS.map((item) => (
+              <details class="faq-item">
+                <summary>
+                  <span class="faq-q">{item.q}</span>
+                  <span class="faq-icon" aria-hidden="true">+</span>
+                </summary>
+                <p class="faq-a">{item.a}</p>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="tiers">
+      <div class="tiers-inner">
+        <p class="section-eyebrow">Get yours</p>
+        <h2 class="section-headline">After molding: the cleaning routine.</h2>
+        <p class="section-sub center">
+          The mouthguard is fitted. Now keep it from reeking. The 32oz handles
+          a full season; the 3-pack is the household-of-multiple-athletes pick.
+        </p>
+        <div class="tier-grid">
+          <a href="/products/jockshock/" class="tier">
+            <div class="tier-label">Single</div>
+            <div class="tier-detail">1 × 32oz</div>
+            <div class="tier-price">$24.99</div>
+            <div class="tier-bottom">Get it →</div>
+          </a>
+          <a href="/products/jockshock/" class="tier featured">
+            <span class="tier-badge">Most Pick This</span>
+            <div class="tier-label">3-Pack</div>
+            <div class="tier-detail">3 × 32oz</div>
+            <div class="tier-price">$59.99</div>
+            <div class="tier-bottom">Get it →</div>
+          </a>
+          <a href="/products/jockshock/" class="tier">
+            <div class="tier-label">6-Pack</div>
+            <div class="tier-detail">6 × 32oz</div>
+            <div class="tier-price">$99.99</div>
+            <div class="tier-bottom">Get it →</div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="related">
+      <div class="related-inner">
+        <p class="section-eyebrow">Related</p>
+        <h2 class="section-headline">More from the gear bag.</h2>
+        <div class="related-grid">
+          <a href="/learn/how-to-clean-a-mouthguard/" class="related-card">
+            <h3>How to clean a mouthguard</h3>
+            <p>The post-fitting routine. Spray, rinse, store. Every practice. The mouthguard's worth keeping fresh.</p>
+          </a>
+          <a href="/learn/clean-football-pads/" class="related-card">
+            <h3>How to clean football pads</h3>
+            <p>The rest of the football kit. Same chemistry, more pieces.</p>
+          </a>
+          <a href="/learn/get-smell-out-of-cleats/" class="related-card">
+            <h3>Get the smell out of cleats</h3>
+            <p>The cleat-specific routine. Soccer, football, lacrosse, baseball — same playbook.</p>
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
