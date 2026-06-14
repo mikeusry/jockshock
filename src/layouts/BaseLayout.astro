@@ -159,6 +159,16 @@ const pixelEndpoint =
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
+    {/* Google site verification (Merchant Center / Search Console domain claim).
+        Set PUBLIC_GOOGLE_SITE_VERIFICATION in Vercel to the token Google gives
+        you ("HTML tag" method) — no redeploy of code needed, just the env var.
+        Renders nothing until set, so it's safe to ship empty. T-904. */}
+    {import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION && (
+      <meta
+        name="google-site-verification"
+        content={import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION}
+      />
+    )}
     <!-- Favicons — the real JockShock "O" glyph (chamfered rectangle with
          lightning bolt) cropped from the wordmark. PNGs at multiple sizes;
          no SVG (the bolt geometry is too distinctive to redraw cleanly). -->
