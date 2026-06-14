@@ -51,7 +51,15 @@ const VARIANT_DESCRIPTIONS: Record<string, string> = {
   "JOCKSHOCK-3x32oz-Pack":
     "JockShock Athlete Pack — three 32 oz bottles of pro-grade gear deodorizer. Treat cleats, pads, mouthguard, and gym bag at the source. No fragrance, no bleach. Powered by ZeroPoint Technology. Made in USA. 30-day money-back.",
   "JOCKSHOCK-6x32oz-Pack":
-    "JockShock Team Pack — six 32 oz bottles. Built for the whole roster. Pro-grade gear deodorizer that goes after funk at the source. No fragrance, no bleach. Powered by ZeroPoint Technology. Made in USA. 30-day money-back.",
+    "JockShock 6-Pack — six 32 oz spray bottles of pro-grade gear deodorizer. Enough for the whole team. Goes after gear funk at the source. No fragrance, no bleach. Powered by ZeroPoint Technology. Made in USA. 30-day money-back.",
+};
+
+// Title overrides per SKU. Google's content classifier false-flagged the 6-pack
+// under guns/weapons policy when its title read "Team Pack — 6 Bottles" (the
+// 32oz + 3-pack, same product, were never flagged). Neutral "6-Pack / spray
+// bottles" wording removes the ambiguity. Falls back to the Shopify variant title.
+const VARIANT_TITLE_OVERRIDES: Record<string, string> = {
+  "JOCKSHOCK-6x32oz-Pack": "6-Pack — Six 32 oz Spray Bottles",
 };
 
 interface ShopifyVariant {
@@ -122,7 +130,7 @@ export const GET: APIRoute = async () => {
     .map((v) => {
       const sku = v.sku as string;
       const price = `${parseFloat(v.price.amount).toFixed(2)} ${v.price.currencyCode}`;
-      const title = `${BRAND} — ${v.title}`;
+      const title = `${BRAND} — ${VARIANT_TITLE_OVERRIDES[sku] || v.title}`;
       const image =
         VARIANT_IMAGES[sku] || product!.featuredImage?.url || "";
       const description = VARIANT_DESCRIPTIONS[sku] || title;
