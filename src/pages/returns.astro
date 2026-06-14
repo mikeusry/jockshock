@@ -1,0 +1,169 @@
+---
+/**
+ * /returns — JockShock return & refund policy.
+ *
+ * Exists because Google Merchant Center requires a customer-readable return
+ * policy URL on the merchant's own domain (jockshockspray.com), and the site
+ * previously only stated "30-day money-back guarantee" in marketing copy with
+ * no dedicated policy page. This formalizes that stated guarantee into a real,
+ * GMC-acceptable policy page. Terms mirror the existing site promise (30-day
+ * money-back); checkout/fulfillment runs through the Southland Shopify backend,
+ * so refunds are issued to the original payment method.
+ *
+ * Voice: plain and clear (a policy page, not a buy page), kept in the brand's
+ * dark register. Self-styled — no dependency on other page CSS.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const title = "Returns & Refunds — 30-Day Money-Back Guarantee | JockShock";
+const description =
+  "JockShock's return and refund policy: a 30-day money-back guarantee. How to start a return, what's eligible, and how refunds are issued.";
+
+const SUPPORT_EMAIL = "hello@jockshockspray.com";
+const SUPPORT_PHONE = "800-608-3755";
+const lastUpdated = "June 2026";
+---
+
+<BaseLayout title={title} description={description}>
+  <main class="returns">
+    <div class="returns-inner">
+      <p class="eyebrow">Returns &amp; Refunds</p>
+      <h1>30-Day Money-Back Guarantee</h1>
+      <p class="lede">
+        We stand behind JockShock. If you're not satisfied for any reason,
+        return it within 30 days of delivery for a full refund of the purchase
+        price. No funk, no fuss.
+      </p>
+
+      <section>
+        <h2>What's covered</h2>
+        <ul>
+          <li>
+            Any JockShock product — the 32&nbsp;oz Starter, the 3-Bottle
+            Athlete Pack, or the 6-Bottle Team Pack.
+          </li>
+          <li>
+            Returns requested within <strong>30 days</strong> of the delivery
+            date.
+          </li>
+          <li>
+            Opened or partially used bottles are eligible — this is a
+            satisfaction guarantee, so you don't have to send back an unused
+            product to qualify.
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>How to start a return</h2>
+        <ol>
+          <li>
+            Email <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> (or
+            call <a href={`tel:${SUPPORT_PHONE.replace(/[^0-9]/g, "")}`}
+              >{SUPPORT_PHONE}</a
+            >) with your order number and the reason for the return.
+          </li>
+          <li>
+            We'll confirm your return and send instructions. You do not need to
+            ship anything back before your refund is approved on our end.
+          </li>
+          <li>
+            Once approved, your refund is issued to the original payment method.
+          </li>
+        </ol>
+      </section>
+
+      <section>
+        <h2>Refunds</h2>
+        <p>
+          Approved refunds are returned to your original payment method.
+          Refunds typically post within 5–10 business days after approval,
+          depending on your bank or card issuer. Original shipping charges, if
+          any, are non-refundable.
+        </p>
+      </section>
+
+      <section>
+        <h2>Damaged or wrong items</h2>
+        <p>
+          If your order arrives damaged, defective, or incorrect, contact us
+          within 30 days and we'll make it right with a replacement or a full
+          refund — including any shipping you paid. Please include a photo if
+          the product arrived damaged.
+        </p>
+      </section>
+
+      <section>
+        <h2>Questions</h2>
+        <p>
+          Reach us at <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> or
+          <a href={`tel:${SUPPORT_PHONE.replace(/[^0-9]/g, "")}`}
+            >{SUPPORT_PHONE}</a
+          >. We're a small team of athletes — a real person will get back to you.
+        </p>
+      </section>
+
+      <p class="updated">Last updated: {lastUpdated}</p>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .returns {
+    background: var(--jockshock-black, #0a0a0a);
+    color: #e9e9e9;
+    min-height: 70vh;
+    padding: clamp(3rem, 8vw, 6rem) 1.25rem;
+  }
+  .returns-inner {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.8rem;
+    color: var(--jockshock-yellow, #facc15);
+    margin: 0 0 0.75rem;
+  }
+  h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1.1;
+    margin: 0 0 1.25rem;
+    color: #fff;
+  }
+  .lede {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    color: #cfcfcf;
+    margin: 0 0 2.5rem;
+  }
+  section {
+    margin: 0 0 2rem;
+  }
+  h2 {
+    font-size: 1.35rem;
+    color: var(--jockshock-yellow, #facc15);
+    margin: 0 0 0.75rem;
+  }
+  ul,
+  ol {
+    padding-left: 1.25rem;
+    line-height: 1.7;
+  }
+  li {
+    margin: 0 0 0.5rem;
+  }
+  p {
+    line-height: 1.7;
+  }
+  a {
+    color: var(--jockshock-yellow, #facc15);
+    text-decoration: underline;
+  }
+  .updated {
+    margin-top: 3rem;
+    font-size: 0.85rem;
+    color: #888;
+  }
+</style>
