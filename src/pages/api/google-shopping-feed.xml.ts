@@ -37,6 +37,14 @@ const VARIANT_IMAGES: Record<string, string> = {
     "https://res.cloudinary.com/southland-organics/image/upload/c_pad,b_white,w_1200,h_1200,f_auto,q_auto/JockShock/jockshock-6pack-team-2026.png",
 };
 
+// Shipping weight per pack (lb), filled bottle ≈ 2.25 lb each + packaging.
+// GMC flags items missing shipping_weight, so every offer needs one.
+const VARIANT_SHIPPING_LB: Record<string, number> = {
+  "JOCKSHOCK-32oz": 2.4,
+  "JOCKSHOCK-3x32oz-Pack": 7.2,
+  "JOCKSHOCK-6x32oz-Pack": 14.2,
+};
+
 const VARIANT_DESCRIPTIONS: Record<string, string> = {
   "JOCKSHOCK-32oz":
     "Pro-grade equipment deodorizer — goes after gear funk at the source, not the surface. Cleats, pads, mouthguard, gym bag. 32 oz. No fragrance, no bleach. Built by D1 athletes. Powered by ZeroPoint Technology. Made in USA. 30-day money-back.",
@@ -133,7 +141,13 @@ export const GET: APIRoute = async () => {
         `      <g:mpn>${esc(sku)}</g:mpn>`,
         `      <g:identifier_exists>no</g:identifier_exists>`,
         `      <g:product_type>Athletic Gear Deodorizer</g:product_type>`,
-        `      <g:google_product_category>469</g:google_product_category>`, // Health & Beauty > Personal Care > Deodorant & Anti-Perspirant
+        // 3049 = Health & Beauty > Personal Care > Foot Care > Foot Odor Removers.
+        // The prior value (469 = bare "Health & Beauty") was too broad — Google
+        // couldn't place it, fell back to scanning the title, and false-flagged
+        // the 6-pack ("Team Pack — 6 Bottles") under a weapons policy. A precise
+        // odor-remover category fixes the misclassification.
+        `      <g:google_product_category>3049</g:google_product_category>`,
+        `      <g:shipping_weight>${esc(((VARIANT_SHIPPING_LB[sku] || 2.4) * 453.592).toFixed(0))} g</g:shipping_weight>`,
         `    </item>`,
       ].join("\n");
     });
