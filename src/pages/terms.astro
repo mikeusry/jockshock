@@ -1,0 +1,183 @@
+---
+/**
+ * /terms — JockShock terms of service.
+ *
+ * Exists because Google Merchant Center expects a customer-readable terms page
+ * on the merchant's own domain. Part of the fix for the JockShock MC
+ * (5807461576) Misrepresentation suspension. JockShock is a Southland Organics
+ * brand; checkout runs through the Southland Shopify backend.
+ *
+ * Self-styled — same dark register as returns.astro / privacy.astro.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const title = "Terms of Service | JockShock";
+const description =
+  "The terms that govern your use of jockshockspray.com and purchases of JockShock products.";
+
+const SUPPORT_EMAIL = "hello@jockshockspray.com";
+const SUPPORT_PHONE = "800-608-3755";
+const lastUpdated = "June 2026";
+---
+
+<BaseLayout title={title} description={description}>
+  <main class="policy">
+    <div class="policy-inner">
+      <p class="eyebrow">Legal</p>
+      <h1>Terms of Service</h1>
+      <p class="lede">
+        These terms govern your use of jockshockspray.com and your purchase of
+        JockShock products. By using the site or placing an order, you agree to
+        them.
+      </p>
+
+      <section>
+        <h2>Who we are</h2>
+        <p>
+          JockShock is a brand of Southland Organics, 189 Luke Road, Bogart, GA
+          30622. Questions: <a href={`mailto:${SUPPORT_EMAIL}`}
+            >{SUPPORT_EMAIL}</a
+          > · <a href={`tel:${SUPPORT_PHONE.replace(/[^0-9]/g, "")}`}
+            >{SUPPORT_PHONE}</a
+          >.
+        </p>
+      </section>
+
+      <section>
+        <h2>Products &amp; pricing</h2>
+        <p>
+          We do our best to describe and price products accurately, but errors
+          can occur. We reserve the right to correct any error, change prices,
+          or limit quantities at any time, and to cancel an order placed at an
+          incorrect price (we'll refund you in full if we do). Product images
+          are for illustration.
+        </p>
+      </section>
+
+      <section>
+        <h2>Orders &amp; payment</h2>
+        <p>
+          Placing an order is an offer to buy. We may accept or decline any
+          order. Payment is processed securely at checkout through our payment
+          provider. You're responsible for providing accurate shipping and
+          contact information.
+        </p>
+      </section>
+
+      <section>
+        <h2>Product use</h2>
+        <p>
+          JockShock is an equipment and gear deodorizer intended for use on
+          athletic gear and surfaces as described on the product. Follow the
+          label directions. It is not a drug, medical device, or treatment for
+          any condition.
+        </p>
+      </section>
+
+      <section>
+        <h2>Shipping, returns &amp; refunds</h2>
+        <p>
+          Shipping is covered in our <a href="/shipping/">Shipping Policy</a> and
+          returns in our <a href="/returns/">Returns &amp; Refunds</a> policy, both
+          of which are part of these terms.
+        </p>
+      </section>
+
+      <section>
+        <h2>Intellectual property</h2>
+        <p>
+          The JockShock name, logo, content, and site design are owned by
+          Southland Organics and may not be copied or used without permission.
+        </p>
+      </section>
+
+      <section>
+        <h2>Limitation of liability</h2>
+        <p>
+          To the fullest extent permitted by law, JockShock and Southland
+          Organics are not liable for indirect or consequential damages arising
+          from your use of the site or products. Our total liability for any
+          claim is limited to the amount you paid for the product at issue.
+          Nothing here limits any rights you have under applicable law.
+        </p>
+      </section>
+
+      <section>
+        <h2>Governing law</h2>
+        <p>
+          These terms are governed by the laws of the State of Georgia, USA.
+        </p>
+      </section>
+
+      <section>
+        <h2>Changes</h2>
+        <p>
+          We may update these terms from time to time. The version posted here,
+          with the date below, is the current one.
+        </p>
+      </section>
+
+      <p class="updated">Last updated: {lastUpdated}</p>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .policy {
+    background: var(--jockshock-black, #0a0a0a);
+    color: #e9e9e9;
+    min-height: 70vh;
+    padding: clamp(3rem, 8vw, 6rem) 1.25rem;
+  }
+  .policy-inner {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.8rem;
+    color: var(--jockshock-yellow, #facc15);
+    margin: 0 0 0.75rem;
+  }
+  h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1.1;
+    margin: 0 0 1.25rem;
+    color: #fff;
+  }
+  .lede {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    color: #cfcfcf;
+    margin: 0 0 2.5rem;
+  }
+  section {
+    margin: 0 0 2rem;
+  }
+  h2 {
+    font-size: 1.35rem;
+    color: var(--jockshock-yellow, #facc15);
+    margin: 0 0 0.75rem;
+  }
+  ul,
+  ol {
+    padding-left: 1.25rem;
+    line-height: 1.7;
+  }
+  li {
+    margin: 0 0 0.5rem;
+  }
+  p {
+    line-height: 1.7;
+  }
+  a {
+    color: var(--jockshock-yellow, #facc15);
+    text-decoration: underline;
+  }
+  .updated {
+    margin-top: 3rem;
+    font-size: 0.85rem;
+    color: #888;
+  }
+</style>
