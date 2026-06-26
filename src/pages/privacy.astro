@@ -1,0 +1,208 @@
+---
+/**
+ * /privacy — JockShock privacy policy.
+ *
+ * Exists because Google Merchant Center requires a customer-readable privacy
+ * policy on the merchant's own domain (jockshockspray.com). The JockShock MC
+ * account (5807461576) was Misrepresentation-suspended in part because the
+ * site published no privacy/terms/shipping pages and had no policy links in
+ * the footer — the most common trust-transparency trigger for a fresh GMC.
+ * JockShock is a Southland Organics brand; data handling mirrors Southland's
+ * (Shopify checkout, Klaviyo email, first-party pixel/CDP).
+ *
+ * Voice: plain and clear (a policy page, not a buy page). Self-styled — shares
+ * the same dark register as returns.astro, no dependency on other page CSS.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const title = "Privacy Policy | JockShock";
+const description =
+  "How JockShock collects, uses, and protects your personal information — what we gather at checkout and email signup, who we share it with, and your choices.";
+
+const SUPPORT_EMAIL = "hello@jockshockspray.com";
+const SUPPORT_PHONE = "800-608-3755";
+const lastUpdated = "June 2026";
+---
+
+<BaseLayout title={title} description={description}>
+  <main class="policy">
+    <div class="policy-inner">
+      <p class="eyebrow">Legal</p>
+      <h1>Privacy Policy</h1>
+      <p class="lede">
+        JockShock is a brand of Southland Organics. This policy explains what
+        personal information we collect when you visit jockshockspray.com or buy
+        from us, how we use it, and the choices you have.
+      </p>
+
+      <section>
+        <h2>Who we are</h2>
+        <p>
+          JockShock is operated by Southland Organics, 189 Luke Road, Bogart, GA
+          30622. You can reach us at <a href={`mailto:${SUPPORT_EMAIL}`}
+            >{SUPPORT_EMAIL}</a
+          > or <a href={`tel:${SUPPORT_PHONE.replace(/[^0-9]/g, "")}`}
+            >{SUPPORT_PHONE}</a
+          >.
+        </p>
+      </section>
+
+      <section>
+        <h2>What we collect</h2>
+        <ul>
+          <li>
+            <strong>Order information</strong> — your name, shipping and billing address,
+            email, phone number, and order details when you make a purchase. Payment
+            card data is handled by our payment processor and is never stored on our
+            servers.
+          </li>
+          <li>
+            <strong>Email signup</strong> — the email address you give us for the
+            Gear Smell Field Guide or other updates.
+          </li>
+          <li>
+            <strong>Usage data</strong> — basic device, browser, and on-site activity
+            collected through cookies and our first-party analytics so we can understand
+            how the site is used and improve it.
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>How we use it</h2>
+        <ul>
+          <li>To process, fulfill, and support your orders.</li>
+          <li>
+            To send order confirmations, shipping updates, and — if you opted in
+            — marketing email you can unsubscribe from at any time.
+          </li>
+          <li>To improve the site, our products, and customer experience.</li>
+          <li>
+            To detect and prevent fraud, and to meet our legal and accounting
+            obligations.
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Who we share it with</h2>
+        <p>
+          We do not sell your personal information. We share it only with the
+          service providers who help us run the business — our e-commerce and
+          payment platforms (Shopify and its payment processors), our email
+          platform (Klaviyo), and shipping carriers — and only as needed to
+          provide the service. We may also disclose information when required by
+          law.
+        </p>
+      </section>
+
+      <section>
+        <h2>Cookies</h2>
+        <p>
+          We use cookies and similar technologies for cart functionality,
+          analytics, and to remember your preferences. You can control cookies
+          through your browser settings; disabling them may affect parts of the
+          site such as the cart.
+        </p>
+      </section>
+
+      <section>
+        <h2>Your choices</h2>
+        <ul>
+          <li>
+            Unsubscribe from marketing email any time using the link in any
+            message we send.
+          </li>
+          <li>
+            Request a copy of, correction to, or deletion of your personal
+            information by emailing <a href={`mailto:${SUPPORT_EMAIL}`}
+              >{SUPPORT_EMAIL}</a
+            >.
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Data security &amp; retention</h2>
+        <p>
+          We use industry-standard safeguards to protect your information and
+          retain it only as long as needed to fulfill the purposes above or as
+          required by law. The site is served over HTTPS and checkout is
+          processed on secured, PCI-compliant infrastructure.
+        </p>
+      </section>
+
+      <section>
+        <h2>Questions</h2>
+        <p>
+          Reach us at <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> or
+          <a href={`tel:${SUPPORT_PHONE.replace(/[^0-9]/g, "")}`}
+            >{SUPPORT_PHONE}</a
+          >. A real person will get back to you.
+        </p>
+      </section>
+
+      <p class="updated">Last updated: {lastUpdated}</p>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .policy {
+    background: var(--jockshock-black, #0a0a0a);
+    color: #e9e9e9;
+    min-height: 70vh;
+    padding: clamp(3rem, 8vw, 6rem) 1.25rem;
+  }
+  .policy-inner {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.8rem;
+    color: var(--jockshock-yellow, #facc15);
+    margin: 0 0 0.75rem;
+  }
+  h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1.1;
+    margin: 0 0 1.25rem;
+    color: #fff;
+  }
+  .lede {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    color: #cfcfcf;
+    margin: 0 0 2.5rem;
+  }
+  section {
+    margin: 0 0 2rem;
+  }
+  h2 {
+    font-size: 1.35rem;
+    color: var(--jockshock-yellow, #facc15);
+    margin: 0 0 0.75rem;
+  }
+  ul,
+  ol {
+    padding-left: 1.25rem;
+    line-height: 1.7;
+  }
+  li {
+    margin: 0 0 0.5rem;
+  }
+  p {
+    line-height: 1.7;
+  }
+  a {
+    color: var(--jockshock-yellow, #facc15);
+    text-decoration: underline;
+  }
+  .updated {
+    margin-top: 3rem;
+    font-size: 0.85rem;
+    color: #888;
+  }
+</style>

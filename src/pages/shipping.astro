@@ -1,0 +1,148 @@
+---
+/**
+ * /shipping — JockShock shipping policy.
+ *
+ * Exists because Google Merchant Center requires a customer-readable shipping
+ * policy on the merchant's own domain. Part of the fix for the JockShock MC
+ * (5807461576) Misrepresentation suspension, which flagged the absence of
+ * transparency pages (privacy/terms/shipping/returns) and any footer links to
+ * them. Fulfillment runs through the Southland Shopify backend.
+ *
+ * Self-styled — same dark register as returns.astro / privacy.astro.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const title = "Shipping Policy | JockShock";
+const description =
+  "How and when JockShock orders ship — processing time, carriers, delivery estimates, and where we ship.";
+
+const SUPPORT_EMAIL = "hello@jockshockspray.com";
+const SUPPORT_PHONE = "800-608-3755";
+const lastUpdated = "June 2026";
+---
+
+<BaseLayout title={title} description={description}>
+  <main class="policy">
+    <div class="policy-inner">
+      <p class="eyebrow">Legal</p>
+      <h1>Shipping Policy</h1>
+      <p class="lede">
+        We ship JockShock from Georgia to addresses across the continental
+        United States. Here's what to expect after you order.
+      </p>
+
+      <section>
+        <h2>Processing time</h2>
+        <p>
+          Orders are processed and shipped within <strong
+            >1–2 business days</strong
+          > of being placed (Monday–Friday, excluding holidays). You'll get a confirmation
+          email when your order ships, with tracking.
+        </p>
+      </section>
+
+      <section>
+        <h2>Delivery estimates</h2>
+        <p>
+          Once shipped, standard delivery typically takes <strong
+            >3–6 business days</strong
+          > depending on your location. These are estimates from the carrier and aren't
+          guaranteed delivery dates.
+        </p>
+      </section>
+
+      <section>
+        <h2>Carriers &amp; cost</h2>
+        <p>
+          We ship via USPS and UPS. Shipping cost (if any) is calculated and
+          shown at checkout before you pay, based on your cart and destination.
+        </p>
+      </section>
+
+      <section>
+        <h2>Where we ship</h2>
+        <p>
+          We currently ship to the 48 contiguous United States. If you need
+          shipping to Alaska, Hawaii, or a US territory, email us at <a
+            href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a
+          > and we'll see what we can do.
+        </p>
+      </section>
+
+      <section>
+        <h2>Lost, delayed, or damaged shipments</h2>
+        <p>
+          If your tracking stalls, your order is late, or it arrives damaged,
+          contact us at <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> or
+          <a href={`tel:${SUPPORT_PHONE.replace(/[^0-9]/g, "")}`}
+            >{SUPPORT_PHONE}</a
+          > and we'll make it right. See our <a href="/returns/"
+            >returns &amp; refunds</a
+          > policy for damaged or incorrect items.
+        </p>
+      </section>
+
+      <p class="updated">Last updated: {lastUpdated}</p>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .policy {
+    background: var(--jockshock-black, #0a0a0a);
+    color: #e9e9e9;
+    min-height: 70vh;
+    padding: clamp(3rem, 8vw, 6rem) 1.25rem;
+  }
+  .policy-inner {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.8rem;
+    color: var(--jockshock-yellow, #facc15);
+    margin: 0 0 0.75rem;
+  }
+  h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1.1;
+    margin: 0 0 1.25rem;
+    color: #fff;
+  }
+  .lede {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    color: #cfcfcf;
+    margin: 0 0 2.5rem;
+  }
+  section {
+    margin: 0 0 2rem;
+  }
+  h2 {
+    font-size: 1.35rem;
+    color: var(--jockshock-yellow, #facc15);
+    margin: 0 0 0.75rem;
+  }
+  ul,
+  ol {
+    padding-left: 1.25rem;
+    line-height: 1.7;
+  }
+  li {
+    margin: 0 0 0.5rem;
+  }
+  p {
+    line-height: 1.7;
+  }
+  a {
+    color: var(--jockshock-yellow, #facc15);
+    text-decoration: underline;
+  }
+  .updated {
+    margin-top: 3rem;
+    font-size: 0.85rem;
+    color: #888;
+  }
+</style>
