@@ -54,12 +54,22 @@ const VARIANT_DESCRIPTIONS: Record<string, string> = {
     "JockShock 6-Pack — six 32 oz spray bottles of pro-grade gear deodorizer. Enough for the whole team. Goes after gear funk at the source. No fragrance, no bleach. Powered by ZeroPoint Technology. Made in USA. 30-day money-back.",
 };
 
-// Title overrides per SKU. Google's content classifier false-flagged the 6-pack
-// under guns/weapons policy when its title read "Team Pack — 6 Bottles" (the
-// 32oz + 3-pack, same product, were never flagged). Neutral "6-Pack / spray
-// bottles" wording removes the ambiguity. Falls back to the Shopify variant title.
+// Full product titles per SKU (complete title, NOT a suffix — includes the brand).
+// WHY: the prior titles led with "Bottle(s)/Spray Bottles" and no product-type
+// keyword, so Google Shopping matched them to empty-spray-bottle shoppers (uline,
+// zep, "32 oz spray bottle") — 100% wrong intent, 0 conversions. Google weights the
+// front of the title most and shows only ~70 chars, so these front-load the product
+// type + use-case: "Shoe & Gear Deodorizer Spray for Athletes". No standalone
+// "Bottles" (also avoids the guns/weapons false-flag that hit the old 6-pack
+// "Team Pack — 6 Bottles" title). No promo text/price/caps, per Google's title spec.
+// Any SKU not listed falls back to "BRAND — <Shopify variant title>".
 const VARIANT_TITLE_OVERRIDES: Record<string, string> = {
-  "JOCKSHOCK-6x32oz-Pack": "6-Pack — Six 32 oz Spray Bottles",
+  "JOCKSHOCK-32oz":
+    "JockShock Shoe & Gear Deodorizer Spray for Athletes – 32 oz",
+  "JOCKSHOCK-3x32oz-Pack":
+    "JockShock Shoe & Gear Deodorizer Spray for Athletes – 32 oz, 3-Pack",
+  "JOCKSHOCK-6x32oz-Pack":
+    "JockShock Shoe & Gear Deodorizer Spray for Athletes – 32 oz, 6-Pack",
 };
 
 interface ShopifyVariant {
@@ -130,7 +140,9 @@ export const GET: APIRoute = async () => {
     .map((v) => {
       const sku = v.sku as string;
       const price = `${parseFloat(v.price.amount).toFixed(2)} ${v.price.currencyCode}`;
-      const title = `${BRAND} — ${VARIANT_TITLE_OVERRIDES[sku] || v.title}`;
+      // Overrides are complete titles (already brand-prefixed); only the fallback
+      // gets the "BRAND — variant" pattern.
+      const title = VARIANT_TITLE_OVERRIDES[sku] || `${BRAND} — ${v.title}`;
       const image =
         VARIANT_IMAGES[sku] || product!.featuredImage?.url || "";
       const description = VARIANT_DESCRIPTIONS[sku] || title;
