@@ -468,6 +468,20 @@
   line-height: 1.6;
   font-size: 0.95rem;
 }
+.js-learn .related-hub {
+  color: var(--jockshock-muted);
+  margin: 28px 0 0;
+  font-size: 0.95rem;
+}
+.js-learn .related-hub a {
+  color: var(--jockshock-yellow);
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 229, 0, 0.35);
+}
+.js-learn .related-hub a:hover {
+  border-bottom-color: var(--jockshock-yellow);
+}
 
 @media (max-width: 880px) {
   .js-learn .hero-grid {
