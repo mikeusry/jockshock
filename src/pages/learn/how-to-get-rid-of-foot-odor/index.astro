@@ -1,0 +1,372 @@
+---
+/**
+ * /learn/how-to-get-rid-of-foot-odor/ — Tier 1 REMEDY / how-to page
+ * (NEW 2026-07-14).
+ *
+ * WHY THIS EXISTS (evidence, 2026-07-14):
+ *   The [JS] Intent Search search-term report shows a large REMEDY-intent
+ *   block with no page behind it: "smelly feet remedy", "cures for stinky
+ *   feet", "get rid of foot odor", "dealing with foot odor", "what's good for
+ *   stinky feet", "solution for stinky feet" — 71 terms / 133 impressions in
+ *   30 days. These people have accepted they have a problem and are shopping
+ *   for a fix. That's the highest commercial intent in the whole foot cluster
+ *   and it was landing on a page written for a different question.
+ *
+ * SEO target cluster (DataForSEO US volume, pulled 2026-07-14):
+ *   "cures for stinky feet" (5,400/mo), "how to get rid of foot odor" (5,400),
+ *   "smelly feet remedy" (3,600), "how to stop smelly feet" (2,900),
+ *   "home remedies for smelly feet" (1,600), "get rid of foot odor" (390),
+ *   "best foot odor eliminator" (390), "foot odor eliminator" (1,000),
+ *   "odor eliminator for feet" (1,000). Cluster ~19,000/mo.
+ *
+ * ROLE IN THE CLUSTER: the REMEDY page — mid/bottom funnel, the "just tell me
+ *   what to do" query. Cause page (/learn/why-do-my-feet-smell/) feeds it;
+ *   it feeds the PDP and the comparison page.
+ *
+ * DELIBERATE STRUCTURE: leads with the actual step-by-step (these searchers
+ *   want the answer immediately, not a lecture), then explains why the popular
+ *   home remedies underperform. Do NOT bury the routine below 800 words of
+ *   preamble — that's what every listicle on this SERP does and it's why they
+ *   lose the snippet.
+ *
+ * CLAIMS COMPLIANCE — re-read before editing:
+ *   JockShock is a DEODORIZER. ALLOWED: "kills odor", "kills the funk",
+ *   "goes after the source of the smell". FORBIDDEN ANYWHERE: killing
+ *   bacteria/microbes, antibacterial, antifungal, antimicrobial, sanitizer,
+ *   disinfectant, EPA-registered, hospital-grade, FDA-approved, HOCl /
+ *   hypochlorous acid by name, and ANY claim to prevent, treat, or cure
+ *   athlete's foot, fungus, hyperhidrosis, or any medical condition.
+ *   SPECIFIC TRAP ON THIS PAGE: the query set uses the words "cure" and
+ *   "remedy". We rank for those words; we do NOT adopt them as claims. Never
+ *   write that JockShock "cures" or "treats" anything. It deodorizes. The
+ *   title uses "get rid of foot odor" (an odor outcome), never "cure".
+ *   Trust attribution is "ZeroPoint Technology" only — never the molecule.
+ *
+ * SCHEMA: Article + HowTo + FAQPage JSON-LD. FAQ answers <60 words.
+ */
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import "../../../styles/learn-hub.css";
+
+const title =
+  "How to Get Rid of Foot Odor (For Real — The Routine That Actually Holds)";
+const description =
+  "Most foot odor advice treats your feet and ignores your shoes, which is why the smell always comes back. Here's the 30-second routine that handles both ends of the problem — plus an honest look at which home remedies are worth your time.";
+
+const HERO_BOTTLE =
+  "https://res.cloudinary.com/southland-organics/image/upload/c_fit,w_700,q_auto,f_auto,dpr_auto/JockShock/jockshock-32oz-single-2026.png";
+
+const STEPS = [
+  {
+    name: "Wash and fully dry your feet",
+    text: "Soap, water, and — this is the part people skip — dry completely, especially between the toes. Damp skin going into a shoe restarts the whole cycle immediately.",
+  },
+  {
+    name: "Spray your feet",
+    text: "A light mist over clean, dry feet: tops, soles, between the toes. JockShock goes after the source of the smell rather than covering it, and it's safe on skin contact. No powder, no residue in your socks.",
+  },
+  {
+    name: "Spray inside the shoes — every pair in rotation",
+    text: "This is the step that actually breaks the cycle. Mist the insole and lining of every pair you wear regularly. The odor has been building up in there for months; treating your feet alone leaves it sitting there.",
+  },
+  {
+    name: "Air dry everything, outside the bag",
+    text: "Pull the insoles if they come out. Let the shoes breathe in open air — never zipped in a gym bag or left in a hot car. Dry footwear is most of the fight.",
+  },
+  {
+    name: "Rotate your shoes",
+    text: "A shoe needs about 24 hours to dry out fully. If you wear the same pair every single day, it never gets there. Two pairs in rotation beats almost any product you can buy.",
+  },
+  {
+    name: "Repeat after every wear",
+    text: "Thirty seconds after practice or after work. The odor rebuilds if you let it — staying ahead of it is far easier than digging out of it.",
+  },
+];
+
+const FAQ_ITEMS = [
+  {
+    q: "How do I get rid of foot odor fast?",
+    a: "Wash and fully dry your feet, spray them, then spray the inside of your shoes and let both air dry. The fast version people miss is the shoes — treating only your feet leaves the odor sitting in the footwear, and it transfers straight back the moment you put them on.",
+  },
+  {
+    q: "Do home remedies for smelly feet actually work?",
+    a: "Some help a little. Vinegar and baking soda soaks can reset your skin briefly, and rotating shoes genuinely helps because it lets them dry. But nearly every home remedy treats only your feet. The odor built up in your shoes is untouched, which is why the smell keeps coming back.",
+  },
+  {
+    q: "Why does the smell always come back?",
+    a: "Because it's a loop. Your feet sweat into the shoes, the shoes accumulate odor, and then the shoes reload your clean feet. Treat one end and the other refills it. The only thing that holds is treating your feet and the inside of your footwear at the same time.",
+  },
+  {
+    q: "How long does it take to get rid of foot odor?",
+    a: "You'll usually notice a difference after the first full treatment of both your feet and your shoes. Badly saturated footwear — a season-old pair of cleats or work boots — may take several treatments and a few days of real drying time to fully turn around.",
+  },
+  {
+    q: "Does baking soda get rid of foot odor?",
+    a: "Baking soda absorbs some moisture and neutralizes a bit of smell for a day or so, which is why it's the internet's favorite trick. But it's absorbing, not addressing the source, and it leaves powder in your shoes. It buys you a day. It doesn't end the cycle.",
+  },
+  {
+    q: "Should I throw the shoes out?",
+    a: "Usually not. Most shoes people give up on just never got treated on the inside — only the feet did. Treat the lining and insole directly, let them dry fully in open air, and repeat. A pair you were ready to bin will often come back.",
+  },
+];
+
+const ARTICLE_LD = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: title,
+  description,
+  author: { "@type": "Organization", name: "JockShock" },
+  publisher: {
+    "@type": "Organization",
+    name: "JockShock",
+    "@id": "https://www.jockshockspray.com/#org",
+  },
+  datePublished: "2026-07-14",
+};
+
+// HowTo schema — this is a procedural query, so the step list is eligible for
+// a rich result the listicles on this SERP don't earn.
+const HOWTO_LD = {
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  name: "How to get rid of foot odor",
+  description,
+  totalTime: "PT30S",
+  step: STEPS.map((s, i) => ({
+    "@type": "HowToStep",
+    position: i + 1,
+    name: s.name,
+    text: s.text,
+  })),
+};
+
+const FAQ_LD = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQ_ITEMS.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: { "@type": "Answer", text: item.a },
+  })),
+};
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  jsonLd={[ARTICLE_LD, HOWTO_LD, FAQ_LD]}
+>
+  <div class="js-learn">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">The Fix</p>
+          <h1 class="hero-headline">
+            You've been treating your feet. The smell is in your shoes.
+          </h1>
+          <p class="hero-sub">
+            That's why it keeps coming back. Every remedy you've tried — the
+            soak, the powder, the scrub — cleaned one end of the problem and left
+            the other end sitting in the closet, fully loaded.
+          </p>
+          <p class="hero-promise">
+            Here's the routine that handles both. It takes about thirty seconds
+            and it's the whole trick.
+          </p>
+          <div class="hero-cta-row">
+            <a href="#routine" class="cta-primary">See the routine</a>
+            <a href="/products/jockshock/" class="cta-secondary"
+              >Get JockShock — $24.99</a
+            >
+          </div>
+          <ul class="hero-trust">
+            <li>No powder, no residue</li>
+            <li>No fragrance, no bleach</li>
+            <li>Safe on skin contact</li>
+            <li>Made in USA</li>
+          </ul>
+        </div>
+        <div class="hero-product">
+          <img
+            src={HERO_BOTTLE}
+            alt="JockShock 32oz bottle — foot odor eliminator spray"
+            width="700"
+            height="467"
+            loading="eager"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- THE ROUTINE — lead with the answer -->
+    <section class="how" id="routine">
+      <div class="how-inner">
+        <p class="section-eyebrow">The routine</p>
+        <h2 class="section-headline">Six steps. Thirty seconds. Both ends.</h2>
+        <p class="section-sub">
+          No preamble — here's the actual thing to do. Steps 3 and 5 are the ones
+          almost everybody skips, and they're the two that make it stick.
+        </p>
+        <ol class="how-steps">
+          {
+            STEPS.map((s, i) => (
+              <li>
+                <span class="step-n">{i + 1}</span>
+                <div>
+                  <h3>{s.name}</h3>
+                  <p>{s.text}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </section>
+
+    <!-- HOME REMEDIES, HONESTLY -->
+    <section class="wo">
+      <div class="wo-inner">
+        <p class="section-eyebrow">The home remedies, honestly</p>
+        <h2 class="section-headline">
+          Which ones are worth your time, and which just buy you a day.
+        </h2>
+        <div class="wo-grid">
+          <div class="wo-card">
+            <h3>Baking soda</h3>
+            <p>
+              Absorbs moisture, neutralizes a little odor, buys you about a day —
+              then leaves powder in the shoe. It's absorbing the smell, not going
+              after what's making it.
+            </p>
+          </div>
+          <div class="wo-card">
+            <h3>Vinegar soak</h3>
+            <p>
+              Resets your skin for a few hours and smells like a salad. Twenty
+              minutes of your evening, and your shoes weren't in the bowl. The
+              odor is waiting for you.
+            </p>
+          </div>
+          <div class="wo-card">
+            <h3>Rotating your shoes</h3>
+            <p>
+              This one genuinely works and costs nothing. A shoe needs ~24 hours
+              to dry out. Two pairs in rotation does more than most products on
+              the shelf. Do this regardless.
+            </p>
+          </div>
+          <div class="wo-card">
+            <h3>Freezing your shoes</h3>
+            <p>
+              A persistent internet myth. Cold slows bacteria down; it doesn't
+              remove the odor already in the lining. Your shoes thaw, and so does
+              the smell.
+            </p>
+          </div>
+          <div class="wo-card">
+            <h3>Dryer sheets in the shoes</h3>
+            <p>
+              Pure cover-up. Fragrance on top of funk for an hour or two, then
+              the two combine into something distinctly worse.
+            </p>
+          </div>
+          <div class="wo-card featured-card">
+            <h3>Treating the footwear itself</h3>
+            <p>
+              The step nearly every list omits. Spray the insole and lining
+              directly, let it dry in open air, repeat after wear. This is the
+              one that ends the loop.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq">
+      <div class="faq-inner">
+        <p class="section-eyebrow">Common questions</p>
+        <h2 class="section-headline">Quick answers.</h2>
+        <div class="faq-list">
+          {
+            FAQ_ITEMS.map((item) => (
+              <details class="faq-item">
+                <summary>
+                  <span class="faq-q">{item.q}</span>
+                  <span class="faq-icon" aria-hidden="true">
+                    +
+                  </span>
+                </summary>
+                <p class="faq-a">{item.a}</p>
+              </details>
+            ))
+          }
+        </div>
+        <p class="faq-crosslink">
+          Want the why behind all this? Read <a href="/learn/why-do-my-feet-smell/"
+            >why feet smell in the first place</a
+          >.
+        </p>
+      </div>
+    </section>
+
+    <!-- TIERS / CTA -->
+    <section class="tiers">
+      <div class="tiers-inner">
+        <p class="section-eyebrow">Get yours</p>
+        <h2 class="section-headline">Most start with the 3-pack.</h2>
+        <p class="section-sub center">
+          One for the mudroom, one for the gym bag, one for the work boots by the
+          door. Lasts most of a season at after-every-wear cadence.
+        </p>
+        <div class="tier-grid">
+          <a href="/products/jockshock/" class="tier">
+            <div class="tier-label">Single</div>
+            <div class="tier-detail">1 × 32oz</div>
+            <div class="tier-price">$24.99</div>
+            <div class="tier-bottom">Get it →</div>
+          </a>
+          <a href="/products/jockshock/" class="tier featured">
+            <span class="tier-badge">Most Pick This</span>
+            <div class="tier-label">3-Pack</div>
+            <div class="tier-detail">3 × 32oz</div>
+            <div class="tier-price">$59.99</div>
+            <div class="tier-bottom">Get it →</div>
+          </a>
+          <a href="/products/jockshock/" class="tier">
+            <div class="tier-label">6-Pack</div>
+            <div class="tier-detail">6 × 32oz</div>
+            <div class="tier-price">$99.99</div>
+            <div class="tier-bottom">Get it →</div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="related">
+      <div class="related-inner">
+        <p class="section-eyebrow">Related</p>
+        <h2 class="section-headline">Keep going.</h2>
+        <div class="related-grid">
+          <a href="/learn/why-do-my-feet-smell/" class="related-card">
+            <h3>Why do my feet smell?</h3>
+            <p>The actual cause — and why washing them never fixes it for long.</p>
+          </a>
+          <a href="/learn/foot-deodorant-vs-powder-vs-spray/" class="related-card">
+            <h3>Powder vs. soak vs. spray</h3>
+            <p>An honest comparison of the drugstore aisle — including where we stop.</p>
+          </a>
+          <a href="/learn/smelly-feet-spray/" class="related-card">
+            <h3>Smelly feet spray</h3>
+            <p>The full routine for feet, boots, and the shoes they live in.</p>
+          </a>
+        </div>
+        <p class="related-hub">
+          Every routine in one place — <a href="/learn/">the JockShock gear-care guides</a>.
+        </p>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

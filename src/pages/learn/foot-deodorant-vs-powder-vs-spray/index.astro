@@ -1,0 +1,405 @@
+---
+/**
+ * /learn/foot-deodorant-vs-powder-vs-spray/ — Tier 1 ALTERNATIVES page
+ * (NEW 2026-07-14).
+ *
+ * WHY THIS EXISTS (evidence, 2026-07-14):
+ *   The [JS] Intent Search search-term report is dominated by PRODUCT-
+ *   ALTERNATIVE vocabulary — people shopping the drugstore aisle, not
+ *   searching for us: "foot deodorant" (26 impr), "antiperspirant for feet",
+ *   "foot soak for smelly feet", "best foot powder for odor", "best soap for
+ *   stinky feet". 126 such terms / 273 impressions in 30 days, and NO page
+ *   answered them. Expected CTR grades BELOW_AVERAGE across the campaign
+ *   while ad relevance grades fine — the words match, the intent doesn't.
+ *   This page is the intent match.
+ *
+ * SEO target cluster (DataForSEO US volume, pulled 2026-07-14):
+ *   "antiperspirant for feet" (6,600/mo), "foot deodorant" (5,400),
+ *   "deodorant for feet" (5,400), "foot powder for odor" (1,600),
+ *   "foot soak for smelly feet" (1,300), "foot soak for odor" (1,300),
+ *   "foot deodorant spray" (1,000), "soap for smelly feet" (1,000),
+ *   "home remedies for smelly feet" (1,600), "best foot powder for odor" (260),
+ *   "best soap for stinky feet" (170). Cluster ~21,000/mo — the single
+ *   biggest uncovered block in the foot market.
+ *
+ * ROLE IN THE CLUSTER: the COMPARISON / bottom-funnel page. Catches the
+ *   shopper mid-aisle, explains honestly why each format underdelivers on
+ *   ODOR specifically, and routes to the product. Cause page feeds this;
+ *   this feeds the PDP.
+ *
+ * HONESTY NOTE (deliberate): powders and antiperspirants are NOT useless —
+ *   they manage MOISTURE, and they do that adequately. We say so. What they
+ *   don't do is address odor already living in the footwear. Pretending they
+ *   do nothing would be the kind of claim a reader can disprove in one wear,
+ *   and it would cost us the sale. The honest comparison is the persuasive one.
+ *
+ * CLAIMS COMPLIANCE — re-read before editing:
+ *   JockShock is a DEODORIZER. ALLOWED: "kills odor", "kills the funk",
+ *   "goes after the source of the smell". FORBIDDEN ANYWHERE: killing
+ *   bacteria/microbes, antibacterial, antifungal, antimicrobial, sanitizer,
+ *   disinfectant, EPA-registered, hospital-grade, FDA-approved, HOCl /
+ *   hypochlorous acid by name, and ANY claim to prevent, treat, or cure
+ *   athlete's foot, fungus, hyperhidrosis, or any medical condition.
+ *   SPECIFIC TRAP ON THIS PAGE: we discuss ANTIPERSPIRANTS, which are
+ *   OTC drugs that reduce sweating. JockShock does NOT reduce sweating and we
+ *   must NEVER imply it replaces an antiperspirant's function or treats sweaty
+ *   feet / hyperhidrosis. Frame strictly as: antiperspirant = moisture,
+ *   JockShock = odor. Different jobs. Never say we stop sweat.
+ *   Trust attribution is "ZeroPoint Technology" only — never the molecule.
+ *
+ * SCHEMA: Article + FAQPage JSON-LD. FAQ answers <60 words (snippet bait).
+ */
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import "../../../styles/learn-hub.css";
+
+const title =
+  "Foot Powder vs. Soak vs. Spray: What Actually Kills Foot Odor (An Honest Comparison)";
+const description =
+  "Foot powder, foot soaks, antiperspirants, and deodorant sprays each do one job — and most of them aren't the odor job. Here's what each one actually does, where each one fails, and what to use if the smell keeps coming back.";
+
+const HERO_BOTTLE =
+  "https://res.cloudinary.com/southland-organics/image/upload/c_fit,w_700,q_auto,f_auto,dpr_auto/JockShock/jockshock-32oz-single-2026.png";
+
+// FAQ targets the PAA block on comparison/alternative queries.
+// Answers <60 words. Claims reviewed: antiperspirant framed as MOISTURE only.
+const FAQ_ITEMS = [
+  {
+    q: "Does foot powder actually work for odor?",
+    a: "Foot powder manages moisture, and it does that job reasonably well for a few hours. What it doesn't do is address the odor already living in your shoes. It also cakes into socks and shoe linings over time. If the smell returns the moment the shoes go back on, powder isn't the tool — the shoes are the problem.",
+  },
+  {
+    q: "Is an antiperspirant for feet the same as a deodorizer?",
+    a: "No — they do different jobs. An antiperspirant reduces sweating. A deodorizer goes after the smell. If your issue is the volume of sweat, an antiperspirant addresses that. If your issue is the odor that's built up in your feet and footwear, that's a deodorizer's job. JockShock is a deodorizer; it does not reduce sweating.",
+  },
+  {
+    q: "Do foot soaks get rid of foot odor?",
+    a: "A soak can reset your skin for a while, and some people like the ritual. But a soak treats only your feet, and it takes fifteen to twenty minutes. The odor sitting in your shoes is untouched, so the smell comes back as soon as you put them on. It's a half-fix with a long runtime.",
+  },
+  {
+    q: "What's the difference between a foot deodorant and a foot deodorizer spray?",
+    a: "Most foot deodorants add fragrance to cover the smell on your skin. A deodorizer goes after the source of the odor instead of layering scent over it — and a spray can treat the inside of shoes and boots, which is where the odor actually accumulates. Cover-up fades in an hour; the source doesn't move.",
+  },
+  {
+    q: "Can I just use regular soap on smelly feet?",
+    a: "Soap and water clean your skin, and that's genuinely worth doing. But clean feet go straight back into footwear that's been absorbing sweat for months, and the odor transfers back within minutes. If washing were enough, the smell wouldn't keep returning — the shoes are what keep reloading it.",
+  },
+  {
+    q: "So what actually stops the smell for good?",
+    a: "Treating both ends of the loop. Your feet load the shoes with sweat; the shoes reload your feet with odor. Treat only one and the other refills it. Spray the feet and the inside of the footwear, let everything air dry, and repeat after wear. That's the routine that actually holds.",
+  },
+];
+
+const ARTICLE_LD = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: title,
+  description,
+  author: { "@type": "Organization", name: "JockShock" },
+  publisher: {
+    "@type": "Organization",
+    name: "JockShock",
+    "@id": "https://www.jockshockspray.com/#org",
+  },
+  datePublished: "2026-07-14",
+};
+
+const FAQ_LD = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQ_ITEMS.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: { "@type": "Answer", text: item.a },
+  })),
+};
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  jsonLd={[ARTICLE_LD, FAQ_LD]}
+>
+  <div class="js-learn">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">The Honest Comparison</p>
+          <h1 class="hero-headline">
+            You've tried the powder. You've tried the soak. It keeps coming back.
+          </h1>
+          <p class="hero-sub">
+            The drugstore foot aisle is four products deep and they all promise
+            the same thing. Most of them are solving a problem you don't have —
+            and none of them touch the one you do.
+          </p>
+          <p class="hero-promise">
+            Here's what each one actually does, said plainly, including where
+            ours stops. Then you can decide.
+          </p>
+          <div class="hero-cta-row">
+            <a href="#compare" class="cta-primary">See the comparison</a>
+            <a href="/products/jockshock/" class="cta-secondary"
+              >Get JockShock — $24.99</a
+            >
+          </div>
+          <ul class="hero-trust">
+            <li>No powder, no residue</li>
+            <li>No fragrance, no bleach</li>
+            <li>Safe on skin contact</li>
+            <li>Made in USA</li>
+          </ul>
+        </div>
+        <div class="hero-product">
+          <img
+            src={HERO_BOTTLE}
+            alt="JockShock 32oz bottle — foot odor deodorizer spray"
+            width="700"
+            height="467"
+            loading="eager"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- THE COMPARISON -->
+    <section class="why" id="compare">
+      <div class="why-inner">
+        <p class="section-eyebrow">What each one actually does</p>
+        <h2 class="section-headline">
+          Four products. Three different jobs. One of them is odor.
+        </h2>
+        <p class="section-sub">
+          The reason the aisle is confusing is that these products aren't
+          competing — they're doing different things. Once you know which job you
+          actually need done, the choice gets simple.
+        </p>
+        <div class="why-grid">
+          <div class="why-card">
+            <h3>Foot powder — the moisture job</h3>
+            <p>
+              Absorbs sweat and keeps skin dry for a few hours. It genuinely does
+              that. But it's managing moisture, not odor, and it cakes into socks
+              and linings. The smell in your shoes is untouched.
+            </p>
+          </div>
+          <div class="why-card">
+            <h3>Antiperspirant — the sweat job</h3>
+            <p>
+              Reduces how much you sweat in the first place. If sheer sweat
+              volume is your issue, that's the right tool. It is not a
+              deodorizer, and it does nothing about odor already living in your
+              footwear.
+            </p>
+          </div>
+          <div class="why-card">
+            <h3>Foot soak — the reset job</h3>
+            <p>
+              Cleans and resets the skin, and it feels great. It also takes
+              twenty minutes and treats exactly one half of the problem. Your
+              shoes are not in the tub with you.
+            </p>
+          </div>
+          <div class="why-card">
+            <h3>Fragrance spray — the cover job</h3>
+            <p>
+              Layers scent on top of the smell. Lasts about an hour, then the two
+              combine into something worse than where you started. Adds nothing,
+              addresses nothing.
+            </p>
+          </div>
+          <div class="why-card featured-card">
+            <h3>JockShock — the odor job</h3>
+            <p>
+              Goes after the source of the smell instead of masking it, and it
+              sprays into the shoes and boots where the odor actually
+              accumulates. No powder, no residue, no fragrance. Safe on skin
+              contact.
+            </p>
+          </div>
+          <div class="why-card">
+            <h3>What we don't do</h3>
+            <p>
+              We don't reduce sweating — that's an antiperspirant's job, and if
+              that's your issue, go get one. We're a deodorizer. We handle the
+              smell.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHY THEY ALL MISS -->
+    <section class="wo">
+      <div class="wo-inner">
+        <p class="section-eyebrow">The thing they all miss</p>
+        <h2 class="section-headline">
+          Every one of them treats your feet. None of them treat your shoes.
+        </h2>
+        <div class="wo-grid">
+          <div class="wo-card">
+            <h3>The odor isn't only on you</h3>
+            <p>
+              Your feet sweat into socks, insoles, and linings all day. That's
+              where the odor accumulates and concentrates — over weeks, over a
+              whole season.
+            </p>
+          </div>
+          <div class="wo-card">
+            <h3>Clean feet get reloaded</h3>
+            <p>
+              Powder them, soak them, scrub them — then put them back in the same
+              shoes. Within minutes the odor transfers right back. You've been
+              cleaning one end of a loop.
+            </p>
+          </div>
+          <div class="wo-card">
+            <h3>That's why it always returns</h3>
+            <p>
+              It isn't that the product failed. It's that half the problem was
+              never in the room. Treat the footwear and the feet together and the
+              cycle finally breaks.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- THE ROUTINE -->
+    <section class="how" id="routine">
+      <div class="how-inner">
+        <p class="section-eyebrow">The routine</p>
+        <h2 class="section-headline">Thirty seconds, both ends of the loop.</h2>
+        <ol class="how-steps">
+          <li>
+            <span class="step-n">1</span>
+            <div>
+              <h3>Spray the feet</h3>
+              <p>
+                Light mist — tops, soles, between the toes. Safe on skin contact,
+                dries without powder or residue.
+              </p>
+            </div>
+          </li>
+          <li>
+            <span class="step-n">2</span>
+            <div>
+              <h3>Spray inside the shoes</h3>
+              <p>
+                The insole and the lining. This is the step the powder, the soak,
+                and the soap all skip — and it's where the odor lives.
+              </p>
+            </div>
+          </li>
+          <li>
+            <span class="step-n">3</span>
+            <div>
+              <h3>Air dry, out of the bag</h3>
+              <p>
+                Don't zip damp shoes into a gym bag. Let them breathe. Dry
+                footwear is most of the battle.
+              </p>
+            </div>
+          </li>
+          <li>
+            <span class="step-n">4</span>
+            <div>
+              <h3>Repeat after wear</h3>
+              <p>
+                Thirty seconds after practice and the smell never rebuilds to
+                where it was.
+              </p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq">
+      <div class="faq-inner">
+        <p class="section-eyebrow">Common questions</p>
+        <h2 class="section-headline">Quick answers.</h2>
+        <div class="faq-list">
+          {
+            FAQ_ITEMS.map((item) => (
+              <details class="faq-item">
+                <summary>
+                  <span class="faq-q">{item.q}</span>
+                  <span class="faq-icon" aria-hidden="true">
+                    +
+                  </span>
+                </summary>
+                <p class="faq-a">{item.a}</p>
+              </details>
+            ))
+          }
+        </div>
+        <p class="faq-crosslink">
+          Still wondering why it happens at all? Read <a
+            href="/learn/why-do-my-feet-smell/">why feet smell in the first place</a
+          >.
+        </p>
+      </div>
+    </section>
+
+    <!-- TIERS / CTA -->
+    <section class="tiers">
+      <div class="tiers-inner">
+        <p class="section-eyebrow">Get yours</p>
+        <h2 class="section-headline">Most start with the 3-pack.</h2>
+        <p class="section-sub center">
+          One for the mudroom, one for the gym bag, one for the work boots by the
+          door. Lasts most of a season at after-every-wear cadence.
+        </p>
+        <div class="tier-grid">
+          <a href="/products/jockshock/" class="tier">
+            <div class="tier-label">Single</div>
+            <div class="tier-detail">1 × 32oz</div>
+            <div class="tier-price">$24.99</div>
+            <div class="tier-bottom">Get it →</div>
+          </a>
+          <a href="/products/jockshock/" class="tier featured">
+            <span class="tier-badge">Most Pick This</span>
+            <div class="tier-label">3-Pack</div>
+            <div class="tier-detail">3 × 32oz</div>
+            <div class="tier-price">$59.99</div>
+            <div class="tier-bottom">Get it →</div>
+          </a>
+          <a href="/products/jockshock/" class="tier">
+            <div class="tier-label">6-Pack</div>
+            <div class="tier-detail">6 × 32oz</div>
+            <div class="tier-price">$99.99</div>
+            <div class="tier-bottom">Get it →</div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="related">
+      <div class="related-inner">
+        <p class="section-eyebrow">Related</p>
+        <h2 class="section-headline">Keep going.</h2>
+        <div class="related-grid">
+          <a href="/learn/why-do-my-feet-smell/" class="related-card">
+            <h3>Why do my feet smell?</h3>
+            <p>The actual cause — and why washing them never fixes it for long.</p>
+          </a>
+          <a href="/learn/smelly-feet-spray/" class="related-card">
+            <h3>Smelly feet spray</h3>
+            <p>The full routine for feet, boots, and the shoes they live in.</p>
+          </a>
+          <a href="/learn/baking-soda-doesnt-fix-sneaker-odor/" class="related-card">
+            <h3>Why baking soda doesn't fix it</h3>
+            <p>The internet's favorite home remedy, and why it only buys you a day.</p>
+          </a>
+        </div>
+        <p class="related-hub">
+          Every routine in one place — <a href="/learn/">the JockShock gear-care guides</a>.
+        </p>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

@@ -319,6 +319,19 @@
 .js-learn .related .works-on-card {
   background: #111;
 }
+/* The JockShock card inside a comparison grid — this is the one the reader is
+   meant to land on after we've been fair to the alternatives, so it carries
+   the yellow border weight the neutral cards don't. */
+.js-learn .why-card.featured-card,
+.js-learn .wo-card.featured-card {
+  border-color: var(--jockshock-yellow, #ffe500);
+  border-width: 2px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 229, 0, 0.06) 0%,
+    rgba(255, 229, 0, 0.02) 100%
+  );
+}
 .js-learn .why-card h3,
 .js-learn .works-on-card h3,
 .js-learn .wo-card h3 {
