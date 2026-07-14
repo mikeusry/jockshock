@@ -75,10 +75,14 @@
   overflow: hidden;
   isolation: isolate;
 }
+/* Decorative only: sits at opacity .5 under .hero-overlay, so it can be
+   heavily compressed and upscaled by the browser without a visible diff.
+   w_2400/q_auto cost 214KB and was the mobile LCP blocker (4.1s). dpr_auto
+   lets Cloudinary serve the 1x asset to mid-DPI phones. */
 .js-learn .hero-bg {
   position: absolute;
   inset: 0;
-  background-image: url("https://res.cloudinary.com/southland-organics/image/upload/c_fill,w_2400,h_1200,g_auto,q_auto,f_auto/JockShock/dark-abstract-texture-pattern-background-with-spot_rpsqte");
+  background-image: url("https://res.cloudinary.com/southland-organics/image/upload/c_fill,w_1200,h_600,g_auto,q_auto:eco,f_auto,dpr_auto/JockShock/dark-abstract-texture-pattern-background-with-spot_rpsqte");
   background-size: cover;
   background-position: center;
   opacity: 0.5;
