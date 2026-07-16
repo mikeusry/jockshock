@@ -2,10 +2,14 @@
  * /api/lead-magnet — footer email capture for the Gear Smell Field Guide.
  *
  * Adds the email to a Klaviyo list (LEAD_MAGNET_LIST_ID) with consent and
- * tags the profile so the Klaviyo welcome flow can fire and deliver the PDF
- * link. The PDF itself is hosted on Cloudinary; the URL is in the welcome
- * flow template, not in this endpoint, so we can swap the asset without
- * redeploying.
+ * tags the profile for segmentation.
+ *
+ * DELIVERY: the SendGrid confirmation below is the ONLY thing that delivers
+ * the guide. There is no Klaviyo welcome flow — verified 2026-07-16, the
+ * Southland account has 54 flows and zero JockShock ones (Nexus T-1175 tracks
+ * building it). An earlier version of this comment claimed the flow held the
+ * PDF link; it never existed. So FIELD_GUIDE_PDF_URL is load-bearing, not a
+ * convenience — if it is null, subscribers get nothing, ever.
  *
  * Source tagging — the exact strings a Klaviyo segment must match:
  *   The caller passes `source` in the POST body. It is written to the profile
@@ -31,13 +35,18 @@ const KLAVIYO_REVISION = "2024-02-15";
 const KLAVIYO_API = "https://a.klaviyo.com/api";
 const SENDGRID_API = "https://api.sendgrid.com/v3/mail/send";
 
-// Public Cloudinary URL of the Field Guide PDF. The PDF asset does NOT exist
-// yet (verified 2026-06-09: Cloudinary returns 404, no raw asset). Until
-// Joseph produces it and uploads to JockShock/gear-smell-field-guide.pdf,
-// leave this null — the confirmation email omits the download button and sends
-// an honest "your guide is on the way" instead of linking a dead PDF. Set the
-// URL string here the moment the asset is live; the email upgrades itself.
-const FIELD_GUIDE_PDF_URL: string | null = null;
+// Public Cloudinary URL of the Field Guide PDF (v6, 8pp, carries the
+// FIELDGUIDE20 coupon on p8). Verified live 2026-07-16: HTTP 200,
+// content-length 6211174.
+//
+// Unversioned on purpose so a new revision swaps in without a redeploy — BUT
+// the overwrite MUST pass `invalidate: true`. Cloudinary's CDN caches 404s:
+// this URL was fetched before the asset existed, the negative got cached, and
+// a later upload without invalidation kept serving that stale 404 for hours
+// while the Admin API happily reported the asset as present. If this ever
+// 404s again, suspect the CDN cache before you suspect the account settings.
+const FIELD_GUIDE_PDF_URL: string | null =
+  "https://res.cloudinary.com/southland-organics/image/upload/JockShock/gear-smell-field-guide.pdf";
 
 /**
  * Immediate confirmation email via SendGrid — Aaron voice, deodorizer-only
