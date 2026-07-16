@@ -2,10 +2,20 @@
  * /api/lead-magnet — footer email capture for the Gear Smell Field Guide.
  *
  * Adds the email to a Klaviyo list (LEAD_MAGNET_LIST_ID) with consent and
- * tags the profile with `source=jockshock-field-guide` so the Klaviyo
- * welcome flow can fire and deliver the PDF link. The PDF itself is hosted
- * on Cloudinary; the URL is in the welcome flow template, not in this
- * endpoint, so we can swap the asset without redeploying.
+ * tags the profile so the Klaviyo welcome flow can fire and deliver the PDF
+ * link. The PDF itself is hosted on Cloudinary; the URL is in the welcome
+ * flow template, not in this endpoint, so we can swap the asset without
+ * redeploying.
+ *
+ * Source tagging — the exact strings a Klaviyo segment must match:
+ *   The caller passes `source` in the POST body. It is written to the profile
+ *   property `jockshock_lead_source` (step 1) AND as `custom_source` on the
+ *   subscribe job (step 2). Only two values are ever sent:
+ *     - `jockshock-footer-field-guide` — Footer.astro capture (also the
+ *       default when `source` is omitted)
+ *     - `jockshock-bottle-label-qr`    — label.astro QR landing
+ *   There is NO `jockshock-field-guide` value. A comment here previously
+ *   claimed there was; a segment built on that string matches nobody.
  *
  * Env required (Vercel production):
  *   KLAVIYO_PRIVATE_API_KEY   - server-side key, scoped to Lists+Profiles
