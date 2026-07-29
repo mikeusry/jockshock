@@ -11,11 +11,24 @@
  * src/lib/carrier-service.ts) and declared to Google via <g:shipping> in
  * src/pages/api/google-shopping-feed.xml.ts. Change one, change all three.
  */
-const message = "Free shipping on 3+ bottles · Built by D1 athletes";
+// Links to the Athlete Pack — the exact SKU that earns the offer the bar
+// advertises. Sending it to the generic PDP would drop the shopper on the
+// $24.99 single, which does NOT qualify, contradicting the bar in one click.
+// ?variant=athlete matches the deep-link convention the homepage tiers use.
+const message = "Free shipping on 3+ bottles";
+const href = "/products/jockshock/?variant=athlete";
+const cta = "Get the Athlete Pack";
 ---
 
-<div
-  class="flex items-center justify-center bg-electric-yellow px-4 py-2.5 text-xs font-bold uppercase tracking-[0.18em] text-carbon-black sm:px-6 sm:text-sm lg:px-8"
+<a
+  href={href}
+  class="group flex items-center justify-center gap-2 bg-electric-yellow px-4 py-2.5 text-xs font-bold uppercase tracking-[0.18em] text-carbon-black transition-colors hover:bg-carbon-black hover:text-electric-yellow sm:px-6 sm:text-sm lg:px-8"
 >
-  {message}
-</div>
+  <span>{message}</span>
+  <span aria-hidden="true" class="opacity-60">·</span>
+  <span class="underline underline-offset-4 decoration-2">{cta}</span>
+  <span
+    aria-hidden="true"
+    class="transition-transform duration-200 group-hover:translate-x-0.5">→</span
+  >
+</a>
