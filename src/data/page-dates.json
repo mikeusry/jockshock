@@ -19,11 +19,10 @@
   "learn/why-do-my-feet-smell/index.astro": "2026-07-14",
   "parents.astro": "2026-05-07",
   "privacy.astro": "2026-06-26",
-  "products/[...handle].astro": "2023-03-20",
+  "products/[...handle].astro": "2026-07-29",
   "products/jockshock.astro": "2026-05-07",
   "returns.astro": "2026-06-14",
-  "shipping.astro": "2026-06-26",
-  "shopify-demo.astro": "2025-10-07",
+  "shipping.astro": "2026-07-29",
   "teams.astro": "2026-07-14",
   "terms.astro": "2026-06-26"
 }

@@ -171,10 +171,10 @@ const productJsonLd = PRODUCT_LD ? [PRODUCT_LD] : [];
         <div class="mechanism-inner">
           <h2 class="mechanism-headline">Built for gear. Not for the kitchen.</h2>
           <p class="mechanism-subhead">
-            JockShock runs on the same chemistry your immune system uses to
-            fight bacteria — adapted for athletic gear. Powered by ZeroPoint
-            Technology. No fragrance. No masking. The funk doesn't get
-            covered up. It goes away.
+            The active is <strong>hypochlorous acid (HOCl)</strong> — the same
+            molecule your own immune system makes. Powered by EPA-registered
+            ZeroPoint Technology. No fragrance. No masking. The funk doesn't
+            get covered up. It goes away.
           </p>
           <div class="mechanism-grid">
             <div class="mechanism-card">
@@ -203,6 +203,92 @@ const productJsonLd = PRODUCT_LD ? [PRODUCT_LD] : [];
               </p>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/*
+        The science. Added 2026-07-29 against a 3.4% add-to-cart rate (vs the
+        Southland parent's 14.4%) — the PDP was asking for trust it never
+        earned: "ZeroPoint Technology" appeared 12 times and was never once
+        explained.
+
+        CLAIMS: every verb here points at ODOR or describes the world. The
+        immunology and the odor chemistry are statements about HOCl and about
+        bacteria in general — describing the world is fine. What is never said
+        is that JockShock does anything TO a microbe. EPA is attributed to
+        ZeroPoint, never to JockShock. See brand-brief.md §Claims Register;
+        Mike re-confirmed the posture 2026-07-29 ("we are not claiming
+        JockShock does it, we are claiming ZeroPoint does").
+      */}
+      <section class="science">
+        <div class="science-inner">
+          <p class="science-eyebrow">The science</p>
+          <h2 class="science-headline">
+            The same molecule your immune system makes.
+          </h2>
+
+          <div class="science-body">
+            <p>
+              When your body detects an invader, a white blood cell called a
+              neutrophil engulfs it and triggers what immunologists call the
+              respiratory burst. An enzyme in that cell —
+              <em>myeloperoxidase</em> — takes ordinary chloride and converts
+              it into <strong>hypochlorous acid</strong>. HOCl. Your body has
+              been making it your entire life.
+            </p>
+            <p>
+              That is the active in JockShock. Not a molecule like it. The
+              same one. It is also what's in the saline wound sprays sold
+              behind the pharmacy counter — which is why JockShock is safe on
+              skin contact at use concentration and still does real work on a
+              helmet liner.
+            </p>
+          </div>
+
+          <h3 class="science-subhead">Why your gear smells</h3>
+          <div class="science-body">
+            <p>
+              Sweat is close to odorless on its own. The smell comes from what
+              happens next: bacteria living on skin and in gear metabolize it
+              into small, extremely pungent compounds — <em>thioalcohols</em>,
+              which read as onion and sulfur, and <em>isovaleric acid</em>,
+              the sharp cheese note that comes off a cleat. Trace amounts.
+              Enormous smell.
+            </p>
+            <p>
+              Which is why air freshener fails in a predictable way. Perfume
+              puts a smell on top of a smell. The compounds are still there,
+              still being produced, and the cover-up quits before the source
+              does. Going after the source isn't a stronger version of
+              masking — it's a different mechanism.
+            </p>
+          </div>
+
+          <h3 class="science-subhead">What "powered by ZeroPoint" means</h3>
+          <div class="science-body">
+            <p>
+              ZeroPoint is Southland Organics' own hypochlorous acid
+              technology, and it carries an EPA-registered label. JockShock is
+              that chemistry — put in a matte-black 32oz bottle with a
+              ratchet-pistol trigger and built for a gear bag instead of a
+              barn.
+            </p>
+            <p class="science-precision">
+              To be exact: the EPA registration belongs to
+              <strong>ZeroPoint</strong>. JockShock is powered by it. That's
+              why this page says "powered by EPA-registered ZeroPoint
+              Technology" and not "JockShock is EPA-registered" — the first is
+              true, the second isn't, and we'd rather be exact than
+              impressive.
+            </p>
+          </div>
+
+          <ul class="science-facts">
+            <li><span>No fragrance</span></li>
+            <li><span>No bleach</span></li>
+            <li><span>No masking</span></li>
+            <li><span>Safe on skin contact at use concentration</span></li>
+          </ul>
         </div>
       </section>
 
@@ -310,10 +396,11 @@ const productJsonLd = PRODUCT_LD ? [PRODUCT_LD] : [];
             <details>
               <summary>Is it safe on skin contact — mouthguards, headgear?</summary>
               <p>
-                Yes. The active chemistry is in the same family as wound-care
-                saline sprays — the same molecule your own immune system
-                produces. Safe on skin contact at use concentration. We still
-                recommend air-drying gear before re-use.
+                Yes. The active is hypochlorous acid (HOCl) — the same
+                molecule your own immune system produces, and the same active
+                in wound-care saline sprays. Safe on skin contact at use
+                concentration. We still recommend air-drying gear before
+                re-use.
               </p>
             </details>
             <details>
@@ -418,6 +505,75 @@ const productJsonLd = PRODUCT_LD ? [PRODUCT_LD] : [];
     color: var(--jockshock-text-on-black);
     line-height: 1.6;
     font-size: 0.95rem;
+  }
+
+  /* === Science === */
+  .science {
+    background: #0d0d0d;
+    padding: 100px 5%;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .science-inner {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .science-eyebrow {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--jockshock-yellow);
+    margin-bottom: 12px;
+  }
+  .science-headline {
+    font-size: clamp(1.9rem, 3.6vw, 2.7rem);
+    color: #fff;
+    margin-bottom: 28px;
+    line-height: 1.15;
+  }
+  .science-subhead {
+    font-size: 1.3rem;
+    color: var(--jockshock-yellow);
+    margin: 48px 0 16px;
+  }
+  .science-body p {
+    color: var(--jockshock-text-on-black);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 18px;
+  }
+  .science-body em {
+    color: #fff;
+    font-style: italic;
+  }
+  .science-body strong {
+    color: #fff;
+  }
+  /* The precision note is deliberately quieter than the copy around it —
+     it's a credibility signal, not a headline. */
+  .science-precision {
+    border-left: 3px solid rgba(255,255,255,0.18);
+    padding-left: 18px;
+    font-size: 0.95rem !important;
+    color: var(--jockshock-muted) !important;
+  }
+  .science-facts {
+    list-style: none;
+    padding: 0;
+    margin: 48px 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .science-facts li span {
+    display: inline-block;
+    padding: 8px 16px;
+    background: #1a1a1a;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--jockshock-text-on-black);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
   }
 
   /* === Routine === */

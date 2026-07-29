@@ -5,9 +5,16 @@
  * dark founders → yellow guarantee → black footer. Carbon-fiber SVG
  * texture on light sections so they read "athletic gear" not "wellness."
  *
- * Substance is locked: no HOCl mention, no kill claims, no EPA references.
- * Trust attribution is "ZeroPoint Technology" only. Mechanism is described
- * via the immune-system metaphor, not the molecule name.
+ * CLAIMS (updated 2026-07-29 — the old "no HOCl, no EPA" rule is DEAD).
+ * The one test: say what the chemistry IS, never what JockShock DOES to a
+ * microbe.
+ *   ✅ "hypochlorous acid (HOCl)", "the same molecule your immune system
+ *      makes", "powered by EPA-registered ZeroPoint Technology", "kills odor"
+ *   🚫 any microbial kill ("kills bacteria/germs"), "antimicrobial",
+ *      "disinfectant", "sanitizer", any %, "JockShock is EPA-registered"
+ *      (false — the registration belongs to ZeroPoint; attribute, don't adopt)
+ * Canonical: mothership docs/brands/southland-organics/jockshock/brand-brief.md
+ * §Claims Register. Do not re-tighten this from an older memory or comment.
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
 import StepBadge from "../components/StepBadge.astro";
@@ -36,7 +43,8 @@ const PACK_6 =
 // Homepage FAQ — top-of-funnel, brand-level questions. Distinct from the PDP
 // FAQ (product details). The questions/answers below also feed FAQPage
 // JSON-LD so we get the SERP "People also ask"–style accordion treatment.
-// Watch claims compliance on every answer (no kill / EPA / 24HR / HOCl).
+// Claims: HOCl + "powered by EPA-registered ZeroPoint" are ALLOWED (2026-07-29).
+// Still banned in every answer: microbial kill claims, 24HR/duration, any %.
 // =============================================================================
 const FAQ_ITEMS = [
   {
@@ -137,13 +145,14 @@ const FAQ_LD = {
       <div class="mechanism-copy">
         <p class="eyebrow">The mechanism</p>
         <h2 class="section-headline">
-          The same chemistry your immune system uses.
+          The same molecule your immune system makes.
         </h2>
         <p class="section-sub">
           Most "gear sprays" mask smell with fragrance. JockShock goes after
-          the source — using the same family of chemistry your body produces
-          to fight infection. Powered by ZeroPoint Technology. Fast-acting,
-          gear-safe, residue-free.
+          the source. The active is hypochlorous acid (HOCl) — the same
+          molecule your own white blood cells produce. Powered by
+          EPA-registered ZeroPoint Technology. Fast-acting, gear-safe,
+          residue-free.
         </p>
 
         <div class="mech-stack">
