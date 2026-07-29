@@ -172,9 +172,9 @@ const productJsonLd = PRODUCT_LD ? [PRODUCT_LD] : [];
           <h2 class="mechanism-headline">Built for gear. Not for the kitchen.</h2>
           <p class="mechanism-subhead">
             The active is <strong>hypochlorous acid (HOCl)</strong> — the same
-            molecule your own immune system makes. Powered by EPA-registered
-            ZeroPoint Technology. No fragrance. No masking. The funk doesn't
-            get covered up. It goes away.
+            molecule your own immune system makes to fight bacteria. Powered
+            by EPA-registered ZeroPoint Technology. No fragrance. No masking.
+            The funk doesn't get covered up. It goes away.
           </p>
           <div class="mechanism-grid">
             <div class="mechanism-card">
@@ -212,13 +212,22 @@ const productJsonLd = PRODUCT_LD ? [PRODUCT_LD] : [];
         earned: "ZeroPoint Technology" appeared 12 times and was never once
         explained.
 
-        CLAIMS: every verb here points at ODOR or describes the world. The
-        immunology and the odor chemistry are statements about HOCl and about
-        bacteria in general — describing the world is fine. What is never said
-        is that JockShock does anything TO a microbe. EPA is attributed to
-        ZeroPoint, never to JockShock. See brand-brief.md §Claims Register;
-        Mike re-confirmed the posture 2026-07-29 ("we are not claiming
-        JockShock does it, we are claiming ZeroPoint does").
+        CLAIMS — the line this section walks, stated precisely so it isn't
+        over-corrected on the next edit:
+
+          ✅ "HOCl is what your immune system makes to FIGHT BACTERIA" —
+             a fact about human biology. The subject is a neutrophil, not
+             JockShock. Mike, 2026-07-29: "It does fight bacteria."
+          ✅ "Bacteria metabolize leucine into isovaleric acid" — describing
+             how odor forms in the world. No product verb anywhere in it.
+          ✅ "HOCl penetrates cell walls better than hypochlorite" — chemistry
+             of the molecule, cited to the literature, no JockShock subject.
+          🚫 "JockShock kills bacteria" — THE line. The product's verb may
+             never take a microbe as its object. It kills ODOR.
+
+        Say what the chemistry IS; never what JockShock DOES to a microbe.
+        EPA is attributed to ZeroPoint, never adopted by JockShock.
+        Canonical: brand-brief.md §Claims Register.
       */}
       <section class="science">
         <div class="science-inner">
@@ -229,38 +238,85 @@ const productJsonLd = PRODUCT_LD ? [PRODUCT_LD] : [];
 
           <div class="science-body">
             <p>
-              When your body detects an invader, a white blood cell called a
-              neutrophil engulfs it and triggers what immunologists call the
-              respiratory burst. An enzyme in that cell —
-              <em>myeloperoxidase</em> — takes ordinary chloride and converts
-              it into <strong>hypochlorous acid</strong>. HOCl. Your body has
-              been making it your entire life.
+              Cut your hand. Within minutes, white blood cells called
+              neutrophils flood the site, swallow what got in, and trigger
+              something immunologists call the <em>respiratory burst</em>.
+              Inside that cell, an enzyme named <em>myeloperoxidase</em> takes
+              ordinary chloride — salt, basically — and converts it into
+              <strong>hypochlorous acid</strong>.
             </p>
             <p>
-              That is the active in JockShock. Not a molecule like it. The
-              same one. It is also what's in the saline wound sprays sold
-              behind the pharmacy counter — which is why JockShock is safe on
-              skin contact at use concentration and still does real work on a
-              helmet liner.
+              HOCl. It's the chemical weapon your immune system has used to
+              fight bacteria since before you could walk. You have been
+              manufacturing it your whole life.
+            </p>
+            <p>
+              <strong>That is the active in JockShock.</strong> Not something
+              inspired by it. Not a synthetic cousin. The same molecule, made
+              outside the body instead of inside it. It's also the active in
+              the saline wound sprays sold behind the pharmacy counter — which
+              is the short answer to how one bottle can be safe on skin at use
+              concentration and still do real work on a helmet liner.
             </p>
           </div>
 
-          <h3 class="science-subhead">Why your gear smells</h3>
+          <h3 class="science-subhead">Why it isn't bleach</h3>
           <div class="science-body">
             <p>
-              Sweat is close to odorless on its own. The smell comes from what
-              happens next: bacteria living on skin and in gear metabolize it
-              into small, extremely pungent compounds — <em>thioalcohols</em>,
-              which read as onion and sulfur, and <em>isovaleric acid</em>,
-              the sharp cheese note that comes off a cleat. Trace amounts.
-              Enormous smell.
+              Both come from the chlorine family, and that's where it ends.
+              Bleach is mostly <em>hypochlorite</em> — OCl⁻ — and that minus
+              sign is the whole story. It carries a negative charge, and
+              bacterial cell walls are negatively charged too. Like poles.
+              It gets pushed away before it can do anything.
             </p>
             <p>
-              Which is why air freshener fails in a predictable way. Perfume
-              puts a smell on top of a smell. The compounds are still there,
-              still being produced, and the cover-up quits before the source
-              does. Going after the source isn't a stronger version of
-              masking — it's a different mechanism.
+              HOCl carries no charge at all. It's small, electrically neutral,
+              and moves through a cell wall about as easily as water does.
+              Same element, radically different behavior — which is why
+              hypochlorous acid is measured in the literature at
+              <strong>tens of times more effective than the hypochlorite ion</strong>
+              that makes up most of a bleach bottle.
+            </p>
+            <p>
+              It also explains the things you'd notice. No bleach smell. No
+              stripped color on a jersey. No rotted stitching. You aren't
+              trading your gear for a clean-smelling bag.
+            </p>
+          </div>
+
+          <h3 class="science-subhead">Why your gear smells in the first place</h3>
+          <div class="science-body">
+            <p>
+              Here's the part most people have backwards: <strong>sweat is
+              basically odorless.</strong> It's mostly water, salt, and a
+              handful of amino acids. If sweat were the problem, a rinse would
+              fix it.
+            </p>
+            <p>
+              The smell is what happens <em>after</em>. Bacteria living on
+              your skin and inside your gear treat that sweat as food. Feed
+              them the amino acid <em>leucine</em> and they hand back
+              <strong>isovaleric acid</strong> — the sour, cheesy note that
+              hits you when a cleat comes out of the bag. That specific
+              reaction, run mostly by a common skin bacterium called
+              <em>Staphylococcus epidermidis</em>, is the documented source of
+              foot odor. Elsewhere on the body the same process yields
+              <strong>thioalcohols</strong>, sulfur compounds that read as
+              onion and are pungent in literally trace amounts.
+            </p>
+            <p>
+              Then gear does the one thing that makes it worse. A gym bag is
+              warm, damp, dark, and closed — the ideal incubator. Foam and
+              padding hold moisture for days. The gear isn't just carrying the
+              smell; it's running the reaction.
+            </p>
+            <p>
+              Which is why air freshener fails in a way you can predict.
+              Perfume puts a smell on top of a smell. The compounds are still
+              there, the bacteria are still fed, and the cover-up quits long
+              before the source does — usually somewhere around the drive
+              home. <strong>Going after the source isn't a stronger version of
+              masking. It's a different mechanism.</strong>
             </p>
           </div>
 
@@ -268,10 +324,16 @@ const productJsonLd = PRODUCT_LD ? [PRODUCT_LD] : [];
           <div class="science-body">
             <p>
               ZeroPoint is Southland Organics' own hypochlorous acid
-              technology, and it carries an EPA-registered label. JockShock is
-              that chemistry — put in a matte-black 32oz bottle with a
-              ratchet-pistol trigger and built for a gear bag instead of a
-              barn.
+              technology, and it carries an EPA-registered label. It has spent
+              years in poultry houses and processing facilities — rooms where
+              the chemistry either works or you find out fast.
+            </p>
+            <p>
+              JockShock is that same chemistry, put in a matte-black 32oz
+              bottle with a ratchet-pistol trigger and built for a gear bag
+              instead of a barn. That's the whole origin story: we weren't a
+              startup looking for a formula. We already had the formula, and
+              four D1 athletes who knew exactly what their gear smelled like.
             </p>
             <p class="science-precision">
               To be exact: the EPA registration belongs to
