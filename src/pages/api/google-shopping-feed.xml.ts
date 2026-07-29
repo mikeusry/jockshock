@@ -37,13 +37,38 @@ const VARIANT_IMAGES: Record<string, string> = {
     "https://res.cloudinary.com/southland-organics/image/upload/c_pad,b_white,w_1200,h_1200,f_auto,q_auto/JockShock/jockshock-6pack-team-2026.png",
 };
 
-// Shipping weight per pack (lb), filled bottle ≈ 2.25 lb each + packaging.
-// GMC flags items missing shipping_weight, so every offer needs one.
+// Shipping weight per pack (lb). GMC flags items missing shipping_weight.
+//
+// A filled 32oz bottle ships at 3.0 lb: 946 g of water-density liquid + the
+// 454 g empty trigger bottle (Southland SKU BOTTLE-32oz-Adjustable). That lands
+// on the same 1361 g both Alpet D2 quarts are declared at, which is the closest
+// comparable in the catalog. Corrected 2026-07-29 from an estimated 2.25 lb/bottle.
+//
+// Packs are straight multiples with no packaging allowance — Southland's own
+// convention (Alpet's 4x1 Quart case = 5443 g vs 4 x 1361 = 5444 g), so JockShock
+// stays consistent with the rest of the feed.
+//
+// These MUST stay in step with the Shopify variant weights, which were corrected
+// to 1361/4082/8165 g on the same date. Two independent tables feed Google and the
+// checkout carrier rate; if they drift, the rate a customer is quoted stops matching
+// the delivered price Google grades on the store-quality scorecard.
 const VARIANT_SHIPPING_LB: Record<string, number> = {
-  "JOCKSHOCK-32oz": 2.4,
-  "JOCKSHOCK-3x32oz-Pack": 7.2,
-  "JOCKSHOCK-6x32oz-Pack": 14.2,
+  "JOCKSHOCK-32oz": 3.0,
+  "JOCKSHOCK-3x32oz-Pack": 9.0,
+  "JOCKSHOCK-6x32oz-Pack": 18.0,
 };
+
+// Free shipping at the Athlete Pack price point and up, mirroring the carrier
+// rule in Nexus (southland-inventory src/lib/carrier-service.ts). Google grades
+// DELIVERED price on the store-quality scorecard, so an offer with no <g:shipping>
+// gets an estimated rate — which is what put Shipping Cost at "Low" for July 2026.
+// Declaring $0 on the packs is what actually moves that grade.
+//
+// The single bottle deliberately declares its real rate rather than free: at
+// ~$12 freight on a $24.99 item, free shipping there would eat 62% of the margin.
+// Paying it is what makes the $59.99 pack the better buy.
+const FREE_SHIPPING_MIN_SUBTOTAL = 59.99;
+const SINGLE_BOTTLE_SHIPPING_USD = "12.00";
 
 const VARIANT_DESCRIPTIONS: Record<string, string> = {
   "JOCKSHOCK-32oz":
@@ -167,7 +192,14 @@ export const GET: APIRoute = async () => {
         // the 6-pack ("Team Pack — 6 Bottles") under a weapons policy. A precise
         // odor-remover category fixes the misclassification.
         `      <g:google_product_category>3049</g:google_product_category>`,
-        `      <g:shipping_weight>${esc(((VARIANT_SHIPPING_LB[sku] || 2.4) * 453.592).toFixed(0))} g</g:shipping_weight>`,
+        `      <g:shipping_weight>${esc(((VARIANT_SHIPPING_LB[sku] || 3.0) * 453.592).toFixed(0))} g</g:shipping_weight>`,
+        // Declared shipping: $0 at/above the free-shipping line, real rate below.
+        // Without this element Google estimates the rate and grades the estimate.
+        `      <g:shipping>`,
+        `        <g:country>US</g:country>`,
+        `        <g:service>Standard</g:service>`,
+        `        <g:price>${esc(parseFloat(v.price.amount) >= FREE_SHIPPING_MIN_SUBTOTAL ? "0.00" : SINGLE_BOTTLE_SHIPPING_USD)} USD</g:price>`,
+        `      </g:shipping>`,
         `    </item>`,
       ].join("\n");
     });
