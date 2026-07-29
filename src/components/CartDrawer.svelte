@@ -19,6 +19,27 @@
     ? "opacity-50 pointer-events-none"
     : "");
 
+  // Free shipping at the Athlete Pack price point and up. This constant is
+  // duplicated in two other places by necessity — the Nexus carrier rule
+  // (southland-inventory src/lib/carrier-service.ts) actually zeroes the rate at
+  // checkout, and <g:shipping> in src/pages/api/google-shopping-feed.xml.ts tells
+  // Google. If this number changes, all three change together, or the cart
+  // promises something checkout won't honor.
+  const FREE_SHIPPING_THRESHOLD = 59.99;
+
+  let cartSubtotal = $derived(
+    parseFloat($cart?.cost?.subtotalAmount?.amount || "0")
+  );
+  let qualifiesForFreeShipping = $derived(
+    cartSubtotal >= FREE_SHIPPING_THRESHOLD
+  );
+  let amountToFreeShipping = $derived(
+    Math.max(0, FREE_SHIPPING_THRESHOLD - cartSubtotal)
+  );
+  let freeShipProgress = $derived(
+    Math.min(100, (cartSubtotal / FREE_SHIPPING_THRESHOLD) * 100)
+  );
+
   // Add focus to cart drawer when it opens, and fire pixel + Klaviyo
   // view_cart event so the abandon-cart flow has a hook before checkout.
   let lastViewedCartId: string | null = null;
@@ -284,8 +305,39 @@
                         />
                       </p>
                     </div>
-                    <p class="mt-0.5 text-sm text-gray-500">
-                      Shipping and taxes calculated at checkout.
+
+                    <!-- Free-shipping progress. Framed as DISTANCE ("$35.00 away"),
+                         not as a target ("spend $59.99") — the shopper shouldn't have
+                         to do the subtraction. Mirrors the carrier rule in Nexus
+                         (src/lib/carrier-service.ts) and the <g:shipping> values in
+                         the Google feed; all three thresholds must move together. -->
+                    <div class="mt-3">
+                      <div
+                        class="h-1.5 w-full overflow-hidden rounded-full bg-zinc-200"
+                        role="progressbar"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                        aria-valuenow={Math.round(freeShipProgress)}
+                        aria-label="Progress toward free shipping"
+                      >
+                        <div
+                          class="h-full rounded-full bg-electric-yellow transition-[width] duration-300 ease-out"
+                          style="width: {freeShipProgress}%"
+                        ></div>
+                      </div>
+                      <p class="mt-2 text-sm font-medium text-carbon-black">
+                        {#if qualifiesForFreeShipping}
+                          Free shipping unlocked.
+                        {:else}
+                          You're <span class="font-bold"
+                            >${amountToFreeShipping.toFixed(2)}</span
+                          > away from free shipping.
+                        {/if}
+                      </p>
+                    </div>
+
+                    <p class="mt-2 text-sm text-gray-500">
+                      Taxes calculated at checkout.
                     </p>
                     <div class="mt-6">
                       <a href={$cart.checkoutUrl} class="button" onclick={handleCheckoutClick}>Checkout</a>

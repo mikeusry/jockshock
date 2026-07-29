@@ -1,5 +1,17 @@
 ---
-const message = "Built by D1 athletes · Made in USA";
+/**
+ * Highest-traffic pixel on the site — renders above the fold on every page.
+ *
+ * Carries the free-shipping offer rather than pure brand copy because shipping
+ * was invisible until checkout: JockShock lost 44% of carts at the checkout step
+ * against the parent brand's 17%, on a ~$12 freight charge a buyer had no way to
+ * see beforehand. This is the earliest possible reveal.
+ *
+ * The $59.99 line is enforced in Nexus (southland-inventory
+ * src/lib/carrier-service.ts) and declared to Google via <g:shipping> in
+ * src/pages/api/google-shopping-feed.xml.ts. Change one, change all three.
+ */
+const message = "Free shipping on 3+ bottles · Built by D1 athletes";
 ---
 
 <div
