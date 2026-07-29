@@ -1,16 +1,31 @@
 ---
+/**
+ * PDP accordions — shipping + returns.
+ *
+ * These shipped as Lorem ipsum from the Astro storefront template and were live
+ * on the buy page since project init (REPLACED 2026-07-29). Copy below is not
+ * written fresh — it restates the terms already published on /shipping/ and
+ * /returns/, which are the pages Google Merchant Center reads.
+ *
+ * If a policy page changes, change it here too, or the PDP contradicts the
+ * policy it links to. No placeholder text may ship on this component again.
+ */
 const accordions = [
   {
     title: "Shipping",
     icon: "truck",
     content:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ullam possimus fuga dolor rerum dicta, ipsum laboriosam est totam iusto alias incidunt cum tempore aliquid aliquam error quisquam ipsam asperiores! Iste?",
+      "Free shipping on orders of 3 bottles or more. On single bottles, shipping is calculated at checkout before you pay. Orders ship from Georgia within 1–2 business days, with tracking emailed when they leave. Standard delivery typically runs 3–6 business days via USPS or UPS. We ship to the 48 contiguous states.",
+    href: "/shipping/",
+    linkText: "Full shipping policy",
   },
   {
-    title: "Care instructions",
+    title: "Returns",
     icon: "care",
     content:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ullam possimus fuga dolor rerum dicta, ipsum laboriosam est totam iusto alias incidunt cum tempore aliquid aliquam error quisquam ipsam asperiores! Iste?",
+      "30-day money-back guarantee. Return any unused, unopened product within 30 days of delivery for a refund of the purchase price to your original payment method. Return shipping is the customer's responsibility; refunds post within 5–10 business days of inspection.",
+    href: "/returns/",
+    linkText: "Full returns policy",
   },
 ];
 ---
@@ -78,7 +93,15 @@ const accordions = [
             </svg>
           </span>
         </summary>
-        <div class="p-4 text-sm text-zinc-600">{accordion.content}</div>
+        <div class="p-4 text-sm text-zinc-600">
+          <p>{accordion.content}</p>
+          <a
+            href={accordion.href}
+            class="mt-2 inline-block font-semibold text-carbon-black underline underline-offset-2"
+          >
+            {accordion.linkText}
+          </a>
+        </div>
       </details>
     ))
   }

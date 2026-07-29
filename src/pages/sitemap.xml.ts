@@ -29,15 +29,14 @@ const SITE = "https://www.jockshockspray.com";
 const PAGE_MODULES = import.meta.glob("./**/*.astro", { eager: true });
 
 // Routes that must never appear in the sitemap: dynamic params, internal/dev
-// surfaces, error pages, API/admin. The QR label lander (/label) and the Shopify
-// dev demo are internal-only, not organic-search surfaces.
+// surfaces, error pages, API/admin. The QR label lander (/label) is printed on
+// the bottle and internal-only, not an organic-search surface.
 const EXCLUDE = [
   /(^|\/)404$/,
   /(^|\/)admin(\/|$)/,
   /(^|\/)api(\/|$)/,
   /\[/, // dynamic routes, e.g. products/[...handle]
   /(^|\/)label$/,
-  /(^|\/)shopify-demo$/,
 ];
 
 // changefreq + priority by route. Anything not listed falls back to DEFAULT.
