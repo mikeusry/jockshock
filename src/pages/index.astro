@@ -18,6 +18,8 @@
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
 import StepBadge from "../components/StepBadge.astro";
+import MuxVideo from "../components/MuxVideo.astro";
+import { VIDEOS } from "../data/videos";
 
 const title = "JockShock — Pro-Grade Equipment Deodorizer for Serious Athletes";
 const description =
@@ -180,15 +182,25 @@ const FAQ_LD = {
         </div>
       </div>
 
-      <div class="mechanism-media" style={`background-image: url('${MECH_BG}')`}>
-        <div class="mechanism-media-overlay"></div>
-        <div class="mechanism-media-frame">
-          <img
-            src={HERO_BOTTLE}
-            alt="JockShock 32oz bottle"
-            loading="lazy"
-          />
-        </div>
+      {/*
+        The 19-second mechanism cut replaces a static bottle shot here. It says
+        this section's argument in Aaron's voice — "This isn't a cologne for
+        your hockey bag. It's hypochlorous acid" — and a visitor who won't read
+        the paragraph will still watch 19 seconds. Captions are on and served
+        from a CORRECTED track (see src/data/videos.ts).
+
+        preload="none" + in-view HLS loading, so this costs nothing above the
+        fold. Mobile LCP is load-bearing here: this LP lost Ad Rank to it once
+        already (c554c66).
+      */}
+      <div class="mechanism-media mechanism-media--video">
+        <MuxVideo
+          playbackId={VIDEOS.mechanism.playbackId}
+          trackId={VIDEOS.mechanism.trackId}
+          title={VIDEOS.mechanism.title}
+          posterTime={VIDEOS.mechanism.posterTime}
+          aspect="9/16"
+        />
         <div class="mechanism-media-tag">
           <span class="hero-trust-rule"></span>
           <div>
@@ -613,6 +625,21 @@ const FAQ_LD = {
     padding: 56px 48px;
     overflow: hidden;
     box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22);
+  }
+  /* Video variant: the player IS the visual, so drop the photo padding and
+     let it run edge to edge. The tag strip still sits on top. */
+  .mechanism-media--video {
+    padding: 0;
+    background-image: none !important;
+  }
+  .mechanism-media--video .mechanism-media-tag {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 20px 24px;
+    background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+    pointer-events: none;
   }
   /* Dark overlay so the bottle still pops against the busy gloves photo */
   .mechanism-media-overlay {

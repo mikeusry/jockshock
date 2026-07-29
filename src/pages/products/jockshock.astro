@@ -13,6 +13,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getProductByHandle } from "../../utils/shopify";
 import { setCache } from "../../utils/cache";
 import JockShockPDP from "../../components/JockShockPDP.svelte";
+import MuxVideo from "../../components/MuxVideo.astro";
+import { VIDEOS } from "../../data/videos";
 
 const HANDLE = "jockshock";
 const headers = Astro.request.headers;
@@ -235,6 +237,23 @@ const productJsonLd = PRODUCT_LD ? [PRODUCT_LD] : [];
           <h2 class="science-headline">
             The same molecule your immune system makes.
           </h2>
+
+          {/*
+            The 19-second mechanism cut makes this section's exact argument in
+            Aaron's voice: "This isn't a cologne for your hockey bag. It's
+            hypochlorous acid." Placed ABOVE the prose deliberately — a skimmer
+            who won't read four paragraphs will still watch 19 seconds, and the
+            PDP's binding constraint is a 3.4% add-to-cart rate against the
+            Southland parent's 14.4%.
+          */}
+          <div class="science-video">
+            <MuxVideo
+              playbackId={VIDEOS.mechanism.playbackId}
+              trackId={VIDEOS.mechanism.trackId}
+              title={VIDEOS.mechanism.title}
+              posterTime={VIDEOS.mechanism.posterTime}
+            />
+          </div>
 
           <div class="science-body">
             <p>
@@ -592,6 +611,10 @@ const productJsonLd = PRODUCT_LD ? [PRODUCT_LD] : [];
     color: #fff;
     margin-bottom: 28px;
     line-height: 1.15;
+  }
+  .science-video {
+    margin: 0 0 40px;
+    border: 1px solid rgba(255,255,255,0.1);
   }
   .science-subhead {
     font-size: 1.3rem;

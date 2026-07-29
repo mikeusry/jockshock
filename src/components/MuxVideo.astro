@@ -1,0 +1,139 @@
+---
+/**
+ * Mux video player — native <video> + HLS, no external player library.
+ *
+ * WHY not mux-player: it's a ~100KB web component, and the LP already lost
+ * Ad Rank once to mobile LCP (see c554c66, which cut 418KB of decorative
+ * texture for exactly this reason). Safari plays HLS natively; everything else
+ * gets hls.js loaded ONLY when a video is actually scrolled into view.
+ *
+ * CAPTIONS: `captions` defaults ON and the track is served from Mux. Those
+ * tracks were corrected on 2026-07-29 — the ASR had transcribed the spoken
+ * "kills odor-causing bacteria," which is cleared for speech but banned on
+ * written surfaces (a caption IS a written surface). Do not swap these back
+ * to auto-generated tracks. See brand-brief.md §Claims Register.
+ *
+ * Poster comes from Mux's thumbnail endpoint at a fixed time so it doesn't
+ * land on a motion-blurred frame.
+ */
+interface Props {
+  playbackId: string;
+  title: string;
+  /** Mux text track id. Omit for videos with no captions. */
+  trackId?: string;
+  /** Seconds into the video to pull the poster frame from. */
+  posterTime?: number;
+  aspect?: '16/9' | '9/16' | '1/1';
+  /** Autoplay muted in-view. Use for ambient/background placements only. */
+  autoplay?: boolean;
+  loop?: boolean;
+  class?: string;
+}
+
+const {
+  playbackId,
+  title,
+  trackId,
+  posterTime = 2,
+  aspect = '16/9',
+  autoplay = false,
+  loop = false,
+  class: className = '',
+} = Astro.props;
+
+const src = `https://stream.mux.com/${playbackId}.m3u8`;
+const poster = `https://image.mux.com/${playbackId}/thumbnail.webp?time=${posterTime}`;
+const captionSrc = trackId
+  ? `https://stream.mux.com/${playbackId}/text/${trackId}.vtt`
+  : null;
+---
+
+<div class={`mux-video ${className}`} style={`--aspect: ${aspect}`}>
+  <video
+    class="mux-video__el"
+    data-src={src}
+    poster={poster}
+    controls={!autoplay}
+    muted={autoplay}
+    loop={loop}
+    playsinline
+    preload="none"
+    aria-label={title}
+  >
+    {captionSrc && (
+      <track kind="captions" src={captionSrc} srclang="en" label="English" default />
+    )}
+  </video>
+</div>
+
+<script>
+  // Load HLS only when a player scrolls into view. preload="none" plus this
+  // means a video costs nothing until someone can actually see it.
+  const players = document.querySelectorAll<HTMLVideoElement>('.mux-video__el');
+  if (players.length) {
+    let hlsPromise: Promise<any> | null = null;
+    const loadHls = () => {
+      if (!hlsPromise) {
+        hlsPromise = import('https://cdn.jsdelivr.net/npm/hls.js@1/+esm' as any);
+      }
+      return hlsPromise;
+    };
+
+    const attach = async (video: HTMLVideoElement) => {
+      const src = video.dataset.src;
+      if (!src || video.dataset.attached) return;
+      video.dataset.attached = '1';
+
+      // Safari / iOS play HLS natively — no library needed.
+      if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = src;
+      } else {
+        const mod = await loadHls();
+        const Hls = mod.default ?? mod;
+        if (Hls?.isSupported()) {
+          const hls = new Hls({ capLevelToPlayerSize: true });
+          hls.loadSource(src);
+          hls.attachMedia(video);
+        } else {
+          video.src = src; // last resort
+        }
+      }
+
+      if (video.muted && video.hasAttribute('loop')) {
+        video.play().catch(() => {
+          /* autoplay blocked — poster stays, which is a fine fallback */
+        });
+      }
+    };
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            attach(e.target as HTMLVideoElement);
+            io.unobserve(e.target);
+          }
+        }
+      },
+      { rootMargin: '200px' }
+    );
+
+    players.forEach((p) => io.observe(p));
+  }
+</script>
+
+<style>
+  .mux-video {
+    position: relative;
+    width: 100%;
+    aspect-ratio: var(--aspect);
+    background: #000;
+    overflow: hidden;
+  }
+  .mux-video__el {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+</style>
