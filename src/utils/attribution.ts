@@ -130,6 +130,24 @@ export function getAttributionAttributes(): Array<{
     const m = document.cookie.match(/(?:^|; )sl_persona=([^;]*)/);
     if (m) out.push({ key: "_pd_persona", value: decodeURIComponent(m[1]) });
   }
+
+  // 🛑 WHICH STOREFRONT. jockshockspray.com and southlandorganics.com share ONE
+  // Shopify backend, so nothing in the checkout payload reliably says which site
+  // the shopper was on. Without this a JockShock cart abandoner receives a
+  // Southland-branded recovery email — wrong logo, wrong voice, wrong reply-to.
+  //
+  // Unconditional, unlike everything above. The other keys are set only when a
+  // click id was captured; brand must be on EVERY cart or the Customer.io
+  // abandoned-cart flow cannot gate on it.
+  //
+  // Measured 2026-08-01 over 300 checkouts — why nothing else works:
+  //   referring_site     absent on 79/300 (direct, search, shop.app)
+  //   full_landing_site  the headless /cart/c/ path on 210/300, both brands
+  //   line item SKU      JockShock SKUs also sell on southlandorganics.com,
+  //                      and that is a SOUTHLAND sale that should get Southland
+  //                      email — attribute on the SITE, not the product.
+  out.push({ key: "_pd_brand", value: "jockshock" });
+
   // Shopify caps cart attributes; we're well under, but guard anyway.
   return out.slice(0, 25);
 }
