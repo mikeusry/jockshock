@@ -143,6 +143,47 @@ async function sendConfirmation(email: string): Promise<boolean> {
   }
 }
 
+/**
+ * Mint the person's single-use 20% code via Nexus, which holds the Shopify
+ * admin token (this storefront only has a read-only storefront token).
+ *
+ * Nexus writes the code onto the Customer.io profile itself as
+ * `jockshock_discount_code`; Email 3 of automation 55 prints it. Nothing here
+ * needs the returned value — it's logged for debugging only.
+ *
+ * 🛑 Fire-and-forget. A discount failure must NEVER cost us the signup: the
+ * guide is what the person asked for, and E3 is 6 days away. E3's code block
+ * is wrapped in `{% if %}`, so a profile with no code renders no code block
+ * rather than a broken one.
+ */
+async function mintDiscountCode(email: string): Promise<void> {
+  const endpoint = import.meta.env.NEXUS_DISCOUNT_ENDPOINT;
+  const secret = import.meta.env.JOCKSHOCK_DISCOUNT_SECRET;
+  if (!endpoint || !secret) {
+    console.error("[lead-magnet] discount endpoint/secret not configured — skipping mint");
+    return;
+  }
+
+  try {
+    const r = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${secret}`,
+      },
+      body: JSON.stringify({ email }),
+    });
+    if (!r.ok) {
+      console.error("[lead-magnet] discount mint failed:", r.status, await r.text());
+      return;
+    }
+    const data = await r.json().catch(() => ({}));
+    console.log(`[lead-magnet] minted discount ${data.code} for ${email} (profile updated: ${data.profileUpdated})`);
+  } catch (err) {
+    console.error("[lead-magnet] discount mint error:", err);
+  }
+}
+
 interface LeadMagnetPayload {
   email: string;
   source?: string;
@@ -283,6 +324,11 @@ export const POST: APIRoute = async ({ request }) => {
         { status: 200, headers: { "Content-Type": "application/json" } },
       );
     }
+
+    // Mint the single-use discount now, so the attribute is on the profile
+    // long before Email 3 fires 6 days from now. Runs AFTER identify so the
+    // profile exists for Nexus to write onto.
+    await mintDiscountCode(email);
 
     // Immediate SendGrid thank-you with the guide. Independent of the
     // Customer.io automation (which may lag) — guarantees the reader gets a
