@@ -1,43 +1,64 @@
 /**
  * /api/lead-magnet — footer email capture for the Gear Smell Field Guide.
  *
- * Adds the email to a Klaviyo list (LEAD_MAGNET_LIST_ID) with consent and
- * tags the profile for segmentation.
+ * Identifies the person in Customer.io and fires `field_guide_requested`,
+ * which is what the JockShock Field Guide automation triggers on.
  *
- * DELIVERY: the SendGrid confirmation below is the ONLY thing that delivers
- * the guide. There is no Klaviyo welcome flow — verified 2026-07-16, the
- * Southland account has 54 flows and zero JockShock ones (Nexus T-1175 tracks
- * building it). An earlier version of this comment claimed the flow held the
- * PDF link; it never existed. So FIELD_GUIDE_PDF_URL is load-bearing, not a
- * convenience — if it is null, subscribers get nothing, ever.
+ * ── Klaviyo is gone (2026-08-11, Nexus T-1175) ───────────────────────────────
  *
- * Source tagging — the exact strings a Klaviyo segment must match:
- *   The caller passes `source` in the POST body. It is written to the profile
- *   property `jockshock_lead_source` (step 1) AND as `custom_source` on the
- *   subscribe job (step 2). Only two values are ever sent:
- *     - `jockshock-footer-field-guide` — Footer.astro capture (also the
- *       default when `source` is omitted)
- *     - `jockshock-bottle-label-qr`    — label.astro QR landing
- *   There is NO `jockshock-field-guide` value. A comment here previously
- *   claimed there was; a segment built on that string matches nobody.
+ * This endpoint used to write to Klaviyo list `XWVKzw` ("JockShock — Field
+ * Guide Subscribers"). That list ran for 3 months with no flow behind it: at
+ * cutover it held 6 profiles — 4 test accounts and 2 real people who got the
+ * SendGrid confirmation below and nothing else, ever.
  *
- * Env required (Vercel production):
- *   KLAVIYO_PRIVATE_API_KEY   - server-side key, scoped to Lists+Profiles
- *   KLAVIYO_LEAD_MAGNET_LIST_ID - the list id welcome flow listens on
+ * JockShock shares the SOUTHLAND Customer.io workspace — it is a sub-brand, not
+ * a separate account, so there is one set of credentials and one profile per
+ * human. `sub_brand: "jockshock"` is what separates JockShock people from
+ * Southland people. 🛑 Every JockShock segment MUST filter on it, or a
+ * JockShock send goes to the entire Southland book.
  *
- * Pattern matches southland-inventory/src/lib/klaviyo.ts:
- *   - revision header 2024-02-15
- *   - Authorization: Klaviyo-API-Key <key>
+ * ── DELIVERY: the SendGrid confirmation is still load-bearing ────────────────
+ *
+ * The confirmation below is what actually puts the PDF in the inbox on submit.
+ * The Customer.io automation adds the 3-email nurture on top (immediate / +3d /
+ * +6d), but it is NOT what delivers the guide at signup — if
+ * FIELD_GUIDE_PDF_URL is null, subscribers get nothing at the moment they ask.
+ * Do not delete this on the assumption that the automation covers it.
+ *
+ * ── Event + attribute contract the automation depends on ─────────────────────
+ *
+ * Trigger event: `field_guide_requested`
+ * Segment filter: attribute `sub_brand` equals `jockshock`
+ *
+ * `source` is passed by the caller, written to the `jockshock_lead_source`
+ * attribute AND onto the event data. Only two values are ever sent:
+ *   - `jockshock-footer-field-guide` — Footer.astro capture (also the default
+ *     when `source` is omitted)
+ *   - `jockshock-bottle-label-qr`    — label.astro QR landing
+ * There is NO `jockshock-field-guide` value. A segment built on that string
+ * matches nobody.
+ *
+ * ⚠️ Uses the TRACK credentials (site id + track api key, HTTP Basic against
+ * track.customer.io) — NOT the App API bearer key, which is a different
+ * credential against a different host and cannot identify or track.
+ *
+ * Env required (Vercel production, project `jockshock`):
+ *   CUSTOMERIO_SITE_ID        - Track site id, Southland workspace
+ *   CUSTOMERIO_TRACK_API_KEY  - Track api key, Southland workspace
+ *   SENDGRID_API_KEY          - immediate confirmation with the PDF
+ *
+ * Pattern matches southland-inventory/src/lib/review-invite-event.ts:
+ *   - Basic auth over `${siteId}:${apiKey}`
+ *   - PUT /customers/:id to identify, THEN POST /customers/:id/events
  */
 import type { APIRoute } from "astro";
 
-const KLAVIYO_REVISION = "2024-02-15";
-const KLAVIYO_API = "https://a.klaviyo.com/api";
+const CIO_TRACK_API = "https://track.customer.io/api/v1/customers";
 const SENDGRID_API = "https://api.sendgrid.com/v3/mail/send";
 
 // Public Cloudinary URL of the Field Guide PDF (v6, 8pp, carries the
-// FIELDGUIDE20 coupon on p8). Verified live 2026-07-16: HTTP 200,
-// content-length 6211174.
+// FIELDGUIDE20 coupon on p8). Verified live 2026-08-11: HTTP 200,
+// content-type application/pdf, content-length 6211174.
 //
 // Unversioned on purpose so a new revision swaps in without a redeploy — BUT
 // the overwrite MUST pass `invalidate: true`. Cloudinary's CDN caches 404s:
@@ -52,7 +73,7 @@ const FIELD_GUIDE_PDF_URL: string | null =
  * Immediate confirmation email via SendGrid — Aaron voice, deodorizer-only
  * (no kill-microbe / EPA / sanitize claims). Mirrors the teams-intake.ts
  * SendGrid pattern. Fire-and-forget: a failure here never fails the signup
- * (Klaviyo already has the profile), it's just logged.
+ * (Customer.io already has the profile), it's just logged.
  */
 async function sendConfirmation(email: string): Promise<boolean> {
   const sendgridKey = import.meta.env.SENDGRID_API_KEY;
@@ -133,11 +154,11 @@ interface LeadMagnetPayload {
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const POST: APIRoute = async ({ request }) => {
-  const apiKey = import.meta.env.KLAVIYO_PRIVATE_API_KEY;
-  const listId = import.meta.env.KLAVIYO_LEAD_MAGNET_LIST_ID;
+  const siteId = import.meta.env.CUSTOMERIO_SITE_ID;
+  const trackKey = import.meta.env.CUSTOMERIO_TRACK_API_KEY;
 
-  if (!apiKey || !listId) {
-    console.error("[lead-magnet] Klaviyo env not configured");
+  if (!siteId || !trackKey) {
+    console.error("[lead-magnet] Customer.io env not configured");
     return new Response(
       JSON.stringify({ error: "Server configuration error" }),
       {
@@ -173,110 +194,99 @@ export const POST: APIRoute = async ({ request }) => {
   const persona = data.persona || "aaron";
   const source = data.source || "jockshock-footer-field-guide";
 
-  // Klaviyo's bulk-subscription endpoint does NOT accept `properties` on the
-  // profile (returns 400 "properties is not a valid field"). So this is a
-  // two-step dance:
-  //   1. POST /profile-import/ — upsert profile with the custom properties
-  //   2. POST /profile-subscription-bulk-create-jobs/ — subscribe the profile
-  //      to the list with consent
-  // Doing them in this order matters: the profile + properties are always
-  // created. The subscribe step is what feeds the welcome flow trigger; if
-  // it fails we still have the profile, so worst case we can backfill via
-  // a Klaviyo segment + flow re-trigger.
-  const profileProperties = {
-    sub_brand: "jockshock",
-    jockshock_persona: persona,
-    jockshock_lead_source: source,
-    jockshock_lead_magnet: "gear-smell-field-guide",
-    jockshock_signup_at: new Date().toISOString(),
-  };
-
-  const baseHeaders = {
-    Authorization: `Klaviyo-API-Key ${apiKey}`,
+  // Customer.io is identify-then-track, in that order and never merged:
+  //   1. PUT /customers/:id  — upsert the profile with attributes
+  //   2. POST /customers/:id/events — fire the automation trigger
+  // Order matters. An event on a profile Customer.io has never seen creates a
+  // stub with no email address, and the automation has nothing to send to.
+  //
+  // ⚖️ Deliberately does NOT set `unsubscribed: false`. Someone who previously
+  // opted out of Southland marketing stays opted out — this form is not consent
+  // to re-subscribe them across the whole workspace.
+  const auth = Buffer.from(`${siteId}:${trackKey}`).toString("base64");
+  const id = encodeURIComponent(email);
+  const headers = {
     "Content-Type": "application/json",
-    Accept: "application/json",
-    revision: KLAVIYO_REVISION,
-  };
-
-  // Step 1: upsert profile with custom properties.
-  const profilePayload = {
-    data: {
-      type: "profile",
-      attributes: { email, properties: profileProperties },
-    },
+    Authorization: `Basic ${auth}`,
   };
 
   try {
-    const profRes = await fetch(`${KLAVIYO_API}/profile-import/`, {
-      method: "POST",
-      headers: baseHeaders,
-      body: JSON.stringify(profilePayload),
+    const identify = await fetch(`${CIO_TRACK_API}/${id}`, {
+      method: "PUT",
+      headers,
+      body: JSON.stringify({
+        email,
+        // 🛑 The segment filter. Without this the JockShock automation cannot
+        // tell a JockShock signup from a Southland customer.
+        sub_brand: "jockshock",
+        jockshock_persona: persona,
+        jockshock_lead_source: source,
+        jockshock_lead_magnet: "gear-smell-field-guide",
+        // Customer.io convention is unix seconds for timestamp attributes;
+        // an ISO string sorts as text and breaks date filters in segments.
+        jockshock_signup_at: Math.floor(Date.now() / 1000),
+      }),
     });
-    if (!profRes.ok) {
-      const errorText = await profRes.text();
+
+    if (!identify.ok) {
+      const errorText = await identify.text();
       console.error(
-        "[lead-magnet] Klaviyo profile-import error:",
-        profRes.status,
+        "[lead-magnet] Customer.io identify error:",
+        identify.status,
         errorText,
       );
-      // Continue to subscribe anyway — we'd rather have an unsubscribed
-      // profile with properties than fail the whole request.
-    }
-
-    // Step 2: subscribe to the list (no properties on the inner profile here —
-    // those are already set in step 1 by email match).
-    const subPayload = {
-      data: {
-        type: "profile-subscription-bulk-create-job",
-        attributes: {
-          custom_source: source,
-          profiles: {
-            data: [
-              {
-                type: "profile",
-                attributes: {
-                  email,
-                  subscriptions: {
-                    email: { marketing: { consent: "SUBSCRIBED" } },
-                  },
-                },
-              },
-            ],
-          },
-        },
-        relationships: {
-          list: { data: { type: "list", id: listId } },
-        },
-      },
-    };
-
-    const subRes = await fetch(
-      `${KLAVIYO_API}/profile-subscription-bulk-create-jobs/`,
-      {
-        method: "POST",
-        headers: baseHeaders,
-        body: JSON.stringify(subPayload),
-      },
-    );
-
-    if (!subRes.ok) {
-      const errorText = await subRes.text();
-      console.error(
-        "[lead-magnet] Klaviyo subscribe error:",
-        subRes.status,
-        errorText,
-      );
-      // Don't 500 the user — profile may still have been imported in step 1.
-      // Still send the confirmation so they get the guide regardless.
+      // Still send the guide — the person asked for it and the delivery path
+      // below does not depend on Customer.io.
       const sent = await sendConfirmation(email);
       return new Response(
         JSON.stringify({ ok: true, queued: false, emailed: sent }),
-        { status: 200 },
+        { status: 200, headers: { "Content-Type": "application/json" } },
       );
     }
 
-    // Immediate SendGrid thank-you with the guide. Independent of the Klaviyo
-    // welcome flow (which may lag) — guarantees the reader gets a response now.
+    // Fire the trigger. `field_guide_requested` is what the automation listens
+    // on.
+    //
+    // 🛑 No `id` (dedupe key) on purpose. Re-submitting SHOULD re-enter the
+    // person — someone who lost the PDF and signs up again expects it back.
+    // Customer.io's own re-entry setting on the automation is where that gets
+    // limited, not here.
+    const track = await fetch(`${CIO_TRACK_API}/${id}/events`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify({
+        name: "field_guide_requested",
+        data: {
+          source,
+          persona,
+          sub_brand: "jockshock",
+          lead_magnet: "gear-smell-field-guide",
+          // The automation renders the download button from this, so a future
+          // PDF move only has to change the constant above.
+          pdf_url: FIELD_GUIDE_PDF_URL || "",
+        },
+      }),
+    });
+
+    if (!track.ok) {
+      const errorText = await track.text();
+      console.error(
+        "[lead-magnet] Customer.io track error:",
+        track.status,
+        errorText,
+      );
+      // Profile exists from step 1, so this is recoverable by re-firing the
+      // event from a segment. Still deliver the guide now.
+      const sent = await sendConfirmation(email);
+      return new Response(
+        JSON.stringify({ ok: true, queued: false, emailed: sent }),
+        { status: 200, headers: { "Content-Type": "application/json" } },
+      );
+    }
+
+    // Immediate SendGrid thank-you with the guide. Independent of the
+    // Customer.io automation (which may lag) — guarantees the reader gets a
+    // response now.
     const sent = await sendConfirmation(email);
 
     return new Response(
