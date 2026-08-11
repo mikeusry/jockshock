@@ -9,7 +9,7 @@
  * in priority order:
  *   1. How to use it (they just got it, want quick directions)
  *   2. Reorder (repeat purchase — drives LTV, not first conversion)
- *   3. Email capture (gear-care drops + restock reminders via Klaviyo)
+ *   3. Email capture (gear-care drops + restock reminders via Customer.io)
  *
  * Mobile-first. Most scans will be on a phone, in a locker room or trunk.
  * Keep it short. No marketing fluff — they already converted.
@@ -18,8 +18,10 @@
  * captures UTMs on the page-view event, so we don't fire a custom event here.
  * Label-scan attribution is the (utm_source=label, utm_medium=qr) tuple.
  *
- * Klaviyo: reuses /api/lead-magnet with source=jockshock-bottle-label-qr so
- * scanners land in their own segment. List ID + welcome flow already wired.
+ * Customer.io: reuses /api/lead-magnet with source=jockshock-bottle-label-qr,
+ * which lands on the `jockshock_lead_source` attribute so scanners can be
+ * segmented apart from footer signups. Same `field_guide_requested` trigger —
+ * a scanner who wants the guide gets the same 3-email nurture.
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
 import StepBadge from "../components/StepBadge.astro";
@@ -95,7 +97,7 @@ const HERO_BOTTLE =
       </div>
     </section>
 
-    {/* KLAVIYO CAPTURE */}
+    {/* EMAIL CAPTURE — Customer.io */}
     <section class="optin">
       <div class="optin-inner">
         <p class="eyebrow">Want gear-care drops?</p>

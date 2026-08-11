@@ -9,8 +9,8 @@ const year = new Date().getFullYear();
   {
     /* Lead-magnet capture — Gear Smell Field Guide.
       Persona is read from the sl_persona cookie at submit time so a Pam
-      visitor gets the parents-flavored welcome flow, etc. The list_id +
-      flow live in Klaviyo. */
+      visitor gets the parents-flavored welcome automation, etc. The segment +
+      automation live in Customer.io, triggered by `field_guide_requested`. */
   }
   <section
     id="field-guide"
@@ -142,8 +142,8 @@ const year = new Date().getFullYear();
 </footer>
 
 <script>
-  // Lead-magnet submit. Reads sl_persona cookie so Klaviyo can fork the
-  // welcome flow by Aaron / Pam / Carmen. Optimistic UX — show success
+  // Lead-magnet submit. Reads sl_persona cookie so Customer.io can fork the
+  // welcome automation by Aaron / Pam / Carmen. Optimistic UX — show success
   // even if the API queues with `queued:false`, since the API will
   // backfill via Sentry.
   const form = document.getElementById(
@@ -186,8 +186,8 @@ const year = new Date().getFullYear();
         const payload = await r.json().catch(() => ({}));
         if (r.ok) {
           // Stamp sl_email cookie so /api/cart-event can attribute events
-          // to this profile in Klaviyo. 1-year expiry, lax samesite (so
-          // SSO / cross-subdomain works), secure on https.
+          // to this profile. 1-year expiry, lax samesite (so SSO /
+          // cross-subdomain works), secure on https.
           const oneYear = 60 * 60 * 24 * 365;
           const isSecure = location.protocol === "https:";
           document.cookie = `sl_email=${encodeURIComponent(email)}; max-age=${oneYear}; path=/; samesite=lax${isSecure ? "; secure" : ""}`;
@@ -209,7 +209,7 @@ const year = new Date().getFullYear();
           pixel?.track?.("lead_magnet_signup", {
             source: "jockshock-footer-field-guide",
             persona,
-            klaviyo_queued: payload.queued !== false,
+            esp_queued: payload.queued !== false,
           });
         } else {
           status.textContent =

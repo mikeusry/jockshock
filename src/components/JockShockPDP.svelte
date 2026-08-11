@@ -41,8 +41,8 @@
 
     // Fire pixel event before adding so we capture the click intent even
     // if the cart mutation is slow. Also POST to /api/cart-event so the
-    // Klaviyo profile (if we have one — lead-magnet signups, returning
-    // customers) gets an "Added to Cart" event for the abandon flow.
+    // Customer.io profile (if we have one — lead-magnet signups, returning
+    // customers) gets an added_to_cart event for the abandon automation.
     const props = {
       sku: selected.sku,
       variant_id: selected.id,
@@ -64,7 +64,7 @@
     addCartItem({ id: selected.id, quantity: 1 });
   }
 
-  // Fire view_product on mount so Klaviyo + the CDP both see the impression.
+  // Fire view_product on mount so Customer.io + the CDP see the impression.
   // Persona is read at fire time, not at render, so it picks up any cookie
   // stamp that ran during the page load.
   onMount(() => {

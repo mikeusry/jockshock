@@ -40,8 +40,8 @@
     Math.min(100, (cartSubtotal / FREE_SHIPPING_THRESHOLD) * 100)
   );
 
-  // Add focus to cart drawer when it opens, and fire pixel + Klaviyo
-  // view_cart event so the abandon-cart flow has a hook before checkout.
+  // Add focus to cart drawer when it opens, and fire pixel + Customer.io
+  // view_cart event so an abandon-cart automation has a hook before checkout.
   let lastViewedCartId: string | null = null;
   run(() => {
     if ($isCartDrawerOpen) {
@@ -91,7 +91,7 @@
   }
 
   function handleCheckoutClick(e: MouseEvent) {
-    // Fire begin_checkout to both pixel and Klaviyo before the navigation
+    // Fire begin_checkout to both pixel and Customer.io before the navigation
     // happens. keepalive on fetch lets the request finish even after the
     // window unloads.
     const c = $cart;
