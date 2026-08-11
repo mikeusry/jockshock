@@ -21,6 +21,11 @@
  * The fire-service offer skips the SendGrid confirmation entirely: its
  * deliverable is the discount code, which Customer.io sends.
  *
+ * Each signup mints its own single-use Shopify code — 20% for the Field Guide,
+ * 10% for fire service — written to the profile as `jockshock_discount_code`.
+ * See `mintDiscountCode`. Coupons are created in Shopify directly; no other
+ * system owns discount logic.
+ *
  * ── Klaviyo is gone (2026-08-11, Nexus T-1175) ───────────────────────────────
  *
  * This endpoint used to write to Klaviyo list `XWVKzw` ("JockShock — Field
@@ -64,6 +69,10 @@
  *   CUSTOMERIO_SITE_ID        - Track site id, Southland workspace
  *   CUSTOMERIO_TRACK_API_KEY  - Track api key, Southland workspace
  *   SENDGRID_API_KEY          - immediate confirmation with the PDF
+ *   SHOPIFY_SHOP              - e.g. southland-organics.myshopify.com
+ *   SHOPIFY_ADMIN_TOKEN       - Admin API token; needed to mint discount codes
+ *                               (the Storefront token is read-only and has no
+ *                               discount mutation at all)
  *
  * Pattern matches southland-inventory/src/lib/review-invite-event.ts:
  *   - Basic auth over `${siteId}:${apiKey}`
@@ -178,41 +187,109 @@ async function sendConfirmation(
 }
 
 /**
- * Mint the person's single-use 20% code via Nexus, which holds the Shopify
- * admin token (this storefront only has a read-only storefront token).
+ * Mint a single-use percentage discount code directly in Shopify.
  *
- * Nexus writes the code onto the Customer.io profile itself as
- * `jockshock_discount_code`; Email 3 of automation 55 prints it. Nothing here
- * needs the returned value — it's logged for debugging only.
+ * 🛑 COUPONS ARE A SHOPIFY CONCERN. This used to POST to a Nexus endpoint
+ * (`/api/jockshock-field-guide-discount`) purely because Nexus happened to hold
+ * the Shopify admin token — an accident of credential placement, not a design.
+ * It also hardcoded 20%, so the fire-service offer inherited the Field Guide's
+ * discount. Nexus is an inventory/ops system and owns no discount logic; the
+ * percentage now travels with the offer.
  *
- * 🛑 Fire-and-forget. A discount failure must NEVER cost us the signup: the
- * guide is what the person asked for, and E3 is 6 days away. E3's code block
- * is wrapped in `{% if %}`, so a profile with no code renders no code block
- * rather than a broken one.
+ * Two calls, because Shopify's REST discount model is two objects:
+ *   1. POST /price_rules            — the rule (who/what/how much)
+ *   2. POST /price_rules/:id/discount_codes — the code string itself
+ *
+ * The code is then written onto the Customer.io profile as
+ * `jockshock_discount_code`, which is what the automation emails print.
+ *
+ * 🛑 Fire-and-forget. A discount failure must NEVER cost us the signup — the
+ * person asked for the guide (or the code) and the profile already exists.
+ * Both automations wrap their code block in `{% if %}`, so a profile with no
+ * code renders no block rather than a broken one.
  */
-async function mintDiscountCode(email: string): Promise<void> {
-  const endpoint = import.meta.env.NEXUS_DISCOUNT_ENDPOINT;
-  const secret = import.meta.env.JOCKSHOCK_DISCOUNT_SECRET;
-  if (!endpoint || !secret) {
-    console.error("[lead-magnet] discount endpoint/secret not configured — skipping mint");
+async function mintDiscountCode(
+  email: string,
+  percent: number,
+  siteId: string,
+  trackKey: string,
+): Promise<void> {
+  const shop = import.meta.env.SHOPIFY_SHOP;
+  const adminToken = import.meta.env.SHOPIFY_ADMIN_TOKEN;
+  if (!shop || !adminToken) {
+    console.error("[lead-magnet] SHOPIFY_ADMIN_TOKEN/SHOP not configured — skipping mint");
     return;
   }
 
+  // Unambiguous alphabet — no O/0/I/1, since people retype these from an email.
+  const suffix = Array.from({ length: 8 }, () =>
+    "ABCDEFGHJKLMNPQRSTUVWXYZ23456789".charAt(Math.floor(Math.random() * 32)),
+  ).join("");
+  const code = `JS-${suffix}`;
+
+  const api = `https://${shop}/admin/api/2025-04`;
+  const headers = {
+    "Content-Type": "application/json",
+    "X-Shopify-Access-Token": adminToken,
+  };
+
   try {
-    const r = await fetch(endpoint, {
+    // 30-day window matches what both emails promise.
+    const endsAt = new Date(Date.now() + 30 * 86_400_000).toISOString();
+
+    const ruleRes = await fetch(`${api}/price_rules.json`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${secret}`,
-      },
-      body: JSON.stringify({ email }),
+      headers,
+      body: JSON.stringify({
+        price_rule: {
+          title: `JockShock ${percent}% (${code})`,
+          target_type: "line_item",
+          target_selection: "all",
+          allocation_method: "across",
+          value_type: "percentage",
+          value: `-${percent}`,
+          customer_selection: "all",
+          // usage_limit 1 is what makes the code single-use — without it a
+          // forwarded code is a public discount.
+          usage_limit: 1,
+          starts_at: new Date().toISOString(),
+          ends_at: endsAt,
+        },
+      }),
     });
-    if (!r.ok) {
-      console.error("[lead-magnet] discount mint failed:", r.status, await r.text());
+    if (!ruleRes.ok) {
+      console.error("[lead-magnet] price rule failed:", ruleRes.status, await ruleRes.text());
       return;
     }
-    const data = await r.json().catch(() => ({}));
-    console.log(`[lead-magnet] minted discount ${data.code} for ${email} (profile updated: ${data.profileUpdated})`);
+    const { price_rule: rule } = await ruleRes.json();
+
+    const codeRes = await fetch(`${api}/price_rules/${rule.id}/discount_codes.json`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify({ discount_code: { code } }),
+    });
+    if (!codeRes.ok) {
+      console.error("[lead-magnet] discount code failed:", codeRes.status, await codeRes.text());
+      // Orphaned rule with no code — harmless, but clean it up so the Shopify
+      // discounts list doesn't fill with unusable rules.
+      await fetch(`${api}/price_rules/${rule.id}.json`, { method: "DELETE", headers }).catch(
+        () => {},
+      );
+      return;
+    }
+
+    // Write it back to the profile so the automation can print it.
+    const auth = Buffer.from(`${siteId}:${trackKey}`).toString("base64");
+    await fetch(`${CIO_TRACK_API}/${encodeURIComponent(email)}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Basic ${auth}`,
+      },
+      body: JSON.stringify({ jockshock_discount_code: code }),
+    });
+
+    console.log(`[lead-magnet] minted ${code} (${percent}%) for ${email}`);
   } catch (err) {
     console.error("[lead-magnet] discount mint error:", err);
   }
@@ -286,6 +363,9 @@ export const POST: APIRoute = async ({ request }) => {
   const leadMagnet = isFirefighter
     ? "fire-service-discount"
     : "gear-smell-field-guide";
+  // The offer carries its own discount. Fire service is 10%; the Field Guide
+  // stays at the 20% it has always been.
+  const discountPercent = isFirefighter ? 10 : 20;
 
   // Customer.io is identify-then-track, in that order and never merged:
   //   1. PUT /customers/:id  — upsert the profile with attributes
@@ -381,7 +461,7 @@ export const POST: APIRoute = async ({ request }) => {
     // Mint the single-use discount now, so the attribute is on the profile
     // long before Email 3 fires 6 days from now. Runs AFTER identify so the
     // profile exists for Nexus to write onto.
-    await mintDiscountCode(email);
+    await mintDiscountCode(email, discountPercent, siteId, trackKey);
 
     // Immediate SendGrid thank-you with the guide. Independent of the
     // Customer.io automation (which may lag) — guarantees the reader gets a
