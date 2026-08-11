@@ -1,8 +1,25 @@
 /**
- * /api/lead-magnet — footer email capture for the Gear Smell Field Guide.
+ * /api/lead-magnet — email capture. Two offers, one route.
  *
- * Identifies the person in Customer.io and fires `field_guide_requested`,
- * which is what the JockShock Field Guide automation triggers on.
+ * Identifies the person in Customer.io, then fires the trigger event the
+ * matching automation listens on.
+ *
+ * ── The two offers ───────────────────────────────────────────────────────────
+ *
+ * | source                       | event                          | PDF? |
+ * |------------------------------|--------------------------------|------|
+ * | jockshock-footer-field-guide | field_guide_requested          | yes  |
+ * | jockshock-bottle-label-qr    | field_guide_requested          | yes  |
+ * | jockshock-firefighters       | firefighter_discount_requested | no   |
+ *
+ * `source` is the ONLY thing that distinguishes them. The fire-service lander
+ * (/firefighters) sends the third value; everything else defaults to the
+ * Field Guide. 🛑 The firefighter automation MUST trigger on
+ * `firefighter_discount_requested` — segmenting on `field_guide_requested`
+ * drops firefighters into the guide nurture and sends them a youth-sports PDF.
+ *
+ * The fire-service offer skips the SendGrid confirmation entirely: its
+ * deliverable is the discount code, which Customer.io sends.
  *
  * ── Klaviyo is gone (2026-08-11, Nexus T-1175) ───────────────────────────────
  *
@@ -27,14 +44,15 @@
  *
  * ── Event + attribute contract the automation depends on ─────────────────────
  *
- * Trigger event: `field_guide_requested`
+ * Trigger event: `field_guide_requested` / `firefighter_discount_requested`
  * Segment filter: attribute `sub_brand` equals `jockshock`
  *
  * `source` is passed by the caller, written to the `jockshock_lead_source`
- * attribute AND onto the event data. Only two values are ever sent:
+ * attribute AND onto the event data. Only three values are ever sent:
  *   - `jockshock-footer-field-guide` — Footer.astro capture (also the default
  *     when `source` is omitted)
  *   - `jockshock-bottle-label-qr`    — label.astro QR landing
+ *   - `jockshock-firefighters`       — firefighters.astro fire-service form
  * There is NO `jockshock-field-guide` value. A segment built on that string
  * matches nobody.
  *
@@ -82,7 +100,16 @@ const FIELD_GUIDE_PDF_URL: string | null =
  * SendGrid pattern. Fire-and-forget: a failure here never fails the signup
  * (Customer.io already has the profile), it's just logged.
  */
-async function sendConfirmation(email: string): Promise<boolean> {
+async function sendConfirmation(
+  email: string,
+  isFirefighter = false,
+): Promise<boolean> {
+  // The fire-service offer is a discount code, not the guide. Customer.io's
+  // firefighter automation owns that send — this SendGrid confirmation would
+  // put an unrelated PDF in their inbox. Gate at the top so every call site is
+  // covered, including the two error paths.
+  if (isFirefighter) return false;
+
   const sendgridKey = import.meta.env.SENDGRID_API_KEY;
   if (!sendgridKey) {
     console.error(
@@ -199,6 +226,13 @@ interface LeadMagnetPayload {
   company_website?: string;
 }
 
+/**
+ * The fire-service lander (/firefighters) posts here with this source. It is a
+ * different offer from the Field Guide — a discount code, no PDF — so it fires
+ * its own trigger event and skips the Field Guide confirmation email.
+ */
+const FIREFIGHTER_SOURCE = "jockshock-firefighters";
+
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const POST: APIRoute = async ({ request }) => {
@@ -241,6 +275,17 @@ export const POST: APIRoute = async ({ request }) => {
 
   const persona = data.persona || "aaron";
   const source = data.source || "jockshock-footer-field-guide";
+  const isFirefighter = source === FIREFIGHTER_SOURCE;
+
+  // Two offers share this route. They differ in three ways and nothing else:
+  // the trigger event, the lead-magnet attribute, and whether the Field Guide
+  // PDF confirmation goes out.
+  const triggerEvent = isFirefighter
+    ? "firefighter_discount_requested"
+    : "field_guide_requested";
+  const leadMagnet = isFirefighter
+    ? "fire-service-discount"
+    : "gear-smell-field-guide";
 
   // Customer.io is identify-then-track, in that order and never merged:
   //   1. PUT /customers/:id  — upsert the profile with attributes
@@ -269,7 +314,7 @@ export const POST: APIRoute = async ({ request }) => {
         sub_brand: "jockshock",
         jockshock_persona: persona,
         jockshock_lead_source: source,
-        jockshock_lead_magnet: "gear-smell-field-guide",
+        jockshock_lead_magnet: leadMagnet,
         // Customer.io convention is unix seconds for timestamp attributes;
         // an ISO string sorts as text and breaks date filters in segments.
         jockshock_signup_at: Math.floor(Date.now() / 1000),
@@ -285,7 +330,7 @@ export const POST: APIRoute = async ({ request }) => {
       );
       // Still send the guide — the person asked for it and the delivery path
       // below does not depend on Customer.io.
-      const sent = await sendConfirmation(email);
+      const sent = await sendConfirmation(email, isFirefighter);
       return new Response(
         JSON.stringify({ ok: true, queued: false, emailed: sent }),
         { status: 200, headers: { "Content-Type": "application/json" } },
@@ -303,15 +348,16 @@ export const POST: APIRoute = async ({ request }) => {
       method: "POST",
       headers,
       body: JSON.stringify({
-        name: "field_guide_requested",
+        name: triggerEvent,
         data: {
           source,
           persona,
           sub_brand: "jockshock",
-          lead_magnet: "gear-smell-field-guide",
-          // The automation renders the download button from this, so a future
-          // PDF move only has to change the constant above.
-          pdf_url: FIELD_GUIDE_PDF_URL || "",
+          lead_magnet: leadMagnet,
+          // The Field Guide automation renders the download button from this,
+          // so a future PDF move only has to change the constant above. Empty
+          // for the fire-service offer — there's no PDF in that one.
+          pdf_url: isFirefighter ? "" : FIELD_GUIDE_PDF_URL || "",
         },
       }),
     });
@@ -325,7 +371,7 @@ export const POST: APIRoute = async ({ request }) => {
       );
       // Profile exists from step 1, so this is recoverable by re-firing the
       // event from a segment. Still deliver the guide now.
-      const sent = await sendConfirmation(email);
+      const sent = await sendConfirmation(email, isFirefighter);
       return new Response(
         JSON.stringify({ ok: true, queued: false, emailed: sent }),
         { status: 200, headers: { "Content-Type": "application/json" } },
@@ -340,7 +386,7 @@ export const POST: APIRoute = async ({ request }) => {
     // Immediate SendGrid thank-you with the guide. Independent of the
     // Customer.io automation (which may lag) — guarantees the reader gets a
     // response now.
-    const sent = await sendConfirmation(email);
+    const sent = await sendConfirmation(email, isFirefighter);
 
     return new Response(
       JSON.stringify({ ok: true, queued: true, emailed: sent }),

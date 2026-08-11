@@ -1,0 +1,950 @@
+---
+/**
+ * /firefighters — the fire-service lander.
+ *
+ * Built for Simpli.fi Flight 1 (geo-fenced display to Georgia fire stations).
+ * Spec: mothership/docs/advertising/campaigns/southland/jockshock-firefighters-landing-page.md
+ *
+ * STRUCTURE — testimony-led PAS, not AIDA.
+ * The 72s interview video is the strongest asset on the page. A 20-year fire
+ * service veteran states the problem, agitates it, AND raises the chemical
+ * objection himself. Framework scaffolding on top of that reads as re-selling
+ * something the visitor just heard from someone with more standing. So the
+ * Problem and Agitation are HIS, verbatim; the page handles mechanism + purchase.
+ *
+ * 🛑 THE SPEAKER IS ANONYMOUS ON PURPOSE. He works for Southland part-time, so
+ *    the page never names him or his department. "A 20-year fire service
+ *    veteran." The lower-third in the video is deliberately blank. Do not
+ *    "fix" it by adding a name.
+ *
+ * 🛑 THIS IS A WRITTEN SURFACE. The video's spoken VO line "eliminate odor
+ *    causing bacteria" is approved for SPOKEN creative only. It must never
+ *    appear in copy, headings, alt text, or meta description here. Use "kills
+ *    odor" / "kills the funk". See brand-brief.md §Claims Register.
+ *
+ * 🛑 TWO WORDS FROM THE INTERVIEW STAY IN THE VIDEO, NOT IN COPY:
+ *    "decontaminate" (adjacent to the fire-service carcinogen conversation —
+ *    heavier than we mean) and "all natural" (brand brief bans eco framing).
+ *
+ * Hero imagery is B-ROLL, not the talking head — he's in a polo in an office.
+ * Visual authority comes from the gear.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import MuxVideo from "../components/MuxVideo.astro";
+import { VIDEOS } from "../data/videos";
+
+const title = "JockShock for Firefighters — Gear Odor Between Washes";
+const description =
+  "Turnout gear can't go in the wash after every call. JockShock is a pro-grade equipment deodorizer powered by EPA-registered ZeroPoint Technology. Kills the funk at the source. No fragrance, no bleach.";
+
+// 🛑 This cut has NO caption track (uploaded past Mux's 7-day auto-caption
+// window). See videos.ts — captions must be authored before this page carries
+// accessibility or SEO weight.
+const VIDEO = VIDEOS.firefighter;
+
+// Hero still pulled from the video's b-roll (~30s — SCBA donning in the
+// apparatus bay). Mux generates thumbnails from the playback ID, so the hero
+// and the video are guaranteed to be the same world.
+const HERO_STILL = `https://image.mux.com/${VIDEO.playbackId}/thumbnail.webp?time=${VIDEO.posterTime}&width=1200`;
+
+// Product shots — same Cloudinary assets the PDP and /parents use.
+const CLD = "https://res.cloudinary.com/southland-organics/image/upload";
+const BOTTLE_SINGLE = `${CLD}/c_fit,w_560,q_auto,f_auto,dpr_auto/JockShock/jockshock-32oz-single-2026.png`;
+const BOTTLE_3PACK = `${CLD}/c_fit,w_560,q_auto,f_auto,dpr_auto/JockShock/jockshock-3pack-athlete-2026.png`;
+const BOTTLE_6PACK = `${CLD}/c_fit,w_560,q_auto,f_auto,dpr_auto/JockShock/jockshock-6pack-team-2026.png`;
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="js-fire">
+    <!-- HERO — the constraint, stated in one line -->
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">For the fire service</p>
+          <h1 class="hero-headline">
+            Your gear can't go in the wash after every call.
+          </h1>
+          <p class="hero-sub">
+            It still has to be ready for the next one.
+          </p>
+          <p class="hero-promise">
+            JockShock is a pro-grade equipment deodorizer built for gear that
+            gets worn hard and washed rarely. Hypochlorous acid — the same
+            molecule your immune system makes. Kills the funk at the source.
+          </p>
+          <div class="hero-cta-row">
+            <a href="/products/jockshock/" class="cta-primary">Get JockShock — $24.99</a>
+            <a href="#how" class="cta-secondary">What's in it</a>
+          </div>
+          <ul class="hero-trust">
+            <li>No fragrance</li>
+            <li>No bleach</li>
+            <li>Safe on skin contact</li>
+            <li>Made in USA</li>
+          </ul>
+        </div>
+        <div class="hero-media">
+          <img src={HERO_STILL} alt="Firefighter donning SCBA and turnout gear in the apparatus bay" />
+        </div>
+      </div>
+    </section>
+
+    <!-- THE VIDEO — the asset -->
+    <section class="video-section" id="video">
+      <div class="video-inner">
+        <p class="section-eyebrow">From the firehouse</p>
+        <h2 class="section-headline center">
+          "They sweat in it all the time. Then it gets pretty rank."
+        </h2>
+        <div class="video-frame">
+          <MuxVideo
+            playbackId={VIDEO.playbackId}
+            title={VIDEO.title}
+            aspect="9/16"
+            posterTime={VIDEO.posterTime}
+          />
+        </div>
+        <p class="video-caption">
+          A 20-year fire service veteran on what happens to turnout gear — and
+          what he wanted done about it.
+        </p>
+      </div>
+    </section>
+
+    <!-- THE PROBLEM — his words carry P and A -->
+    <section class="problem">
+      <div class="problem-inner">
+        <p class="section-eyebrow">The problem</p>
+        <h2 class="section-headline">
+          Turnout gear absorbs everything. Then it goes back on the rack.
+        </h2>
+        <p class="section-sub">
+          Sweat, moisture, smoke — the liner holds all of it. And crews don't
+          just wear gear on calls:
+        </p>
+
+        <blockquote class="pull">
+          <p>
+            "We had a lot of guys that work out in their gear to get acclimated
+            to the heat. So they sweat in it all the time, and then it gets
+            pretty rank."
+          </p>
+          <cite>20-year fire service veteran</cite>
+        </blockquote>
+
+        <p class="section-sub">
+          Gear gets worn hard, shift after shift — and it can't be laundered
+          between calls. That's the gap JockShock is built for.
+        </p>
+      </div>
+    </section>
+
+    <!-- THE OBJECTION, ANSWERED — he raises it himself -->
+    <section class="how" id="how">
+      <div class="how-inner">
+        <p class="section-eyebrow">The obvious question</p>
+
+        <blockquote class="pull pull-lead">
+          <p>
+            "We wouldn't want to clean something that was putting just as bad of
+            chemicals back on it just because it smells good."
+          </p>
+          <cite>20-year fire service veteran</cite>
+        </blockquote>
+
+        <h2 class="section-headline">That's the right question to ask.</h2>
+        <p class="section-sub">
+          JockShock is powered by EPA-registered ZeroPoint Technology. The active
+          ingredient is hypochlorous acid (HOCl) — the same molecule your white
+          blood cells produce. It's the chemistry, not a fragrance. Nothing gets
+          masked, and nothing heavy gets left behind on your gear.
+        </p>
+
+        <div class="how-grid">
+          <div class="how-card">
+            <h3>No fragrance</h3>
+            <p>
+              Nothing is covered up. There's no perfume layer sitting on top of
+              the odor waiting to wear off.
+            </p>
+          </div>
+          <div class="how-card">
+            <h3>No bleach</h3>
+            <p>
+              Not a solvent, not a detergent. Water-based and built for the
+              materials gear is actually made of.
+            </p>
+          </div>
+          <div class="how-card">
+            <h3>Safe on skin contact</h3>
+            <p>
+              Same chemistry family as wound-care saline. Safe on hoods,
+              collars, and anything that rides against skin.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ROUTINE -->
+    <section class="routine">
+      <div class="routine-inner">
+        <p class="section-eyebrow">The routine</p>
+        <h2 class="section-headline">Between calls. Before it sets in.</h2>
+        <p class="section-sub">
+          The gear that holds the most odor is the gear that touches you — hood,
+          collar, cuffs. Hit those and you've done most of the work.
+        </p>
+        <ol class="steps">
+          <li>
+            <span class="step-num">1</span>
+            <h3>Spray the liner</h3>
+            <p>Hood, collar, cuffs — anywhere that holds sweat.</p>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <h3>Hit the bag too</h3>
+            <p>Gear bags hold what the gear leaves behind.</p>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <h3>Let it dry</h3>
+            <p>No rinse, no wipe-down. Back on the rack.</p>
+          </li>
+        </ol>
+        <p class="routine-note">
+          JockShock is for between washes — follow your department's cleaning
+          and inspection protocol.
+        </p>
+      </div>
+    </section>
+
+    <!-- FIRE SERVICE DISCOUNT -->
+    <section class="fs-discount" id="discount">
+      <div class="fs-inner">
+        <p class="section-eyebrow">Fire service discount</p>
+        <h2 class="section-headline">10% off, because you're the one wearing it.</h2>
+        <p class="section-sub">
+          Drop your email and we'll send a code that works on any size. One code,
+          one use, yours.
+        </p>
+
+        <form class="fs-form" id="fs-form" novalidate>
+          <div class="fs-row">
+            <label class="sr-only" for="fs-email">Email address</label>
+            <input
+              type="email"
+              id="fs-email"
+              name="email"
+              placeholder="you@yourdepartment.gov"
+              autocomplete="email"
+              required
+            />
+            <button type="submit" class="cta-primary" id="fs-submit" disabled>Send my code</button>
+          </div>
+
+          <!-- Honeypot — bots fill it, humans never see it. Matches the
+               `company_website` field /api/lead-magnet already checks. -->
+          <input
+            type="text"
+            name="company_website"
+            id="fs-hp"
+            tabindex="-1"
+            autocomplete="off"
+            aria-hidden="true"
+          />
+
+          <label class="fs-attest">
+            <input type="checkbox" id="fs-attest" required />
+            <span>
+              I'm a firefighter or first responder. <strong>Claiming service you
+              didn't earn is stolen valor.</strong> We're trusting you on this one.
+            </span>
+          </label>
+
+          <p class="fs-status" id="fs-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+
+    <!-- TIERS -->
+    <section class="tiers">
+      <div class="tiers-inner">
+        <p class="section-eyebrow">Get yours</p>
+        <h2 class="section-headline center">One for your locker. One for the bag. One for home.</h2>
+        <p class="section-sub center">
+          Gear doesn't live in one place, and neither should the bottle.
+        </p>
+
+        <div class="tier-grid">
+          <a href="/products/jockshock/" class="tier">
+            <img class="tier-img" src={BOTTLE_SINGLE} alt="JockShock 32oz single bottle" loading="lazy" />
+            <div class="tier-label">Single</div>
+            <div class="tier-detail">1 &times; 32oz</div>
+            <div class="tier-price">$24.99</div>
+            <div class="tier-bottom">Get it &rarr;</div>
+          </a>
+          <a href="/products/jockshock/" class="tier featured">
+            <span class="tier-badge">Most Pick This</span>
+            <img class="tier-img" src={BOTTLE_3PACK} alt="JockShock 3-pack, three 32oz bottles" loading="lazy" />
+            <div class="tier-label">3-Pack</div>
+            <div class="tier-detail">3 &times; 32oz</div>
+            <div class="tier-price">$59.99</div>
+            <div class="tier-savings">Save $15</div>
+            <div class="tier-ship">Free shipping</div>
+            <div class="tier-bottom">Get it &rarr;</div>
+          </a>
+          <a href="/products/jockshock/" class="tier">
+            <img class="tier-img" src={BOTTLE_6PACK} alt="JockShock 6-pack, six 32oz bottles" loading="lazy" />
+            <div class="tier-label">Shift Supply</div>
+            <div class="tier-detail">6 &times; 32oz</div>
+            <div class="tier-price">$99.99</div>
+            <div class="tier-savings">Save $50</div>
+            <div class="tier-ship">Free shipping</div>
+            <div class="tier-bottom">Get it &rarr;</div>
+          </a>
+        </div>
+        <p class="ship-note">Free shipping on 3 bottles or more.</p>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq">
+      <div class="faq-inner">
+        <h2 class="section-headline center">Straight answers</h2>
+        <div class="faq-grid">
+          <details>
+            <summary>Will it damage my gear?</summary>
+            <p>
+              No. JockShock is a deodorizer — not a detergent, not a solvent.
+              It's water-based, fragrance-free, and safe on skin contact. It's
+              engineered for the materials gear is made of.
+            </p>
+          </details>
+          <details>
+            <summary>Does this replace washing my gear?</summary>
+            <p>
+              No. Follow your department's cleaning and inspection protocol.
+              JockShock is for between washes — the stretch where gear gets worn
+              again before it can be laundered.
+            </p>
+          </details>
+          <details>
+            <summary>What does it smell like?</summary>
+            <p>
+              Nothing. There's no added fragrance. It goes after odor at the
+              source instead of covering it with perfume.
+            </p>
+          </details>
+          <details>
+            <summary>What's actually in it?</summary>
+            <p>
+              Hypochlorous acid (HOCl) — the same molecule your immune system
+              makes. Powered by EPA-registered ZeroPoint Technology.
+            </p>
+          </details>
+          <details>
+            <summary>How long does a 32oz bottle last?</summary>
+            <p>
+              Depends on how hard you run. A single 32oz bottle covers a full
+              set of gear repeatedly — most people keep more than one bottle so
+              there's always one where the gear is.
+            </p>
+          </details>
+          <details>
+            <summary>What's your return policy?</summary>
+            <p>
+              30 days, no questions, keep what's left. If JockShock doesn't work
+              for you, email us and we'll refund the bottle.
+            </p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="final-cta">
+      <div class="final-cta-inner">
+        <h2>Ready for the next call.</h2>
+        <p>Try it for 30 days. If it doesn't work, we refund it.</p>
+        <a href="/products/jockshock/" class="cta-primary">Get JockShock</a>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<script>
+  // Stamp aaron — the fire-service buyer is an individual buying for his own
+  // gear, which is Aaron's shape (self-buyer), not Pam's (buys for someone
+  // else) or Carmen's (buys for a roster). There is no firefighter persona in
+  // the model and this page does not justify adding one.
+  import { setPersona } from "../utils/persona-stamp";
+  setPersona("aaron");
+
+  if (typeof window !== "undefined" && (window as any).pdPixel) {
+    (window as any).pdPixel.track("firefighters_lander_view", {
+      sub_brand: "jockshock",
+      persona: "aaron",
+      segment: "fire_service",
+    });
+  }
+
+  // ── Fire-service discount capture ──────────────────────────────────────────
+  // Posts to the SAME /api/lead-magnet route the footer uses. That route does
+  // identify → track → mintDiscountCode, in that order, and Customer.io writes
+  // the code onto the profile for the automation to send.
+  //
+  // 🛑 `source` is the ONLY thing distinguishing this from a Field Guide
+  // signup. The Customer.io automation for the fire-service code MUST segment
+  // on `jockshock_lead_source == "jockshock-firefighters"`, or these people
+  // fall into the Field Guide nurture instead.
+  //
+  // 🛑 The attestation checkbox is an honor-system gate, not verification. It
+  // gates the SUBMIT only — nothing server-side checks it. That is deliberate:
+  // the code is single-use and email-bound, so the blast radius of a false
+  // claim is one 10% order.
+  const form = document.getElementById("fs-form") as HTMLFormElement | null;
+  const emailEl = document.getElementById("fs-email") as HTMLInputElement | null;
+  const attestEl = document.getElementById("fs-attest") as HTMLInputElement | null;
+  const hpEl = document.getElementById("fs-hp") as HTMLInputElement | null;
+  const btn = document.getElementById("fs-submit") as HTMLButtonElement | null;
+  const status = document.getElementById("fs-status");
+
+  if (form && emailEl && attestEl && btn && status) {
+    // The button ships disabled and only unlocks once the attestation is
+    // checked, so the requirement is visible BEFORE someone tries to submit
+    // rather than being an error message after. The submit handler still
+    // re-checks — a disabled button is a UI affordance, not a guarantee.
+    const syncSubmit = () => {
+      btn.disabled = !attestEl.checked;
+    };
+    attestEl.addEventListener("change", syncSubmit);
+    syncSubmit();
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      status.className = "fs-status";
+
+      const email = emailEl.value.trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        status.textContent = "That email doesn't look right.";
+        status.classList.add("is-error");
+        return;
+      }
+      if (!attestEl.checked) {
+        status.textContent = "Check the box to confirm you're in the service.";
+        status.classList.add("is-error");
+        return;
+      }
+
+      btn.disabled = true;
+      const original = btn.textContent;
+      btn.textContent = "Sending…";
+
+      try {
+        const res = await fetch("/api/lead-magnet", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email,
+            source: "jockshock-firefighters",
+            persona: "aaron",
+            company_website: hpEl?.value || "",
+          }),
+        });
+        if (!res.ok) throw new Error(String(res.status));
+
+        form.querySelector(".fs-row")?.classList.add("is-hidden");
+        form.querySelector(".fs-attest")?.classList.add("is-hidden");
+        status.textContent =
+          "Check your inbox — your code is on the way. Stay safe out there.";
+        status.classList.add("is-success");
+
+        if ((window as any).pdPixel) {
+          (window as any).pdPixel.track("firefighter_discount_requested", {
+            sub_brand: "jockshock",
+            segment: "fire_service",
+          });
+        }
+      } catch {
+        // Re-enable only if the box is still checked — never unconditionally,
+        // or a failed submit would hand back a button the gate no longer holds.
+        syncSubmit();
+        btn.textContent = original;
+        status.textContent =
+          "Something went wrong. Email hello@southlandorganics.com and we'll sort it.";
+        status.classList.add("is-error");
+      }
+    });
+  }
+</script>
+
+<style>
+  .js-fire {
+    --jockshock-black: #0a0a0a;
+    --jockshock-yellow: #FFE500;
+    --jockshock-text: #f3f4f6;
+    --jockshock-muted: #9ca3af;
+    background: var(--jockshock-black);
+    color: var(--jockshock-text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  }
+  .js-fire h1, .js-fire h2, .js-fire h3 {
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  .eyebrow, .section-eyebrow {
+    color: var(--jockshock-yellow);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 700;
+    font-size: 0.8125rem;
+    margin-bottom: 16px;
+  }
+  .section-headline {
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: #fff;
+    margin: 0 0 16px;
+    line-height: 1.15;
+  }
+  .section-headline.center { text-align: center; }
+  .section-sub {
+    font-size: 1.125rem;
+    color: var(--jockshock-muted);
+    line-height: 1.6;
+    margin-bottom: 40px;
+    max-width: 720px;
+  }
+  .section-sub.center {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+
+  /* === HERO ===
+     Gear, not face. He's in a polo in an office — the authority on this page
+     is the b-roll. */
+  .hero {
+    background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+    padding: 100px 5% 80px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .hero-grid {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 64px;
+    align-items: center;
+  }
+  .hero-copy { max-width: 640px; }
+  .hero-headline {
+    font-size: clamp(2.25rem, 4.5vw, 3.5rem);
+    color: #fff;
+    line-height: 1.1;
+    margin: 0 0 16px;
+  }
+  .hero-sub {
+    font-size: clamp(1.25rem, 2vw, 1.75rem);
+    color: var(--jockshock-yellow);
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 24px;
+  }
+  .hero-promise {
+    font-size: 1.0625rem;
+    color: var(--jockshock-text);
+    line-height: 1.6;
+    margin-bottom: 32px;
+    padding: 16px 20px;
+    background: rgba(255, 229, 0, 0.06);
+    border-left: 3px solid var(--jockshock-yellow);
+  }
+  .hero-cta-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .cta-primary {
+    display: inline-block;
+    background: var(--jockshock-yellow);
+    color: var(--jockshock-black);
+    padding: 18px 36px;
+    text-decoration: none;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.9375rem;
+    border-radius: 4px;
+    transition: transform 0.1s ease, box-shadow 0.15s ease;
+  }
+  .cta-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 229, 0, 0.35);
+  }
+  .cta-secondary {
+    display: inline-block;
+    color: #fff;
+    padding: 18px 24px;
+    text-decoration: none;
+    font-weight: 700;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    transition: border-color 0.15s ease;
+  }
+  .cta-secondary:hover { border-color: var(--jockshock-yellow); }
+  .hero-trust {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 16px 24px;
+    flex-wrap: wrap;
+    color: #d1d5db;
+    font-size: 0.875rem;
+  }
+  .hero-trust li { display: flex; align-items: center; gap: 6px; }
+  .hero-trust li::before {
+    content: "✓";
+    color: var(--jockshock-yellow);
+    font-weight: 800;
+  }
+  .hero-media { display: flex; justify-content: center; align-items: center; }
+  .hero-media img {
+    max-width: 100%;
+    height: auto;
+    max-height: 620px;
+    border-radius: 4px;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
+  }
+
+  /* === VIDEO === */
+  .video-section {
+    padding: 100px 5%;
+    background: #050505;
+  }
+  .video-inner { max-width: 900px; margin: 0 auto; text-align: center; }
+  .video-section .section-eyebrow { text-align: center; }
+  .video-frame {
+    max-width: 420px;
+    margin: 40px auto 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8);
+    border: 1px solid rgba(255, 229, 0, 0.15);
+  }
+  .video-caption {
+    color: var(--jockshock-muted);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    margin: 24px auto 0;
+    max-width: 520px;
+    font-style: italic;
+  }
+
+  /* === PROBLEM === */
+  .problem { padding: 100px 5%; background: var(--jockshock-black); }
+  .problem-inner { max-width: 860px; margin: 0 auto; }
+
+  .pull {
+    margin: 0 0 40px;
+    padding: 32px 36px;
+    background: #141414;
+    border-left: 4px solid var(--jockshock-yellow);
+  }
+  .pull p {
+    font-size: clamp(1.25rem, 2.2vw, 1.6rem);
+    line-height: 1.4;
+    color: #fff;
+    font-weight: 700;
+    margin: 0 0 16px;
+  }
+  .pull cite {
+    color: var(--jockshock-yellow);
+    font-style: normal;
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+  }
+  .pull-lead { margin-bottom: 32px; }
+
+  /* === HOW === */
+  .how { padding: 100px 5%; background: #050505; }
+  .how-inner { max-width: 1100px; margin: 0 auto; }
+  .how-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+  }
+  .how-card {
+    background: #141414;
+    padding: 32px;
+    border-left: 3px solid var(--jockshock-yellow);
+  }
+  .how-card h3 { color: var(--jockshock-yellow); font-size: 1.25rem; margin: 0 0 12px; }
+  .how-card p { color: var(--jockshock-text); line-height: 1.6; margin: 0; font-size: 0.95rem; }
+
+  /* === ROUTINE === */
+  .routine { padding: 100px 5%; background: var(--jockshock-black); }
+  .routine-inner { max-width: 900px; margin: 0 auto; }
+  .steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+  }
+  .steps li { background: #141414; padding: 32px; text-align: center; }
+  .steps h3 { color: #fff; font-size: 1.25rem; margin: 0 0 8px; }
+  .steps p { color: var(--jockshock-muted); margin: 0; font-size: 0.95rem; line-height: 1.5; }
+  .step-num {
+    display: inline-flex;
+    width: 56px;
+    height: 56px;
+    background: var(--jockshock-yellow);
+    color: var(--jockshock-black);
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+  .routine-note {
+    margin: 32px 0 0;
+    color: var(--jockshock-muted);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+
+  /* === FIRE SERVICE DISCOUNT === */
+  .fs-discount {
+    padding: 100px 5%;
+    background: var(--jockshock-black);
+    border-top: 1px solid rgba(255, 229, 0, 0.2);
+  }
+  .fs-inner { max-width: 720px; margin: 0 auto; }
+  .fs-form { margin-top: 8px; }
+  .fs-row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .fs-row.is-hidden, .fs-attest.is-hidden { display: none; }
+  .fs-row input[type="email"] {
+    flex: 1 1 280px;
+    padding: 18px 20px;
+    background: #141414;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 4px;
+    color: #fff;
+    font-size: 1rem;
+    font-family: inherit;
+  }
+  .fs-row input[type="email"]:focus {
+    outline: none;
+    border-color: var(--jockshock-yellow);
+  }
+  .fs-row input[type="email"]::placeholder { color: #6b7280; }
+  .fs-row button { border: none; cursor: pointer; font-family: inherit; }
+  .fs-row button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+  }
+
+  /* Honeypot — offscreen, not display:none (some bots skip hidden fields). */
+  #fs-hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+  }
+
+  .fs-attest {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-top: 20px;
+    color: var(--jockshock-muted);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    cursor: pointer;
+  }
+  .fs-attest input { margin-top: 3px; accent-color: var(--jockshock-yellow); flex-shrink: 0; }
+  .fs-attest strong { color: #fff; }
+
+  .fs-status { margin-top: 16px; font-size: 0.9375rem; line-height: 1.5; min-height: 1.4em; }
+  .fs-status.is-error { color: #fca5a5; }
+  .fs-status.is-success { color: var(--jockshock-yellow); font-weight: 700; }
+
+  .sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* === TIERS === */
+  .tiers {
+    padding: 100px 5%;
+    background: #050505;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .tiers-inner { max-width: 1200px; margin: 0 auto; text-align: center; }
+  .tier-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    margin-top: 16px;
+  }
+  .tier {
+    background: #141414;
+    padding: 40px 32px;
+    text-decoration: none;
+    color: var(--jockshock-text);
+    border: 2px solid transparent;
+    border-radius: 4px;
+    transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    position: relative;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .tier:hover {
+    border-color: var(--jockshock-yellow);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+  }
+  .tier.featured {
+    border-color: var(--jockshock-yellow);
+    background: #1a1a1a;
+    box-shadow: 0 0 0 1px var(--jockshock-yellow);
+  }
+  .tier-badge {
+    position: absolute;
+    top: -12px;
+    right: 24px;
+    background: var(--jockshock-yellow);
+    color: var(--jockshock-black);
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 0.6875rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+  .tier-label {
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 800;
+    font-size: 1rem;
+  }
+  .tier-img {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    margin: 0 auto 20px;
+    display: block;
+    filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.6));
+  }
+  .tier-detail { color: var(--jockshock-muted); font-size: 0.875rem; }
+  .tier-ship {
+    color: var(--jockshock-yellow);
+    font-weight: 700;
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 4px;
+  }
+  .ship-note {
+    margin: 32px 0 0;
+    color: var(--jockshock-muted);
+    font-size: 0.9375rem;
+  }
+  .tier-price { color: #fff; font-size: 2rem; font-weight: 900; margin-top: 8px; }
+  .tier-savings { color: var(--jockshock-yellow); font-weight: 700; font-size: 0.8125rem; }
+  .tier-bottom {
+    margin-top: 16px;
+    color: var(--jockshock-yellow);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.8125rem;
+  }
+
+  /* === FAQ === */
+  .faq { padding: 100px 5%; background: var(--jockshock-black); }
+  .faq-inner { max-width: 800px; margin: 0 auto; }
+  .faq .section-headline { margin-bottom: 48px; }
+  .faq-grid { display: flex; flex-direction: column; gap: 4px; }
+  .faq details {
+    background: #141414;
+    border-left: 3px solid transparent;
+    transition: border-color 0.15s ease;
+  }
+  .faq details[open] { border-left-color: var(--jockshock-yellow); }
+  .faq summary {
+    padding: 24px 32px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: #fff;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after {
+    content: "+";
+    color: var(--jockshock-yellow);
+    font-size: 1.5rem;
+    font-weight: 400;
+  }
+  .faq details[open] summary::after { content: "−"; }
+  .faq details p {
+    padding: 0 32px 24px;
+    color: var(--jockshock-muted);
+    line-height: 1.6;
+  }
+
+  /* === FINAL CTA === */
+  .final-cta {
+    padding: 100px 5%;
+    background: var(--jockshock-black);
+    border-top: 2px solid var(--jockshock-yellow);
+    border-bottom: 2px solid var(--jockshock-yellow);
+    text-align: center;
+  }
+  .final-cta-inner { max-width: 600px; margin: 0 auto; }
+  .final-cta h2 {
+    color: #fff;
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    margin-bottom: 16px;
+  }
+  .final-cta p {
+    color: var(--jockshock-muted);
+    margin-bottom: 32px;
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 900px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 32px; }
+    .hero-media { order: -1; }
+    .hero-media img { max-height: 380px; }
+    .hero, .video-section, .problem, .how, .routine, .tiers, .faq, .final-cta {
+      padding: 64px 5%;
+    }
+    .pull { padding: 24px 24px; }
+  }
+</style>
