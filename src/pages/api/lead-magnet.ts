@@ -56,9 +56,16 @@ import type { APIRoute } from "astro";
 const CIO_TRACK_API = "https://track.customer.io/api/v1/customers";
 const SENDGRID_API = "https://api.sendgrid.com/v3/mail/send";
 
-// Public Cloudinary URL of the Field Guide PDF (v6, 8pp, carries the
-// FIELDGUIDE20 coupon on p8). Verified live 2026-08-11: HTTP 200,
-// content-type application/pdf, content-length 6211174.
+// Public Cloudinary URL of the Field Guide PDF. Verified live 2026-08-11:
+// HTTP 200, content-type application/pdf, content-length 6211174.
+//
+// 🛑 The PDF served here is still v6, which PRINTS "FIELDGUIDE20" on page 8 —
+// but that code no longer exists: its Shopify price rule was deleted
+// 2026-08-11 (unlimited uses, no expiry, 0 redemptions at deletion). Anyone
+// typing it at checkout gets nothing. v7 removes the block from the page;
+// until it lands, page 8 advertises a dead code. That is the intended state —
+// a dead code is strictly better than a live shared one. Discounts are now
+// minted per signup, one use each (see mintDiscountCode below).
 //
 // Unversioned on purpose so a new revision swaps in without a redeploy — BUT
 // the overwrite MUST pass `invalidate: true`. Cloudinary's CDN caches 404s:
