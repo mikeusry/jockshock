@@ -81,6 +81,31 @@ export const VIDEOS = {
     hook: 'The smell is proof the work happened. The bag opening is the joke.',
   },
 
+  /**
+   * Fire-service testimonial. A 20-year fire service veteran on turnout-gear
+   * odor, intercut with SCBA / apparatus-bay b-roll.
+   *
+   * 🛑 NO CAPTION TRACK. Uploaded 2026-08-04, past Mux's 7-day auto-caption
+   * window — same problem as UNCAPTIONED below. Author and upload captions
+   * before this carries accessibility or SEO weight.
+   *
+   * 🛑 The speaker is ANONYMOUS ON PURPOSE — he works for Southland part-time.
+   * Never name him or his department on any surface. The blank lower-third in
+   * the cut is deliberate, not an unfinished template.
+   *
+   * ⚠️ When captions ARE authored: the spoken VO says "eliminate odor causing
+   * bacteria." Cleared for SPEECH, banned in TEXT — a caption is a written
+   * surface. Write it as "kills odor" in the VTT. This is the exact failure the
+   * 2026-07-29 caption correction fixed on the other six.
+   */
+  firefighter: {
+    playbackId: 'HqTb7qXS7NIOqO1GnTNNWPdLA3cAPCxS02nhC7lS3w8A',
+    title: 'JockShock — a 20-year fire service veteran on turnout gear',
+    durationSeconds: 72,
+    posterTime: 30,
+    hook: "Firefighters can't always wash their gear between calls, but they still have to wear it.",
+  },
+
   /** Longest cut — full problem → mechanism → proof. Founder-voiced. */
   longform: {
     playbackId: '7xWetw8fKiMnX501MK6ykrTMaH28RsIr4ZvS2NF00Exs00',
