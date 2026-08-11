@@ -56,9 +56,16 @@ import type { APIRoute } from "astro";
 const CIO_TRACK_API = "https://track.customer.io/api/v1/customers";
 const SENDGRID_API = "https://api.sendgrid.com/v3/mail/send";
 
-// Public Cloudinary URL of the Field Guide PDF (v6, 8pp, carries the
-// FIELDGUIDE20 coupon on p8). Verified live 2026-08-11: HTTP 200,
-// content-type application/pdf, content-length 6211174.
+// Public Cloudinary URL of the Field Guide PDF. Verified live 2026-08-11:
+// HTTP 200, content-type application/pdf, content-length 6211174.
+//
+// 🛑 The PDF served here is still v6, which PRINTS "FIELDGUIDE20" on page 8 —
+// but that code no longer exists: its Shopify price rule was deleted
+// 2026-08-11 (unlimited uses, no expiry, 0 redemptions at deletion). Anyone
+// typing it at checkout gets nothing. v7 removes the block from the page;
+// until it lands, page 8 advertises a dead code. That is the intended state —
+// a dead code is strictly better than a live shared one. Discounts are now
+// minted per signup, one use each (see mintDiscountCode below).
 //
 // Unversioned on purpose so a new revision swaps in without a redeploy — BUT
 // the overwrite MUST pass `invalidate: true`. Cloudinary's CDN caches 404s:
@@ -140,6 +147,47 @@ async function sendConfirmation(email: string): Promise<boolean> {
   } catch (err) {
     console.error("[lead-magnet] SendGrid fetch error:", err);
     return false;
+  }
+}
+
+/**
+ * Mint the person's single-use 20% code via Nexus, which holds the Shopify
+ * admin token (this storefront only has a read-only storefront token).
+ *
+ * Nexus writes the code onto the Customer.io profile itself as
+ * `jockshock_discount_code`; Email 3 of automation 55 prints it. Nothing here
+ * needs the returned value — it's logged for debugging only.
+ *
+ * 🛑 Fire-and-forget. A discount failure must NEVER cost us the signup: the
+ * guide is what the person asked for, and E3 is 6 days away. E3's code block
+ * is wrapped in `{% if %}`, so a profile with no code renders no code block
+ * rather than a broken one.
+ */
+async function mintDiscountCode(email: string): Promise<void> {
+  const endpoint = import.meta.env.NEXUS_DISCOUNT_ENDPOINT;
+  const secret = import.meta.env.JOCKSHOCK_DISCOUNT_SECRET;
+  if (!endpoint || !secret) {
+    console.error("[lead-magnet] discount endpoint/secret not configured — skipping mint");
+    return;
+  }
+
+  try {
+    const r = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${secret}`,
+      },
+      body: JSON.stringify({ email }),
+    });
+    if (!r.ok) {
+      console.error("[lead-magnet] discount mint failed:", r.status, await r.text());
+      return;
+    }
+    const data = await r.json().catch(() => ({}));
+    console.log(`[lead-magnet] minted discount ${data.code} for ${email} (profile updated: ${data.profileUpdated})`);
+  } catch (err) {
+    console.error("[lead-magnet] discount mint error:", err);
   }
 }
 
@@ -283,6 +331,11 @@ export const POST: APIRoute = async ({ request }) => {
         { status: 200, headers: { "Content-Type": "application/json" } },
       );
     }
+
+    // Mint the single-use discount now, so the attribute is on the profile
+    // long before Email 3 fires 6 days from now. Runs AFTER identify so the
+    // profile exists for Nexus to write onto.
+    await mintDiscountCode(email);
 
     // Immediate SendGrid thank-you with the guide. Independent of the
     // Customer.io automation (which may lag) — guarantees the reader gets a
