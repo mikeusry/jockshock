@@ -244,6 +244,31 @@ const pixelEndpoint =
     <script is:inline src="https://cdn.point.dog/pixel/pd-pixel.min.js" async
     ></script>
 
+    <!-- Simpli.fi organization tag — "JockShock" (org 554212, tag id 282486).
+         Site-wide, and the prerequisite for everything Simpli.fi can measure or
+         retarget: site-retargeting audiences are "this tag + URL rules", and
+         conversion tracking is this same tag with tx_val/tx_id on the
+         order-status page.
+
+         🛑 This is the JOCKSHOCK tag, not Southland's. Org 554212 holds three
+         tags — Southland `679871f8…`, JockShock `5e5a79bc…`, and D2 `18f08d36…`
+         under sub-org 555696. Installing the wrong one pools firefighters in
+         with poultry growers and makes both audiences useless.
+
+         🛑 Southland's own tag is ISSUED BUT NOT DEPLOYED on
+         southlandorganics.com — its retargeting segment shows user_count 1,
+         active false. Issued ≠ installed. That is a separate open item.
+
+         The order-status half still has to be pasted into Shopify admin
+         (Settings → Checkout → Order status page) with tx_val/tx_id. This repo
+         has no confirmation page; checkout is hosted by Shopify, and that store
+         is shared with Southland — both tags belong on that page. -->
+    <script
+      is:inline
+      async
+      src="https://tag.simpli.fi/sifitag/5e5a79bc-7946-433c-a47e-ad3ce57872a7"
+    ></script>
+
     <!-- Cross-origin attribution capture: persist gclid/fbclid/utm from the
          landing URL so a Google Ads click survives the Shopify checkout jump
          and lands on the order (utils/attribution.ts). Without this the JS
