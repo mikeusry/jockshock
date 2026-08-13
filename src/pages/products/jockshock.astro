@@ -14,7 +14,14 @@ import { getProductByHandle } from "../../utils/shopify";
 import { setCache } from "../../utils/cache";
 import JockShockPDP from "../../components/JockShockPDP.svelte";
 import MuxVideo from "../../components/MuxVideo.astro";
+import ReviewsSection from "../../components/ReviewsSection.astro";
 import { VIDEOS } from "../../data/videos";
+import {
+  EMPTY_AGGREGATE,
+  JOCKSHOCK_AGGREGATE_FLOOR,
+  fetchProductReviews,
+  numericShopifyId,
+} from "../../utils/reviews";
 
 const HANDLE = "jockshock";
 const headers = Astro.request.headers;
@@ -26,6 +33,9 @@ if (!product) {
 }
 
 setCache.short(Astro);
+
+const reviewData = product ? await fetchProductReviews(product.id) : null;
+const shopifyProductId = product ? numericShopifyId(product.id) : "";
 
 // Map Shopify variants → our SKU/image data so we control presentation.
 // SKUs were set in Shopify by the 2026-05-06 wiring session; verified via
@@ -147,6 +157,21 @@ const PRODUCT_LD = product
         itemCondition: "https://schema.org/NewCondition",
         seller: { "@id": "https://www.jockshockspray.com/#organization" },
       })),
+      // Reviews! display policy: JockShock at ≥3. Do not emit a 0.0 / fake
+      // aggregateRating — Google treats fabricated review markup as spam.
+      ...(reviewData &&
+      reviewData.aggregate.ratingCount >= JOCKSHOCK_AGGREGATE_FLOOR
+        ? {
+            aggregateRating: {
+              "@type": "AggregateRating",
+              ratingValue: reviewData.aggregate.averageRating,
+              reviewCount:
+                reviewData.aggregate.reviewCount ||
+                reviewData.aggregate.ratingCount,
+              ratingCount: reviewData.aggregate.ratingCount,
+            },
+          }
+        : {}),
     }
   : null;
 
@@ -500,6 +525,14 @@ const productJsonLd = PRODUCT_LD ? [PRODUCT_LD] : [];
           </div>
         </div>
       </section>
+
+      <ReviewsSection
+        reviews={reviewData?.reviews ?? []}
+        aggregate={reviewData?.aggregate ?? EMPTY_AGGREGATE}
+        shopifyProductId={shopifyProductId}
+        productHandle={HANDLE}
+        productName="JockShock Equipment Deodorizer"
+      />
     </article>
   )}
 </BaseLayout>
