@@ -1,0 +1,634 @@
+---
+/**
+ * JockShock PDP reviews — Nexus-owned, carbon-and-yellow.
+ *
+ * Same two paths as Southland:
+ *   ?review=<token>  — post-purchase invite. Lands verified.
+ *   open form        — anyone. Lands unverified. GroupMe / sample asks use this.
+ *
+ * Both land pending. Nothing self-publishes.
+ *
+ * Aggregate stars wait for ≥3 published ratings (Reviews! display policy).
+ * The form is always here — a product with no reviews is the one that needs
+ * the first. Do not invent a 5.0 or a count.
+ */
+import type { ProductReview, ReviewAggregate } from "../utils/reviews";
+import { JOCKSHOCK_AGGREGATE_FLOOR } from "../utils/reviews";
+
+interface Props {
+  reviews: ProductReview[];
+  aggregate: ReviewAggregate;
+  shopifyProductId: string;
+  productHandle: string;
+  productName: string;
+}
+
+const {
+  reviews,
+  aggregate,
+  shopifyProductId,
+  productHandle,
+  productName,
+} = Astro.props;
+
+const showAggregate = aggregate.ratingCount >= JOCKSHOCK_AGGREGATE_FLOOR;
+const written = reviews.filter((r) => r.content.trim().length > 1);
+
+function stars(n: number): string {
+  const filled = Math.round(Math.min(5, Math.max(0, n)));
+  return "★".repeat(filled) + "☆".repeat(5 - filled);
+}
+
+function relativeDate(iso: string): string {
+  const days = Math.floor((Date.now() - new Date(iso).getTime()) / 86400000);
+  if (days <= 0) return "Today";
+  if (days === 1) return "Yesterday";
+  if (days < 30) return `${days} days ago`;
+  const months = Math.floor(days / 30);
+  if (months < 12) return months === 1 ? "1 month ago" : `${months} months ago`;
+  const years = Math.floor(months / 12);
+  return years === 1 ? "1 year ago" : `${years} years ago`;
+}
+---
+
+<section id="reviews" class="js-reviews" data-section="pdp-reviews">
+  <div class="js-reviews-inner">
+    <p class="js-reviews-eyebrow">From the locker room</p>
+    <h2 class="js-reviews-headline">
+      {showAggregate ? "Customer reviews" : "Reviews"}
+    </h2>
+
+    {
+      aggregate.ratingCount === 0 && (
+        <p class="js-reviews-empty">
+          No reviews yet. If you used a bottle — bought it or we handed you one —
+          yours is the one the next person reads. Honest, good or bad.
+        </p>
+      )
+    }
+
+    {
+      showAggregate && (
+        <div class="js-reviews-agg">
+          <p class="js-reviews-avg">{aggregate.averageRating.toFixed(1)}</p>
+          <p class="js-reviews-avg-stars" aria-hidden="true">
+            {stars(aggregate.averageRating)}
+          </p>
+          <p class="js-reviews-avg-count">
+            {aggregate.ratingCount} rating{aggregate.ratingCount === 1 ? "" : "s"}
+          </p>
+        </div>
+      )
+    }
+
+    {
+      written.length > 0 && (
+        <div class="js-review-cards">
+          {written.map((review) => (
+            <article class="js-review-card" data-review-id={review.id}>
+              <div class="js-review-card-top">
+                <span class="js-review-card-stars" aria-label={`${review.rating} out of 5`}>
+                  {stars(review.rating)}
+                </span>
+                <time class="js-review-card-date" datetime={review.createdAt}>
+                  {relativeDate(review.createdAt)}
+                </time>
+              </div>
+              {review.title && <h3 class="js-review-card-title">{review.title}</h3>}
+              {review.content && <p class="js-review-card-body">{review.content}</p>}
+              <p class="js-review-card-author">
+                {review.author}
+                {review.verified && <span class="js-review-verified">Verified buyer</span>}
+              </p>
+              {review.publicReply?.content && (
+                <div class="js-review-reply">
+                  <p class="js-review-reply-label">JockShock replied</p>
+                  <p>{review.publicReply.content}</p>
+                </div>
+              )}
+            </article>
+          ))}
+        </div>
+      )
+    }
+
+    <div id="review-form-root" class="js-review-form-root">
+      <button
+        type="button"
+        id="review-form-toggle"
+        class="js-review-toggle"
+        aria-expanded="false"
+        aria-controls="review-form"
+      >
+        Write a review
+      </button>
+
+      <form
+        id="review-form"
+        class="js-review-form is-hidden"
+        data-product-id={shopifyProductId}
+        data-product-handle={productHandle}
+        data-product-name={productName}
+      >
+        <div>
+          <span class="js-review-label">Your rating</span>
+          <div
+            id="review-stars"
+            class="js-review-stars"
+            role="radiogroup"
+            aria-label="Rating out of 5"
+          >
+            {
+              [1, 2, 3, 4, 5].map((n) => (
+                <button
+                  type="button"
+                  class="js-review-star"
+                  data-value={n}
+                  role="radio"
+                  aria-checked="false"
+                  aria-label={`${n} star${n > 1 ? "s" : ""}`}
+                >
+                  ★
+                </button>
+              ))
+            }
+          </div>
+        </div>
+
+        <div>
+          <label for="review-title" class="js-review-label">
+            Headline <span class="js-review-opt">(optional)</span>
+          </label>
+          <input type="text" id="review-title" maxlength="120" class="js-review-input" />
+        </div>
+
+        <div>
+          <label for="review-body" class="js-review-label">
+            Your review <span class="js-review-opt">(optional)</span>
+          </label>
+          <textarea
+            id="review-body"
+            rows="4"
+            maxlength="4000"
+            class="js-review-input js-review-textarea"
+            placeholder="What you used it on. What changed. What you'd tell a teammate."
+          ></textarea>
+        </div>
+
+        <div class="js-review-row">
+          <div>
+            <label for="review-name" class="js-review-label">Your name</label>
+            <input
+              type="text"
+              id="review-name"
+              maxlength="80"
+              autocomplete="name"
+              class="js-review-input"
+            />
+          </div>
+          <div>
+            <label for="review-email" class="js-review-label">Email</label>
+            <input
+              type="email"
+              id="review-email"
+              required
+              autocomplete="email"
+              class="js-review-input"
+            />
+            <p class="js-review-hint">Not published. We only use it to verify.</p>
+          </div>
+        </div>
+
+        <div class="js-review-hp" aria-hidden="true">
+          <label for="company_website">Company website</label>
+          <input
+            type="text"
+            id="company_website"
+            name="company_website"
+            tabindex="-1"
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="js-review-actions">
+          <button type="submit" id="review-submit" class="js-review-submit">
+            Submit review
+          </button>
+          <span id="review-form-status" class="js-review-status" role="status" aria-live="polite"
+          ></span>
+        </div>
+
+        <p class="js-review-fineprint">
+          A person reads every review before it goes up. We publish honest ones —
+          the 1-stars too.
+        </p>
+      </form>
+
+      <div id="review-form-done" class="js-review-done is-hidden"></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .js-reviews {
+    background: #050505;
+    padding: 100px 5%;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    color: var(--bone, #f3f4f6);
+    font-family: "Inter", system-ui, sans-serif;
+  }
+  .js-reviews-inner {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .js-reviews-eyebrow {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--electric-yellow, #ffe500);
+    margin: 0 0 12px;
+  }
+  .js-reviews-headline {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    color: #fff;
+    margin: 0 0 16px;
+    line-height: 1.05;
+  }
+  .js-reviews-empty {
+    color: var(--steel, #9ca3af);
+    font-size: 1.05rem;
+    line-height: 1.65;
+    max-width: 52ch;
+    margin: 0 0 36px;
+  }
+  .js-reviews-agg {
+    margin: 0 0 40px;
+  }
+  .js-reviews-avg {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 4rem;
+    line-height: 1;
+    color: #fff;
+    margin: 0;
+  }
+  .js-reviews-avg-stars {
+    color: var(--electric-yellow, #ffe500);
+    letter-spacing: 0.12em;
+    margin: 4px 0 0;
+  }
+  .js-reviews-avg-count {
+    color: var(--steel, #9ca3af);
+    font-size: 0.9rem;
+    margin: 6px 0 0;
+  }
+
+  .js-review-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  .js-review-card {
+    background: var(--carbon-tint, #141414);
+    border-left: 3px solid var(--electric-yellow, #ffe500);
+    padding: 24px 28px;
+  }
+  .js-review-card-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: baseline;
+  }
+  .js-review-card-stars {
+    color: var(--electric-yellow, #ffe500);
+    letter-spacing: 0.08em;
+  }
+  .js-review-card-date {
+    color: var(--steel, #9ca3af);
+    font-size: 0.8rem;
+  }
+  .js-review-card-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 10px 0 0;
+  }
+  .js-review-card-body {
+    color: var(--bone, #f3f4f6);
+    line-height: 1.65;
+    margin: 10px 0 0;
+    font-size: 0.95rem;
+  }
+  .js-review-card-author {
+    margin: 14px 0 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #fff;
+  }
+  .js-review-verified {
+    display: inline-block;
+    margin-left: 8px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--electric-yellow, #ffe500);
+  }
+  .js-review-reply {
+    margin-top: 16px;
+    padding-left: 16px;
+    border-left: 2px solid rgba(255, 229, 0, 0.4);
+  }
+  .js-review-reply-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--electric-yellow, #ffe500);
+    margin: 0 0 6px;
+  }
+  .js-review-reply p:last-child {
+    margin: 0;
+    color: var(--steel, #9ca3af);
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+
+  .js-review-form-root {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 32px;
+  }
+  .js-review-toggle {
+    background: var(--electric-yellow, #ffe500);
+    color: var(--carbon-black, #0a0a0a);
+    border: none;
+    padding: 16px 36px;
+    font-family: "Inter", sans-serif;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    cursor: pointer;
+    border-radius: 2px;
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.15);
+  }
+  .js-review-toggle:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(255, 229, 0, 0.28);
+  }
+
+  .js-review-form {
+    max-width: 560px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .js-review-form.is-hidden,
+  .js-review-toggle.is-hidden,
+  .js-review-done.is-hidden {
+    display: none;
+  }
+  .js-review-label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  .js-review-opt {
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--steel, #9ca3af);
+  }
+  .js-review-stars {
+    display: flex;
+    gap: 4px;
+  }
+  .js-review-star {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 2rem;
+    line-height: 1;
+    color: #4b4b4b;
+    cursor: pointer;
+  }
+  .js-review-star.is-on {
+    color: var(--electric-yellow, #ffe500);
+  }
+  .js-review-input {
+    width: 100%;
+    background: #0a0a0a;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: #fff;
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    padding: 14px 16px;
+    border-radius: 0;
+  }
+  .js-review-input:focus {
+    outline: none;
+    border-color: var(--electric-yellow, #ffe500);
+    box-shadow: 0 0 0 3px rgba(255, 229, 0, 0.16);
+  }
+  .js-review-textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+  .js-review-row {
+    display: grid;
+    gap: 16px;
+  }
+  @media (min-width: 640px) {
+    .js-review-row {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .js-review-hint {
+    margin: 6px 0 0;
+    font-size: 0.75rem;
+    color: var(--steel, #9ca3af);
+  }
+  .js-review-hp {
+    position: absolute;
+    left: -9999px;
+  }
+  .js-review-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .js-review-submit {
+    background: var(--electric-yellow, #ffe500);
+    color: var(--carbon-black, #0a0a0a);
+    border: none;
+    padding: 16px 36px;
+    font-family: "Inter", sans-serif;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    cursor: pointer;
+    border-radius: 2px;
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.15);
+  }
+  .js-review-submit:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(255, 229, 0, 0.28);
+  }
+  .js-review-submit:disabled {
+    opacity: 0.7;
+    cursor: default;
+  }
+  .js-review-status {
+    font-size: 0.9rem;
+  }
+  .js-review-status.is-err {
+    color: #fca5a5;
+  }
+  .js-review-status.is-ok {
+    color: var(--steel, #9ca3af);
+  }
+  .js-review-fineprint {
+    margin: 0;
+    font-size: 0.8rem;
+    line-height: 1.55;
+    color: var(--steel, #9ca3af);
+    max-width: 48ch;
+  }
+  .js-review-done {
+    border-left: 3px solid var(--electric-yellow, #ffe500);
+    background: var(--carbon-tint, #141414);
+    padding: 20px 24px;
+    color: #fff;
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+
+  @media (max-width: 768px) {
+    .js-reviews {
+      padding: 64px 5%;
+    }
+  }
+</style>
+
+<script>
+  function initReviewForm() {
+    const root = document.getElementById("review-form-root");
+    const form = document.getElementById("review-form") as HTMLFormElement | null;
+    const toggle = document.getElementById("review-form-toggle");
+    if (!root || !form || !toggle) return;
+    if (root.dataset.ready === "1") return;
+    root.dataset.ready = "1";
+
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("review");
+    const write = params.get("write") === "1";
+    const fromHash = window.location.hash === "#reviews";
+    const prefill = Number(params.get("rating"));
+
+    let rating = 0;
+    const stars = Array.from(document.querySelectorAll<HTMLElement>(".js-review-star"));
+
+    function paint(n: number) {
+      rating = n;
+      for (const s of stars) {
+        const v = Number(s.dataset.value);
+        s.classList.toggle("is-on", v <= n);
+        s.setAttribute("aria-checked", String(v === n));
+      }
+    }
+
+    for (const s of stars) {
+      s.addEventListener("click", () => paint(Number(s.dataset.value)));
+    }
+
+    function open() {
+      form!.classList.remove("is-hidden");
+      toggle!.classList.add("is-hidden");
+      toggle!.setAttribute("aria-expanded", "true");
+    }
+
+    toggle.addEventListener("click", open);
+
+    // Token = paid invite. write=1 or #reviews = GroupMe / shared ask.
+    // Open the form so a phone tap is not two more taps.
+    if (token || write || fromHash) {
+      open();
+      if (prefill >= 1 && prefill <= 5) paint(prefill);
+      root.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const status = document.getElementById("review-form-status")!;
+      const submit = document.getElementById("review-submit") as HTMLButtonElement;
+
+      const email = (document.getElementById("review-email") as HTMLInputElement).value.trim();
+      if (!rating) {
+        status.textContent = "Pick a star rating first.";
+        status.className = "js-review-status is-err";
+        return;
+      }
+      if (!email) {
+        status.textContent = "Email is required.";
+        status.className = "js-review-status is-err";
+        return;
+      }
+
+      submit.disabled = true;
+      status.textContent = "Sending…";
+      status.className = "js-review-status is-ok";
+
+      try {
+        const res = await fetch("/api/reviews/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            token,
+            rating,
+            title: (document.getElementById("review-title") as HTMLInputElement).value,
+            content: (document.getElementById("review-body") as HTMLTextAreaElement).value,
+            author_name: (document.getElementById("review-name") as HTMLInputElement).value,
+            email,
+            company_website: (document.getElementById("company_website") as HTMLInputElement)
+              .value,
+            shopify_product_id: form.dataset.productId,
+            product_handle: form.dataset.productHandle,
+            product_name: form.dataset.productName,
+          }),
+        });
+
+        const json = await res.json().catch(() => ({}));
+
+        if (!res.ok) {
+          status.textContent = json.error || "Something went wrong. Please try again.";
+          status.className = "js-review-status is-err";
+          submit.disabled = false;
+          return;
+        }
+
+        const done = document.getElementById("review-form-done")!;
+        done.textContent =
+          json.message ||
+          "Thanks — your review has been received and will be published after review.";
+        done.classList.remove("is-hidden");
+        form.classList.add("is-hidden");
+      } catch {
+        status.textContent = "Could not reach us just now. Please try again shortly.";
+        status.className = "js-review-status is-err";
+        submit.disabled = false;
+      }
+    });
+  }
+
+  initReviewForm();
+</script>
