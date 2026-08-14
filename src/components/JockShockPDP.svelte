@@ -130,9 +130,14 @@
           {#if v.savingsLabel}
             <span class="variant-savings">{v.savingsLabel}</span>
           {/if}
+          {#if v.bottleCount >= 3}
+            <!-- 3+ bottles unlock free ship — same lock as AnnouncementBar, Nexus carrier-service, Google feed. Single stays silent. -->
+            <span class="variant-ship">Free shipping</span>
+          {/if}
         </button>
       {/each}
     </div>
+    <p class="ship-note">Free shipping on 3 bottles or more.</p>
 
     <!-- Add to cart -->
     <button
@@ -218,7 +223,7 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 8px;
-    margin-bottom: 24px;
+    margin-bottom: 12px;
   }
   .variant {
     background: #141414;
@@ -288,6 +293,19 @@
     font-size: 0.6875rem;
     font-weight: 700;
     margin-top: 2px;
+  }
+  .variant-ship {
+    color: #FFE500;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 2px;
+  }
+  .ship-note {
+    margin: 0 0 24px;
+    color: #9ca3af;
+    font-size: 0.8125rem;
   }
 
   /* === CTA === */
@@ -361,7 +379,7 @@
     .variant-label { flex: 0 0 auto; }
     .variant-sublabel { flex: 1; }
     .variant-price { margin-top: 0; margin-left: auto; }
-    .variant-perbottle, .variant-savings { width: 100%; }
+    .variant-perbottle, .variant-savings, .variant-ship { width: 100%; }
     .variant-badge {
       top: -8px;
       left: 12px;
