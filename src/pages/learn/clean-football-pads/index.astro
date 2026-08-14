@@ -20,8 +20,10 @@ const title = "How to Clean Football Pads (Without Ruining Them)";
 const description =
   "How to clean football shoulder pads, helmets, and the rest of the kit — for athletes and the parents who haul the bag. Pro-grade deodorizer engineered for athletic foam, leather, and mesh. Powered by ZeroPoint Technology.";
 
-const HERO_BOTTLE =
-  "https://res.cloudinary.com/southland-organics/image/upload/c_fit,w_700,q_auto,f_auto,dpr_auto/JockShock/jockshock-32oz-single-2026.png";
+const HERO_GEAR =
+  "https://res.cloudinary.com/southland-organics/image/upload/c_fit,w_900,q_auto,f_auto,dpr_auto/JockShock/learn/clean-football-pads-hero";
+const OG_IMAGE =
+  "https://res.cloudinary.com/southland-organics/image/upload/c_fill,w_1200,h_630,g_auto,q_auto,f_jpg/JockShock/learn/clean-football-pads-hero";
 
 const FAQ_ITEMS = [
   {
@@ -70,6 +72,7 @@ const ARTICLE_LD = {
     "@id": "https://www.jockshockspray.com/#org",
   },
   datePublished: "2026-05-06",
+  image: OG_IMAGE,
 };
 
 const FAQ_LD = {
@@ -83,7 +86,7 @@ const FAQ_LD = {
 };
 ---
 
-<BaseLayout title={title} description={description} jsonLd={[ARTICLE_LD, FAQ_LD]}>
+<BaseLayout title={title} description={description} ogImage={OG_IMAGE} jsonLd={[ARTICLE_LD, FAQ_LD]}>
   <div class="js-learn">
     <section class="hero">
       <div class="hero-bg" aria-hidden="true"></div>
@@ -119,7 +122,12 @@ const FAQ_LD = {
           </ul>
         </div>
         <div class="hero-product">
-          <img src={HERO_BOTTLE} alt="JockShock 32oz pro-grade equipment deodorizer" width="700" height="700" />
+          <img
+            src={HERO_GEAR}
+            alt="Football shoulder pads and a black helmet with a red facemask on turf"
+            width="900"
+            height="600"
+          />
         </div>
       </div>
     </section>
