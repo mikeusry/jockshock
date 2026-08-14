@@ -8,9 +8,15 @@
  * 🛑 CAPTIONS: trackId points at a CORRECTED caption track. Mux's ASR
  * transcribed the spoken line "kills odor-causing bacteria" — cleared for
  * speech, banned in text, because a caption is a written surface a Google MC
- * reviewer parses. Those tracks were replaced 2026-07-29. If a track is ever
- * regenerated, re-run mothership scripts/voice/fix-jockshock-caption-claims.js
- * before shipping. See brand-brief.md §Claims Register.
+ * reviewer parses. Those tracks were replaced 2026-07-29, then re-attached
+ * 2026-08-14 after the six ads were re-uploaded (new asset + playback IDs;
+ * the July IDs 404). If a track is ever regenerated, re-run mothership
+ * scripts/voice/fix-jockshock-caption-claims.js AND
+ * scripts/voice/swap-jockshock-caption-tracks.js before shipping.
+ * See brand-brief.md §Claims Register.
+ *
+ * ⚠️ Re-upload always mints new playback IDs. Update THIS file or the site
+ * renders a black box. The five uncaptioned cuts below were not re-uploaded.
  *
  * The five cuts with no captions were uploaded 2026-06-11/12 and are past
  * Mux's 7-day auto-caption window — backfill needs Mux support. Don't place
@@ -33,8 +39,8 @@ export interface JockShockVideo {
 export const VIDEOS = {
   /** Mechanism-first. Names HOCl and the immune-system parallel outright. */
   mechanism: {
-    playbackId: 'Te7JfKhujhSv7AXYpSjCst8Pkk02oCogWAY8xEt5q1JY',
-    trackId: 'bKCSxKh9wyHcZ02uAMzXkwTuzWZEa6UdgTFl5TrCyrAi01nnBI6ieGRQ',
+    playbackId: 'nqgpbOIHrGhuCNAHvhM7nOYzhySiWUxHjdmMEw1mKiw',
+    trackId: 'Xr5JJ5b62KKDR0201q1YZ00rwcfnAvaAmdgXK3dsQk5Gsn1HZZTLoFUTA',
     title: "JockShock — it's hypochlorous acid, not cologne",
     durationSeconds: 19,
     posterTime: 3,
@@ -43,8 +49,8 @@ export const VIDEOS = {
 
   /** Identity / rejection angle. Aaron's voice at its purest. */
   identity: {
-    playbackId: 'iccAfD1JxFiuvnt3skUE4OP65XmAVkjVwUagFHvZc5A',
-    trackId: 'evHDW1PdxemaTRU4MV8g2a1jeO3r02dqRSgMeAmr9zW4ygl8XQTNyhA',
+    playbackId: '93IAUFNIBql5I4JrwW15ucHPTuDO2w9Lh8l4AnNNei00',
+    trackId: 'p02lOKnTsaqsIW00lPDtkimeLggGaJYHs00m02Xw9u35015KDctoNr00wiaw',
     title: 'JockShock — built for the athlete whose gear actually gets used',
     durationSeconds: 25,
     posterTime: 3,
@@ -53,8 +59,8 @@ export const VIDEOS = {
 
   /** The outcome: opening the bag and smelling nothing. */
   outcome: {
-    playbackId: 'qaOqbmNMIBREMlB68QrGVrONZJxaA6Spbw5OsB8SlS00',
-    trackId: 'vxP3AmdaSi8M3aYtKW4j8rKW7MDU2ZREmrUrVxNExiEzYUglJABgZQ',
+    playbackId: 'LJzCwZRSeJzWNgXdndUMqHgD1wmpNXoG75Tb0271xklE',
+    trackId: 'nGOimDnGFdg4X7bq1nS7gyjB7X02k00jj9cECcp8D2sLfpszf5ShavdA',
     title: 'JockShock — you open your bag and it smells like nothing',
     durationSeconds: 24,
     posterTime: 2,
@@ -63,8 +69,8 @@ export const VIDEOS = {
 
   /** Problem-first hook. Top of funnel — the bag walks in before you do. */
   problem: {
-    playbackId: 'O01IEmGqkmdnsrNK8dtfSN402qaEXCjjd01GRai3n5ugGQ',
-    trackId: '4CzkaJ01m025MOuGu1v01sI1pvfooUIyOmQs00Hnq7M5sf8WtVuhWh13Gg',
+    playbackId: 'pXitY3K01bJj01EeybP15aVpIl02tvTMPBeW02ObH1IQdnE',
+    trackId: 'TtxYSQwL3TUYYeLNH7V7CvLGjEMOQAG8XJ5VnwumcMaJXUNd00qDmoQ',
     title: 'JockShock — your bag walks into the room before you do',
     durationSeconds: 32,
     posterTime: 2,
@@ -73,8 +79,8 @@ export const VIDEOS = {
 
   /** The earned-funk / maintenance framing. Routine-oriented. */
   routine: {
-    playbackId: 'wvwzbpiKQ00Z46POBzd3c29VDxculW01swrNPoTh7nQR4',
-    trackId: 'tmIrmHS6QB4PjqIGyrkNfSUWRJH00X8Zbp1E1Aqy9f8OXglD9yRKliQ',
+    playbackId: 'h00vkFRosdTxhQ6sG800v3fWWW6yYRcyJjkaGden4Md8s',
+    trackId: 'tu701pYxk004kduJMKdHf5ne02mS5rL9B00xayYjpCQSs601LJbSf3Vhxmw',
     title: 'JockShock — if your gear earns the reps, it earns the maintenance',
     durationSeconds: 32,
     posterTime: 3,
@@ -108,8 +114,8 @@ export const VIDEOS = {
 
   /** Longest cut — full problem → mechanism → proof. Founder-voiced. */
   longform: {
-    playbackId: '7xWetw8fKiMnX501MK6ykrTMaH28RsIr4ZvS2NF00Exs00',
-    trackId: 'WmJ6C5LNS6aOY00lQtfhqoX5G57GhQTWFjZ2ilmg1qrdAHv3Qa4OaAQ',
+    playbackId: 'Xcz6p4qkHiB01EZTzfNdpXdbqWsz6ojsbkE3iSjqVkmQ',
+    trackId: 'onqZVKyu9ll9s02VesPZNX01o01oTTf4gMSIunJU9mGVV1DLXaT78YFkg',
     title: 'JockShock — we tried every spray too',
     durationSeconds: 50,
     posterTime: 3,

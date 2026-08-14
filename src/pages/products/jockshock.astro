@@ -203,6 +203,20 @@ const productJsonLd = PRODUCT_LD ? [PRODUCT_LD] : [];
             by EPA-registered ZeroPoint Technology. No fragrance. No masking.
             The funk doesn't get covered up. It goes away.
           </p>
+          {/*
+            Identity cut above the three cards: Aaron drawing the line
+            ("not for the guy who wants pine trees") before the science
+            section names the molecule. 16/9 so it doesn't fight the card
+            grid. Captions on, corrected track.
+          */}
+          <div class="pdp-video">
+            <MuxVideo
+              playbackId={VIDEOS.identity.playbackId}
+              trackId={VIDEOS.identity.trackId}
+              title={VIDEOS.identity.title}
+              posterTime={VIDEOS.identity.posterTime}
+            />
+          </div>
           <div class="mechanism-grid">
             <div class="mechanism-card">
               <h3>Mechanism, not perfume</h3>
@@ -408,6 +422,19 @@ const productJsonLd = PRODUCT_LD ? [PRODUCT_LD] : [];
             stays in your bag, the funk never sets in, and a single bottle
             lasts most of a season.
           </p>
+          {/*
+            Routine cut — earned-funk / maintenance framing. Same argument
+            the three steps make, in Aaron's voice, before anyone has to
+            read a numbered list.
+          */}
+          <div class="pdp-video">
+            <MuxVideo
+              playbackId={VIDEOS.routine.playbackId}
+              trackId={VIDEOS.routine.trackId}
+              title={VIDEOS.routine.title}
+              posterTime={VIDEOS.routine.posterTime}
+            />
+          </div>
           <ol class="routine-steps">
             <li>
               <span class="routine-num">1</span>
@@ -449,6 +476,19 @@ const productJsonLd = PRODUCT_LD ? [PRODUCT_LD] : [];
             like cleaning products. So we built the spray we wanted in our own
             bags. Powered by ZeroPoint Technology. Made in the USA.
           </p>
+          {/*
+            Longform — "we tried every spray too." Founder-voiced proof that
+            matches this section's credential. 50s, so it sits after the
+            prose, not instead of it.
+          */}
+          <div class="pdp-video pdp-video--credential">
+            <MuxVideo
+              playbackId={VIDEOS.longform.playbackId}
+              trackId={VIDEOS.longform.trackId}
+              title={VIDEOS.longform.title}
+              posterTime={VIDEOS.longform.posterTime}
+            />
+          </div>
         </div>
       </section>
 
@@ -597,8 +637,17 @@ const productJsonLd = PRODUCT_LD ? [PRODUCT_LD] : [];
     font-size: 1.15rem;
     color: var(--jockshock-muted);
     max-width: 720px;
-    margin-bottom: 64px;
+    margin-bottom: 32px;
     line-height: 1.6;
+  }
+  .pdp-video {
+    margin: 0 0 48px;
+    max-width: 900px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .pdp-video--credential {
+    margin: 40px auto 0;
+    text-align: left;
   }
   .mechanism-grid {
     display: grid;
@@ -711,7 +760,7 @@ const productJsonLd = PRODUCT_LD ? [PRODUCT_LD] : [];
   .routine-subhead {
     font-size: 1.15rem;
     color: var(--jockshock-muted);
-    margin-bottom: 56px;
+    margin-bottom: 32px;
     line-height: 1.6;
   }
   .routine-steps {
