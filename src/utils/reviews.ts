@@ -49,6 +49,32 @@ export const EMPTY_AGGREGATE: ReviewAggregate = {
   distribution: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
 };
 
+/** Same filter as the visible cards — schema must match what's on the page. */
+export function writtenReviews(reviews: ProductReview[]): ProductReview[] {
+  return reviews.filter((r) => r.content.trim().length > 1);
+}
+
+/**
+ * Nested Review objects for Product JSON-LD. Google stars can run on
+ * aggregateRating alone; ChatGPT / Bing / Perplexity quote customers from
+ * these Review nodes. Only emit reviews that are actually rendered.
+ */
+export function reviewJsonLd(reviews: ProductReview[]) {
+  return writtenReviews(reviews).map((r) => ({
+    "@type": "Review",
+    author: { "@type": "Person", name: r.author },
+    datePublished: r.createdAt,
+    ...(r.title ? { name: r.title } : {}),
+    reviewBody: r.content,
+    reviewRating: {
+      "@type": "Rating",
+      ratingValue: r.rating,
+      bestRating: 5,
+      worstRating: 1,
+    },
+  }));
+}
+
 function nexusBase(): string {
   return import.meta.env.NEXUS_API_BASE || DEFAULT_NEXUS_BASE;
 }

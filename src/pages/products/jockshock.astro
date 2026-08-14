@@ -21,6 +21,7 @@ import {
   JOCKSHOCK_AGGREGATE_FLOOR,
   fetchProductReviews,
   numericShopifyId,
+  reviewJsonLd,
 } from "../../utils/reviews";
 
 const HANDLE = "jockshock";
@@ -159,17 +160,22 @@ const PRODUCT_LD = product
       })),
       // Reviews! display policy: JockShock at ≥3. Do not emit a 0.0 / fake
       // aggregateRating — Google treats fabricated review markup as spam.
+      // Nest the on-page Review objects too: aggregateRating is enough for
+      // SERP stars; ChatGPT/Bing need the quote bodies in JSON-LD.
       ...(reviewData &&
       reviewData.aggregate.ratingCount >= JOCKSHOCK_AGGREGATE_FLOOR
         ? {
             aggregateRating: {
               "@type": "AggregateRating",
               ratingValue: reviewData.aggregate.averageRating,
+              bestRating: 5,
+              worstRating: 1,
               reviewCount:
                 reviewData.aggregate.reviewCount ||
                 reviewData.aggregate.ratingCount,
               ratingCount: reviewData.aggregate.ratingCount,
             },
+            review: reviewJsonLd(reviewData.reviews),
           }
         : {}),
     }
@@ -203,20 +209,6 @@ const productJsonLd = PRODUCT_LD ? [PRODUCT_LD] : [];
             by EPA-registered ZeroPoint Technology. No fragrance. No masking.
             The funk doesn't get covered up. It goes away.
           </p>
-          {/*
-            Identity cut above the three cards: Aaron drawing the line
-            ("not for the guy who wants pine trees") before the science
-            section names the molecule. 16/9 so it doesn't fight the card
-            grid. Captions on, corrected track.
-          */}
-          <div class="pdp-video">
-            <MuxVideo
-              playbackId={VIDEOS.identity.playbackId}
-              trackId={VIDEOS.identity.trackId}
-              title={VIDEOS.identity.title}
-              posterTime={VIDEOS.identity.posterTime}
-            />
-          </div>
           <div class="mechanism-grid">
             <div class="mechanism-card">
               <h3>Mechanism, not perfume</h3>
@@ -291,6 +283,7 @@ const productJsonLd = PRODUCT_LD ? [PRODUCT_LD] : [];
               trackId={VIDEOS.mechanism.trackId}
               title={VIDEOS.mechanism.title}
               posterTime={VIDEOS.mechanism.posterTime}
+              aspect={VIDEOS.mechanism.aspect}
             />
           </div>
 
@@ -433,6 +426,7 @@ const productJsonLd = PRODUCT_LD ? [PRODUCT_LD] : [];
               trackId={VIDEOS.routine.trackId}
               title={VIDEOS.routine.title}
               posterTime={VIDEOS.routine.posterTime}
+              aspect={VIDEOS.routine.aspect}
             />
           </div>
           <ol class="routine-steps">
@@ -487,6 +481,7 @@ const productJsonLd = PRODUCT_LD ? [PRODUCT_LD] : [];
               trackId={VIDEOS.longform.trackId}
               title={VIDEOS.longform.title}
               posterTime={VIDEOS.longform.posterTime}
+              aspect={VIDEOS.longform.aspect}
             />
           </div>
         </div>
@@ -641,13 +636,12 @@ const productJsonLd = PRODUCT_LD ? [PRODUCT_LD] : [];
     line-height: 1.6;
   }
   .pdp-video {
-    margin: 0 0 48px;
-    max-width: 900px;
+    margin: 0 auto 48px;
+    max-width: 420px;
     border: 1px solid rgba(255,255,255,0.1);
   }
   .pdp-video--credential {
     margin: 40px auto 0;
-    text-align: left;
   }
   .mechanism-grid {
     display: grid;
@@ -695,7 +689,8 @@ const productJsonLd = PRODUCT_LD ? [PRODUCT_LD] : [];
     line-height: 1.15;
   }
   .science-video {
-    margin: 0 0 40px;
+    margin: 0 auto 40px;
+    max-width: 420px;
     border: 1px solid rgba(255,255,255,0.1);
   }
   .science-subhead {

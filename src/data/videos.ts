@@ -32,6 +32,12 @@ export interface JockShockVideo {
   durationSeconds: number;
   /** Best poster frame, in seconds */
   posterTime: number;
+  /**
+   * Native frame. Every JockShock ad in this registry is a 1080×1920
+   * phone cut (Mux RESOLUTION=1080x1920). MuxVideo defaults to 16/9, which
+   * crops the talking head — pass this through, don't assume landscape.
+   */
+  aspect: '16/9' | '9/16' | '1/1';
   /** One-line note on what the cut actually says, for placement decisions */
   hook: string;
 }
@@ -44,6 +50,7 @@ export const VIDEOS = {
     title: "JockShock — it's hypochlorous acid, not cologne",
     durationSeconds: 19,
     posterTime: 3,
+    aspect: '9/16',
     hook: "This isn't a cologne for your hockey bag. It's hypochlorous acid.",
   },
 
@@ -54,6 +61,7 @@ export const VIDEOS = {
     title: 'JockShock — built for the athlete whose gear actually gets used',
     durationSeconds: 25,
     posterTime: 3,
+    aspect: '9/16',
     hook: "This isn't for the guy who wants his gloves to smell like pine trees.",
   },
 
@@ -64,6 +72,7 @@ export const VIDEOS = {
     title: 'JockShock — you open your bag and it smells like nothing',
     durationSeconds: 24,
     posterTime: 2,
+    aspect: '9/16',
     hook: 'No linen, no pine, no fake scent. Just nothing. And that\'s the point.',
   },
 
@@ -74,6 +83,7 @@ export const VIDEOS = {
     title: 'JockShock — your bag walks into the room before you do',
     durationSeconds: 32,
     posterTime: 2,
+    aspect: '9/16',
     hook: 'You stopped noticing three practices ago. Everybody else still does.',
   },
 
@@ -84,6 +94,7 @@ export const VIDEOS = {
     title: 'JockShock — if your gear earns the reps, it earns the maintenance',
     durationSeconds: 32,
     posterTime: 3,
+    aspect: '9/16',
     hook: 'The smell is proof the work happened. The bag opening is the joke.',
   },
 
@@ -109,6 +120,7 @@ export const VIDEOS = {
     title: 'JockShock — a 20-year fire service veteran on turnout gear',
     durationSeconds: 72,
     posterTime: 30,
+    aspect: '9/16',
     hook: "Firefighters can't always wash their gear between calls, but they still have to wear it.",
   },
 
@@ -119,6 +131,7 @@ export const VIDEOS = {
     title: 'JockShock — we tried every spray too',
     durationSeconds: 50,
     posterTime: 3,
+    aspect: '9/16',
     hook: "You've tried every spray out there. So have we. No results.",
   },
 } as const satisfies Record<string, JockShockVideo>;

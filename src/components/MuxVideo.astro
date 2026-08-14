@@ -4,8 +4,12 @@
  *
  * WHY not mux-player: it's a ~100KB web component, and the LP already lost
  * Ad Rank once to mobile LCP (see c554c66, which cut 418KB of decorative
- * texture for exactly this reason). Safari plays HLS natively; everything else
- * gets hls.js loaded ONLY when a video is actually scrolled into view.
+ * texture for exactly this reason). hls.js loads ONLY when a video scrolls
+ * into view (or the visitor hits play).
+ *
+ * PLAYBACK: Chrome 147+ reports canPlayType('application/vnd.apple.mpegurl')
+ * as "maybe" but native HLS then spins forever on the poster. Always prefer
+ * hls.js when MSE exists; native src=m3u8 is Safari/iOS only.
  *
  * CAPTIONS: `captions` defaults ON and the track is served from Mux. Those
  * tracks were corrected on 2026-07-29 — the ASR had transcribed the spoken
@@ -23,6 +27,7 @@ interface Props {
   trackId?: string;
   /** Seconds into the video to pull the poster frame from. */
   posterTime?: number;
+  /** Native frame. JockShock ads are 9/16 — omitting this crops them. */
   aspect?: '16/9' | '9/16' | '1/1';
   /** Autoplay muted in-view. Use for ambient/background placements only. */
   autoplay?: boolean;
@@ -52,10 +57,11 @@ const captionSrc = trackId
   <video
     class="mux-video__el"
     data-src={src}
+    data-playback-id={playbackId}
     poster={poster}
     controls={!autoplay}
-    muted={autoplay}
-    loop={loop}
+    muted={autoplay ? true : undefined}
+    loop={loop ? true : undefined}
     playsinline
     preload="none"
     aria-label={title}
@@ -67,16 +73,21 @@ const captionSrc = trackId
 </div>
 
 <script>
-  // Load HLS only when a player scrolls into view. preload="none" plus this
-  // means a video costs nothing until someone can actually see it.
   const players = document.querySelectorAll<HTMLVideoElement>('.mux-video__el');
   if (players.length) {
     let hlsPromise: Promise<any> | null = null;
     const loadHls = () => {
       if (!hlsPromise) {
-        hlsPromise = import('https://cdn.jsdelivr.net/npm/hls.js@1/+esm' as any);
+        hlsPromise = import('hls.js');
       }
       return hlsPromise;
+    };
+
+    const pauseOthers = (event: Event) => {
+      const current = event.currentTarget as HTMLVideoElement;
+      for (const other of players) {
+        if (other !== current && !other.paused) other.pause();
+      }
     };
 
     const attach = async (video: HTMLVideoElement) => {
@@ -84,26 +95,38 @@ const captionSrc = trackId
       if (!src || video.dataset.attached) return;
       video.dataset.attached = '1';
 
-      // Safari / iOS play HLS natively — no library needed.
-      if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = src;
-      } else {
-        const mod = await loadHls();
-        const Hls = mod.default ?? mod;
-        if (Hls?.isSupported()) {
-          const hls = new Hls({ capLevelToPlayerSize: true });
-          hls.loadSource(src);
-          hls.attachMedia(video);
-        } else {
-          video.src = src; // last resort
+      // Chrome 147+ returns canPlayType('mpegurl') = "maybe" then native HLS
+      // spins forever. Only use native when MSE is missing (iOS Safari).
+      const useNativeHls =
+        Boolean(video.canPlayType('application/vnd.apple.mpegurl')) &&
+        !('MediaSource' in window);
+
+      try {
+        if (!useNativeHls) {
+          const mod = await loadHls();
+          const Hls = mod.default ?? mod;
+          if (Hls?.isSupported()) {
+            const hls = new Hls({
+              capLevelToPlayerSize: true,
+              enableWebVTT: false,
+            });
+            hls.loadSource(src);
+            hls.attachMedia(video);
+            video.addEventListener('play', pauseOthers);
+            return;
+          }
         }
+
+        if (video.canPlayType('application/vnd.apple.mpegurl')) {
+          video.src = src;
+          video.addEventListener('play', pauseOthers);
+          return;
+        }
+      } catch {
+        /* allow retry */
       }
 
-      if (video.muted && video.hasAttribute('loop')) {
-        video.play().catch(() => {
-          /* autoplay blocked — poster stays, which is a fine fallback */
-        });
-      }
+      delete video.dataset.attached;
     };
 
     const io = new IntersectionObserver(
@@ -118,7 +141,10 @@ const captionSrc = trackId
       { rootMargin: '200px' }
     );
 
-    players.forEach((p) => io.observe(p));
+    players.forEach((p) => {
+      io.observe(p);
+      p.addEventListener('pointerdown', () => attach(p), { once: true });
+    });
   }
 </script>
 

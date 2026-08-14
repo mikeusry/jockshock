@@ -19,6 +19,7 @@
     "@shopify/hydrogen-react": "^2025.5.0",
     "@tailwindcss/vite": "^4.1.13",
     "astro": "^5.14.1",
+    "hls.js": "^1.7.0",
     "nanostores": "^1.0.1",
     "svelte": "^5.39.6",
     "zod": "^4.1.11"
