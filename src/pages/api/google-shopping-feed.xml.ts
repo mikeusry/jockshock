@@ -11,8 +11,9 @@
  *
  * The 3 packs are VARIANTS of one Shopify product (handle "jockshock"); each
  * becomes its own offer (id = variant SKU) sharing an item_group_id so GMC
- * groups them. Pulled live from Shopify Storefront — single source of truth,
- * never drifts from the PDP.
+ * groups them. Titles and product_type come from Shopify Storefront
+ * (product.title + pack suffix, product.productType) so Google Shopping and
+ * ChatGPT Catalog cannot drift. Variant titles stay as PDP picker labels.
  *
  * Claims-clean: deodorizer framing only. No kill-microbe/sanitize/disinfect/
  * antimicrobial/EPA/24-hour/staph/MRSA. "Kill the funk" (odor) is Mike-approved.
@@ -79,16 +80,18 @@ const VARIANT_DESCRIPTIONS: Record<string, string> = {
     "JockShock 6-Pack — six 32 oz spray bottles of pro-grade gear deodorizer. Enough for the whole team. Goes after gear funk at the source. No fragrance, no bleach. Powered by ZeroPoint Technology. Made in USA. 30-day money-back.",
 };
 
-// Full product titles per SKU (complete title, NOT a suffix — includes the brand).
-// WHY: the prior titles led with "Bottle(s)/Spray Bottles" and no product-type
-// keyword, so Google Shopping matched them to empty-spray-bottle shoppers (uline,
-// zep, "32 oz spray bottle") — 100% wrong intent, 0 conversions. Google weights the
-// front of the title most and shows only ~70 chars, so these front-load the product
-// type + use-case: "Shoe & Gear Deodorizer Spray for Athletes". No standalone
-// "Bottles" (also avoids the guns/weapons false-flag that hit the old 6-pack
-// "Team Pack — 6 Bottles" title). No promo text/price/caps, per Google's title spec.
-// Any SKU not listed falls back to "BRAND — <Shopify variant title>".
-const VARIANT_TITLE_OVERRIDES: Record<string, string> = {
+// Pack-size suffix only. Parent title is Shopify product.title — ChatGPT Catalog
+// reads that field, not this file. Do not put a second full-title table here.
+const PACK_TITLE_SUFFIX: Record<string, string> = {
+  "JOCKSHOCK-32oz": " – 32 oz",
+  "JOCKSHOCK-3x32oz-Pack": " – 32 oz, 3-Pack",
+  "JOCKSHOCK-6x32oz-Pack": " – 32 oz, 6-Pack",
+};
+
+// Last-resort full titles if Shopify product.title is brand-only ("JockShock")
+// and would re-break Google matching (empty-bottle / weapons false-flag from
+// titles that led with "Bottles"). Google weights the front of the title most.
+const VARIANT_TITLE_FALLBACKS: Record<string, string> = {
   "JOCKSHOCK-32oz":
     "JockShock Shoe & Gear Deodorizer Spray for Athletes – 32 oz",
   "JOCKSHOCK-3x32oz-Pack":
@@ -96,6 +99,22 @@ const VARIANT_TITLE_OVERRIDES: Record<string, string> = {
   "JOCKSHOCK-6x32oz-Pack":
     "JockShock Shoe & Gear Deodorizer Spray for Athletes – 32 oz, 6-Pack",
 };
+
+function shopifyTitleIsCatalogReady(title: string): boolean {
+  const t = title.toLowerCase();
+  return t.includes("deodorizer") || t.includes("spray") || t.includes("gear");
+}
+
+function feedItemTitle(
+  productTitle: string,
+  sku: string,
+  variantTitle: string,
+): string {
+  if (shopifyTitleIsCatalogReady(productTitle)) {
+    return `${productTitle}${PACK_TITLE_SUFFIX[sku] ?? ""}`;
+  }
+  return VARIANT_TITLE_FALLBACKS[sku] || `${BRAND} — ${variantTitle}`;
+}
 
 interface ShopifyVariant {
   id: string;
@@ -110,6 +129,7 @@ const FEED_QUERY = `{
     id
     title
     handle
+    productType
     featuredImage { url }
     variants(first: 20) {
       nodes { id title sku availableForSale price { amount currencyCode } }
@@ -131,6 +151,7 @@ export const GET: APIRoute = async () => {
     id: string;
     title: string;
     handle: string;
+    productType: string | null;
     featuredImage: { url: string } | null;
     variants: { nodes: ShopifyVariant[] };
   } | null = null;
@@ -159,15 +180,15 @@ export const GET: APIRoute = async () => {
   // item_group_id ties the variant offers together (numeric Shopify product id)
   const itemGroupId = product.id.split("/").pop() || "jockshock";
   const link = `${SITE}/products/${product.handle}/`;
+  const productType =
+    product.productType?.trim() || "Athletic Gear Deodorizer";
 
   const items = product.variants.nodes
     .filter((v) => v.sku && VARIANT_IMAGES[v.sku]) // only the 3 known sellable packs
     .map((v) => {
       const sku = v.sku as string;
       const price = `${parseFloat(v.price.amount).toFixed(2)} ${v.price.currencyCode}`;
-      // Overrides are complete titles (already brand-prefixed); only the fallback
-      // gets the "BRAND — variant" pattern.
-      const title = VARIANT_TITLE_OVERRIDES[sku] || `${BRAND} — ${v.title}`;
+      const title = feedItemTitle(product!.title, sku, v.title);
       const image =
         VARIANT_IMAGES[sku] || product!.featuredImage?.url || "";
       const description = VARIANT_DESCRIPTIONS[sku] || title;
@@ -185,7 +206,7 @@ export const GET: APIRoute = async () => {
         `      <g:condition>new</g:condition>`,
         `      <g:mpn>${esc(sku)}</g:mpn>`,
         `      <g:identifier_exists>no</g:identifier_exists>`,
-        `      <g:product_type>Athletic Gear Deodorizer</g:product_type>`,
+        `      <g:product_type>${esc(productType)}</g:product_type>`,
         // 3049 = Health & Beauty > Personal Care > Foot Care > Foot Odor Removers.
         // The prior value (469 = bare "Health & Beauty") was too broad — Google
         // couldn't place it, fell back to scanning the title, and false-flagged
