@@ -14,12 +14,23 @@ function fbq(): Fbq | undefined {
   return typeof fn === "function" ? fn : undefined;
 }
 
+export function nextMetaEventId(): string {
+  if (typeof crypto !== "undefined" && crypto.randomUUID) return crypto.randomUUID();
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
+
 export function trackMeta(
   event: string,
   data?: Record<string, unknown>,
+  eventID?: string,
 ): void {
   const fn = fbq();
   if (!fn) return;
-  if (data) fn("track", event, data);
+  if (eventID) fn("track", event, data || {}, { eventID });
+  else if (data) fn("track", event, data);
   else fn("track", event);
 }
