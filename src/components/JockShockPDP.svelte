@@ -6,6 +6,7 @@
    */
   import { onMount } from "svelte";
   import { addCartItem, isCartUpdating } from "../stores/cart";
+  import { trackMeta } from "../utils/meta-pixel";
 
   type Variant = {
     id: string;
@@ -54,6 +55,13 @@
     if (typeof window !== "undefined" && (window as any).pdPixel) {
       (window as any).pdPixel.track("add_to_cart", props);
     }
+    trackMeta("AddToCart", {
+      content_ids: [selected.sku],
+      content_name: "JockShock",
+      content_type: "product",
+      value: parseFloat(selected.price.amount),
+      currency: selected.price.currencyCode || "USD",
+    });
     void fetch("/api/cart-event", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -78,6 +86,13 @@
       persona: getStoredPersona(),
     };
     if ((window as any).pdPixel) (window as any).pdPixel.track("view_product", props);
+    trackMeta("ViewContent", {
+      content_ids: [selected.sku],
+      content_name: "JockShock",
+      content_type: "product",
+      value: parseFloat(selected.price.amount),
+      currency: selected.price.currencyCode || "USD",
+    });
     void fetch("/api/cart-event", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

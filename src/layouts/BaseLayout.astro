@@ -244,8 +244,49 @@ const pixelEndpoint =
     <script is:inline src="https://cdn.point.dog/pixel/pd-pixel.min.js" async
     ></script>
 
-    <!-- Cross-origin attribution capture: persist gclid/fbclid/utm from the
-         landing URL so a Google Ads click survives the Shopify checkout jump
+    <!-- Meta Pixel — same ID as Southland checkout CAPI (2459921147627824).
+         PageView only here. Purchase is NOT fired on this origin: checkout is
+         Shopify, and Nexus + the Shopify web pixel already send it with the
+         shared order-<shopify numeric> event_id. -->
+    <script is:inline>
+      !(function (f, b, e, v, n, t, s) {
+        if (f.fbq) return;
+        n = f.fbq = function () {
+          n.callMethod
+            ? n.callMethod.apply(n, arguments)
+            : n.queue.push(arguments);
+        };
+        if (!f._fbq) f._fbq = n;
+        n.push = n;
+        n.loaded = !0;
+        n.version = "2.0";
+        n.queue = [];
+        t = b.createElement(e);
+        t.async = !0;
+        t.src = v;
+        s = b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t, s);
+      })(
+        window,
+        document,
+        "script",
+        "https://connect.facebook.net/en_US/fbevents.js",
+      );
+      fbq("init", "2459921147627824");
+      fbq("track", "PageView");
+    </script>
+    <noscript>
+      <img
+        height="1"
+        width="1"
+        style="display:none"
+        src="https://www.facebook.com/tr?id=2459921147627824&ev=PageView&noscript=1"
+        alt=""
+      />
+    </noscript>
+
+    <!-- Cross-origin attribution capture: persist gclid/fbclid/utm/_fbp from the
+         landing URL so a Meta/Google click survives the Shopify checkout jump
          and lands on the order (utils/attribution.ts). Without this the JS
          Search campaign spends blind — same gap as D2's two-origin break. -->
     <script>

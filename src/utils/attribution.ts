@@ -37,6 +37,16 @@ const PARAMS = [
   "utm_term",
 ] as const;
 
+function readCookie(name: string): string {
+  if (typeof document === "undefined") return "";
+  const m = document.cookie.match(
+    new RegExp("(?:^|; )" + name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "=([^;]*)"),
+  );
+  return m ? decodeURIComponent(m[1]) : "";
+}
+
+let fbpRetryScheduled = false;
+
 type AttributionData = Record<string, string>;
 
 function readStore(key: string): AttributionData {
@@ -74,6 +84,32 @@ export function captureAttribution(): void {
     found.srsltid = srsltid;
     hasNew = true;
   }
+  if (found.fbclid && !found.utm_source) {
+    found.utm_source = "facebook";
+    found.utm_medium = found.utm_medium || "paid_social";
+    hasNew = true;
+  }
+  // Meta's _fbp cookie — minted by fbq in BaseLayout. Highest-signal CAPI match
+  // param after email. Often missing on the first paint (pixel is async), so we
+  // also schedule one retry. Last-touch only; do not add first-touch fbp (cart
+  // attribute cap is 25 and _pd_brand must survive).
+  const fbp = readCookie("_fbp");
+  if (fbp) {
+    found.fbp = fbp;
+    hasNew = true;
+  } else if (!fbpRetryScheduled) {
+    fbpRetryScheduled = true;
+    window.setTimeout(() => {
+      const later = readCookie("_fbp");
+      if (!later) return;
+      const mergedLater = { ...readStore(LAST_TOUCH_KEY), fbp: later };
+      try {
+        localStorage.setItem(LAST_TOUCH_KEY, JSON.stringify(mergedLater));
+      } catch {
+        /* non-fatal */
+      }
+    }, 1500);
+  }
   if (!hasNew) return;
 
   // Last-touch: merge over existing.
@@ -96,7 +132,13 @@ export function captureAttribution(): void {
     try {
       localStorage.setItem(
         FIRST_TOUCH_KEY,
-        JSON.stringify({ ...found, _timestamp: String(Date.now()) }),
+        JSON.stringify(
+          (() => {
+            const { fbp: _omit, ...rest } = found;
+            void _omit;
+            return { ...rest, _timestamp: String(Date.now()) };
+          })(),
+        ),
       );
     } catch {
       /* non-fatal */
@@ -146,8 +188,8 @@ export function getAttributionAttributes(): Array<{
   //   line item SKU      JockShock SKUs also sell on southlandorganics.com,
   //                      and that is a SOUTHLAND sale that should get Southland
   //                      email — attribute on the SITE, not the product.
-  out.push({ key: "_pd_brand", value: "jockshock" });
-
-  // Shopify caps cart attributes; we're well under, but guard anyway.
-  return out.slice(0, 25);
+  const brand = { key: "_pd_brand", value: "jockshock" };
+  // Brand must survive the cap — without it a JockShock cart gets Southland
+  // recovery email. Keep it first, then fill remaining slots.
+  return [brand, ...out.filter((a) => a.key !== "_pd_brand")].slice(0, 25);
 }
