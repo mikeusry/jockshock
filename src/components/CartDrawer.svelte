@@ -11,7 +11,7 @@
   import ShopifyImage from "./ShopifyImage.svelte";
   import Money from "./Money.svelte";
   import { clickOutside } from "../utils/click-outside";
-  import { trackMeta } from "../utils/meta-pixel";
+  import { nextMetaEventId, trackMeta } from "../utils/meta-pixel";
 
   let cartDrawerEl: HTMLDivElement = $state();
 
@@ -98,8 +98,9 @@
     const c = $cart;
     if (!c?.id) return;
     const props = cartEventProps(c, "begin_checkout");
+    const eventID = nextMetaEventId();
     const pixel = (window as unknown as { pdPixel?: { track: (n: string, p: Record<string, unknown>) => void } }).pdPixel;
-    pixel?.track("begin_checkout", props);
+    pixel?.track("begin_checkout", { ...props, event_id: eventID });
     trackMeta("InitiateCheckout", {
       content_ids: (c.lines?.nodes || []).map(
         (l) => l.merchandise?.product?.handle || "jockshock",
@@ -107,7 +108,7 @@
       num_items: c.totalQuantity || 0,
       value: parseFloat(c.cost?.subtotalAmount?.amount || "0"),
       currency: c.cost?.subtotalAmount?.currencyCode || "USD",
-    });
+    }, eventID);
     void fetch("/api/cart-event", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
