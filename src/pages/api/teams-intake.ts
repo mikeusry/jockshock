@@ -24,6 +24,9 @@ interface TeamsIntakePayload {
   organization: string;
   email: string;
   phone?: string;
+  city?: string;
+  spray_now?: string;
+  under_contract?: string;
   sport: string;
   roster_size: string;
   timeline: string;
@@ -91,7 +94,7 @@ function buildEmail(data: TeamsIntakePayload): string {
         <tr><td style="background:#141414;padding:32px;border-left:1px solid #1f2937;border-right:1px solid #1f2937;">
 
           <h2 style="margin:0 0 8px;font-size:22px;color:#fff;font-weight:800;letter-spacing:-0.01em;">New gym / team lead</h2>
-          <p style="margin:0 0 24px;color:#9ca3af;font-size:13px;">From the JockShock /teams page. Fred — please reply within one business day per the page's promise. Mike is cc'd for visibility.</p>
+          <p style="margin:0 0 24px;color:#9ca3af;font-size:13px;">From the JockShock ${data.source === "jockshock-gyms-page" ? "/gyms" : "/teams"} page. Fred — please reply within one business day per the page's promise. Mike is cc'd for visibility.</p>
 
           <table style="border-collapse:collapse;width:100%;">
             ${row("Name", escapeHtml(data.name))}
@@ -99,9 +102,12 @@ function buildEmail(data: TeamsIntakePayload): string {
             ${row("Organization", escapeHtml(data.organization))}
             ${row("Email", `<a href="mailto:${escapeHtml(data.email)}" style="color:#FFE500;text-decoration:none;">${escapeHtml(data.email)}</a>`)}
             ${row("Phone", phone)}
+            ${data.city ? row("City", escapeHtml(data.city)) : ""}
             ${row("Sport", escapeHtml(data.sport))}
             ${row("Roster size", escapeHtml(data.roster_size))}
             ${row("Timeline", escapeHtml(data.timeline))}
+            ${data.spray_now ? row("Sprays now", escapeHtml(data.spray_now)) : ""}
+            ${data.under_contract ? row("Contract", escapeHtml(data.under_contract)) : ""}
           </table>
 
           ${notes}
@@ -111,7 +117,7 @@ function buildEmail(data: TeamsIntakePayload): string {
         <!-- Footer -->
         <tr><td style="background:#0a0a0a;padding:20px 32px;border:1px solid #1f2937;border-top:none;border-radius:0 0 6px 6px;">
           <p style="margin:0;font-size:11px;color:#6b7280;text-align:center;line-height:1.6;">
-            Lead from <a href="https://jockshock.com/teams" style="color:#FFE500;text-decoration:none;">jockshock.com/teams</a> ·
+            Lead from <a href="https://www.jockshockspray.com/${data.source === "jockshock-gyms-page" ? "gyms" : "teams"}" style="color:#FFE500;text-decoration:none;">jockshockspray.com/${data.source === "jockshock-gyms-page" ? "gyms" : "teams"}</a> ·
             persona: <strong style="color:#9ca3af;">${escapeHtml(data.persona || "carmen")}</strong> ·
             source: <strong style="color:#9ca3af;">${escapeHtml(data.source || "jockshock-teams-page")}</strong>
           </p>

@@ -47,6 +47,7 @@ const ROUTE_META: Record<string, { changefreq: string; priority: string }> = {
   "/learn/": { changefreq: "weekly", priority: "0.8" },
   "/parents/": { changefreq: "monthly", priority: "0.7" },
   "/teams/": { changefreq: "monthly", priority: "0.7" },
+  "/gyms/": { changefreq: "monthly", priority: "0.7" },
   "/founders/": { changefreq: "monthly", priority: "0.6" },
 };
 // /learn/* spokes: cornerstone content, refreshed as the cluster grows.

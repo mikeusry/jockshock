@@ -1,0 +1,1054 @@
+---
+/**
+ * /gyms — academies + wrestling rooms. Paid lander for Simplifi + [JS] Gyms Search.
+ *
+ * Spec: mothership/docs/advertising/campaigns/jockshock/gyms/landing-page.md
+ *
+ * Two products, two buyers, one URL.
+ *   JockShock  = athlete + gear that goes home. Deodorizer. Kills odor.
+ *   ZeroPoint  = facility / mats. EPA-registered disinfectant. Quote only.
+ *
+ * 🛑 TWO CLAIMS REGISTERS. JockShock never "disinfects." ZeroPoint never
+ *    "kills the funk." Do not merge the cards.
+ *
+ * 🛑 No invented testimonial. SPG is a bottle drop, not a close. Joseph is
+ *    cutting a gym tape — the video slot stays empty until a Mux ID lands.
+ *    Do not drop a stock mat or a talking-head placeholder that looks like
+ *    proof.
+ *
+ * 🛑 ZeroPoint add-to-cart does not exist on this site. Fred quotes.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const title = "JockShock for Gyms — Facility + Athlete";
+const description =
+  "ZeroPoint for the mats. JockShock for the athlete. Alcohol-free facility disinfectant and a pro-grade gear deodorizer. Protect your customer. Protect your mat.";
+
+const CLD = "https://res.cloudinary.com/southland-organics/image/upload";
+const BOTTLE_SINGLE = `${CLD}/c_fit,w_560,q_auto,f_auto,dpr_auto/JockShock/jockshock-32oz-single-2026.png`;
+const BOTTLE_3PACK = `${CLD}/c_fit,w_560,q_auto,f_auto,dpr_auto/JockShock/jockshock-3pack-athlete-2026.png`;
+const BOTTLE_6PACK = `${CLD}/c_fit,w_560,q_auto,f_auto,dpr_auto/JockShock/jockshock-6pack-team-2026.png`;
+
+const PDP = "/products/jockshock/?utm_campaign=js-gyms";
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="js-gyms">
+    <!-- HERO — constraint, then the pair. No fake mat photo. -->
+    <section class="hero" id="top">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">For academies, wrestling rooms, and the people who train in them</p>
+          <h1 class="hero-headline">
+            Alcohol dries the mats. The athletes take the rest home.
+          </h1>
+          <p class="hero-sub">Two jobs. Two labels. Same chemistry family.</p>
+          <p class="hero-promise">
+            ZeroPoint for the facility — EPA-registered disinfectant for the
+            mats and the shared surfaces. JockShock for the athlete — a
+            pro-grade equipment deodorizer that goes in the bag. Protect your
+            customer. Protect your mat.
+          </p>
+          <div class="hero-cta-row">
+            <a href={PDP} class="cta-primary" data-gym-athlete-cta>Get JockShock — $24.99</a>
+            <a href="#doors" class="cta-secondary">Talk to Fred about the facility</a>
+          </div>
+          <ul class="hero-trust">
+            <li>No fragrance on the athlete spray</li>
+            <li>No bleach</li>
+            <li>Made in USA</li>
+            <li>No contract on the facility program</li>
+          </ul>
+        </div>
+        <div class="hero-split" aria-hidden="false">
+          <div class="hero-split-card">
+            <p class="hero-split-eyebrow">Goes home</p>
+            <h2>JockShock</h2>
+            <p>Athlete. Gear bag. Gi, gloves, shoes.</p>
+          </div>
+          <div class="hero-split-plus">+</div>
+          <div class="hero-split-card">
+            <p class="hero-split-eyebrow">Stays here</p>
+            <h2>ZeroPoint</h2>
+            <p>Mats. Mop bucket. Shared surfaces.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- JOSEPH'S TAPE — empty until Mux ID exists. Do not invent a speaker. -->
+    <section class="video-section" id="video">
+      <div class="video-inner">
+        <p class="section-eyebrow">From the academy</p>
+        <h2 class="section-headline center">The tape is being cut.</h2>
+        <div class="video-slot">
+          <p class="video-slot-kicker">Gym-owner interview</p>
+          <p class="video-slot-body">
+            Same job the fire-service page already does — a person who runs a
+            room, saying what the mats and the bags actually do. It is not
+            here yet. When it is, this slot plays it.
+          </p>
+        </div>
+        <p class="video-caption">
+          No stock mat. No borrowed testimonial. The page stays empty until
+          the interview exists.
+        </p>
+      </div>
+    </section>
+
+    <!-- THE SPLIT -->
+    <section class="split" id="split">
+      <div class="split-inner">
+        <p class="section-eyebrow">The pair</p>
+        <div class="split-grid">
+          <article class="split-card">
+            <p class="split-card-eyebrow">For the athlete and the athlete's gear</p>
+            <h2>JockShock goes home in the bag.</h2>
+            <p>
+              Gi, gloves, headgear, shoes, the bag itself. Kills the odor. No
+              fragrance, no bleach. Powered by EPA-registered ZeroPoint
+              Technology.
+            </p>
+          </article>
+          <article class="split-card">
+            <p class="split-card-eyebrow">For the facility</p>
+            <h2>ZeroPoint stays in the closet.</h2>
+            <p>
+              Mats, mop bucket, shared equipment, locker-room surfaces. Broad
+              spectrum disinfectant on the organisms on the label. Alcohol-free.
+              Ammonia-free.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- THE PROBLEM -->
+    <section class="problem" id="problem">
+      <div class="problem-inner">
+        <p class="section-eyebrow">The problem</p>
+        <h2 class="section-headline">
+          The stuff that "works" is the stuff that wrecks the mat.
+        </h2>
+        <p class="section-sub">
+          Most rooms are already spraying something. A lot of it is alcohol or
+          ammonia. It flashes off. It dries the surface. The mat is one of the
+          most expensive things you own.
+        </p>
+        <p class="section-sub">
+          Then class ends and the gi goes in a bag. That problem leaves with
+          the athlete. A mop bucket does not follow them home.
+        </p>
+        <blockquote class="pull">
+          <p>
+            The most effective bottle is the one your people will actually use.
+          </p>
+          <cite>Easy. Won't corrode the mat. Money last.</cite>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- FACILITY — ZeroPoint. Disinfectant language lives ONLY here. -->
+    <section class="how" id="facility">
+      <div class="how-inner">
+        <p class="section-eyebrow">The facility</p>
+        <h2 class="section-headline">The mats stay wet for ten minutes. That's the job.</h2>
+        <p class="section-sub">
+          ZeroPoint is an EPA-registered disinfectant (Reg. No. 97801-1-102456).
+          Hospital disinfectant / broad spectrum — on the organisms on the
+          label, at a 10-minute wet dwell:
+        </p>
+        <ul class="organism-list">
+          <li><em>Staphylococcus aureus</em></li>
+          <li><em>Pseudomonas aeruginosa</em></li>
+          <li>Human Coronavirus 229E</li>
+        </ul>
+        <p class="section-sub">
+          No alcohol. No ammonia. No fragrance to cover a room that still
+          isn't done. Cases, not a spray bottle from the front desk: 4×1-gallon
+          or 2×2.5-gallon, sized to the room. Fred quotes it. You don't fight
+          a cart.
+        </p>
+        <a href="#doors" class="cta-secondary">Get a facility quote</a>
+      </div>
+    </section>
+
+    <!-- ATHLETE — JockShock. Odor language lives ONLY here. -->
+    <section class="athlete" id="athlete">
+      <div class="athlete-inner">
+        <p class="section-eyebrow">The athlete</p>
+        <h2 class="section-headline">The gi does not live at the gym.</h2>
+        <p class="section-sub">
+          JockShock is a pro-grade equipment deodorizer for the gear that
+          leaves with them. Hypochlorous acid — the same molecule your immune
+          system makes. Powered by EPA-registered ZeroPoint Technology. Kills
+          the funk at the source. Not a perfume. Not a household cleaner
+          poured on a $200 gi.
+        </p>
+        <div class="how-grid">
+          <div class="how-card">
+            <h3>No fragrance</h3>
+            <p>Nothing is covered up. No perfume layer waiting to wear off.</p>
+          </div>
+          <div class="how-card">
+            <h3>No bleach</h3>
+            <p>Water-based. Built for the materials gear is actually made of.</p>
+          </div>
+          <div class="how-card">
+            <h3>Safe on skin contact</h3>
+            <p>Same chemistry family as wound-care saline.</p>
+          </div>
+          <div class="how-card">
+            <h3>Won't wreck tape or polish</h3>
+            <p>Alcohol will. This will not. Materials fact — not a kill claim.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROTOCOL -->
+    <section class="routine" id="protocol">
+      <div class="routine-inner">
+        <p class="section-eyebrow">After class</p>
+        <h2 class="section-headline">Two sprays. After the same class.</h2>
+        <ol class="steps">
+          <li>
+            <span class="step-num">1</span>
+            <h3>Mats and shared surfaces — ZeroPoint</h3>
+            <p>Wet for 10 minutes. That's the label.</p>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <h3>Gi, gloves, shoes, bag — JockShock</h3>
+            <p>Spray. Dry. Goes home.</p>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <h3>Do not use one bottle for both</h3>
+            <p>The athlete spray is not the mop-bucket chemical.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- FRED — facts only. No invented quote. -->
+    <section class="fred" id="fred">
+      <div class="fred-inner">
+        <p class="section-eyebrow">Talk to Fred</p>
+        <h2 class="section-headline">
+          A gym owner runs this program. Because gym owners trust gym owners.
+        </h2>
+        <div class="fred-card">
+          <p class="fred-name">Fred Munzenmaier</p>
+          <p class="fred-creds">UGA Football, 2007–2009 · Running Back · #48</p>
+          <p class="fred-creds">Owner — D1 Training franchise</p>
+          <p class="fred-body">
+            Fred wakes up in his gym every morning. He runs the facility side
+            of this program. The quote comes from him, not a cart.
+          </p>
+          <a href="#doors" class="cta-primary">Get Fred your details</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- TWO DOORS -->
+    <section class="doors" id="doors">
+      <div class="doors-inner">
+        <p class="section-eyebrow">Two doors</p>
+        <h2 class="section-headline">Buy for the bag, or quote the room.</h2>
+
+        <div class="doors-grid">
+          <div class="door">
+            <p class="door-eyebrow">Athlete</p>
+            <h3>JockShock — checkout</h3>
+            <p class="door-sub">Same ladder as the rest of the site. Free shipping on 3+.</p>
+            <div class="tier-grid">
+              <a href={PDP} class="tier" data-gym-athlete-cta>
+                <img class="tier-img" src={BOTTLE_SINGLE} alt="JockShock 32oz single bottle" loading="lazy" />
+                <div class="tier-label">One bag</div>
+                <div class="tier-detail">1 × 32oz</div>
+                <div class="tier-price">$24.99</div>
+                <div class="tier-bottom">Get it →</div>
+              </a>
+              <a href={PDP} class="tier featured" data-gym-athlete-cta>
+                <span class="tier-badge">Locker / car / home</span>
+                <img class="tier-img" src={BOTTLE_3PACK} alt="JockShock 3-pack" loading="lazy" />
+                <div class="tier-label">3-Pack</div>
+                <div class="tier-detail">3 × 32oz</div>
+                <div class="tier-price">$59.99</div>
+                <div class="tier-ship">Free shipping</div>
+                <div class="tier-bottom">Get it →</div>
+              </a>
+              <a href={PDP} class="tier" data-gym-athlete-cta>
+                <img class="tier-img" src={BOTTLE_6PACK} alt="JockShock 6-pack" loading="lazy" />
+                <div class="tier-label">Class shelf</div>
+                <div class="tier-detail">6 × 32oz — still checkout, not the facility quote</div>
+                <div class="tier-price">$99.99</div>
+                <div class="tier-ship">Free shipping</div>
+                <div class="tier-bottom">Get it →</div>
+              </a>
+            </div>
+          </div>
+
+          <div class="door door-quote">
+            <p class="door-eyebrow">Owner / coach</p>
+            <h3>ZeroPoint — talk to Fred</h3>
+            <p class="door-sub">Cases sized to the room. No cart. No contract.</p>
+
+            <div class="quote-success" data-success hidden>
+              <h3>Got it. Fred's on it.</h3>
+              <p>
+                Fred or someone from the team will email you within one business
+                day. If you need to chat sooner, call
+                <a href="tel:8006083755">800-608-3755</a> and ask for Fred.
+              </p>
+            </div>
+
+            <form class="quote-form" method="POST" action="/api/teams-intake" data-quote-form>
+              <div class="form-row">
+                <label>
+                  <span>Your name</span>
+                  <input type="text" name="name" required autocomplete="name" />
+                </label>
+                <label>
+                  <span>Role</span>
+                  <select name="role" required>
+                    <option value="">Select…</option>
+                    <option>Gym owner</option>
+                    <option>Head coach</option>
+                    <option>Assistant coach</option>
+                    <option>Athletic trainer (ATC)</option>
+                    <option>Club / program director</option>
+                    <option>Other</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="form-row">
+                <label>
+                  <span>Gym / academy</span>
+                  <input type="text" name="organization" required autocomplete="organization" />
+                </label>
+                <label>
+                  <span>City</span>
+                  <input type="text" name="city" required autocomplete="address-level2" />
+                </label>
+              </div>
+
+              <div class="form-row">
+                <label>
+                  <span>Email</span>
+                  <input type="email" name="email" required autocomplete="email" inputmode="email" />
+                </label>
+                <label>
+                  <span>Phone (optional)</span>
+                  <input type="tel" name="phone" autocomplete="tel" inputmode="tel" />
+                </label>
+              </div>
+
+              <div class="form-row">
+                <label>
+                  <span>Sport</span>
+                  <select name="sport" required>
+                    <option value="">Select…</option>
+                    <option>Brazilian jiu-jitsu</option>
+                    <option>MMA / combat sports</option>
+                    <option>Wrestling</option>
+                    <option>Boxing</option>
+                    <option>Multi-sport / other</option>
+                  </select>
+                </label>
+                <label>
+                  <span>Roster size (athletes per week)</span>
+                  <select name="roster_size" required>
+                    <option value="">Select…</option>
+                    <option>Under 25</option>
+                    <option>25–50</option>
+                    <option>50–100</option>
+                    <option>100–200</option>
+                    <option>200+</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="form-row">
+                <label>
+                  <span>What do you spray now?</span>
+                  <input type="text" name="spray_now" required placeholder="Alcohol, ammonia, Ecolab, nothing…" />
+                </label>
+                <label>
+                  <span>Chemical contract?</span>
+                  <select name="under_contract" required>
+                    <option value="">Select…</option>
+                    <option>No</option>
+                    <option>Yes — Ecolab</option>
+                    <option>Yes — other</option>
+                    <option>Not sure</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="form-row">
+                <label>
+                  <span>Decision timeline</span>
+                  <select name="timeline" required>
+                    <option value="">Select…</option>
+                    <option>This week (urgent)</option>
+                    <option>This month</option>
+                    <option>This quarter</option>
+                    <option>Just exploring</option>
+                  </select>
+                </label>
+                <label></label>
+              </div>
+
+              <label class="form-fullwidth">
+                <span>Anything else (optional)</span>
+                <textarea name="notes" rows="3" placeholder="Room size, mat type, how often you mop."></textarea>
+              </label>
+
+              <input type="hidden" name="persona" value="carmen" />
+              <input type="hidden" name="source" value="jockshock-gyms-page" />
+
+              <button type="submit" class="cta-primary cta-submit">Send the request</button>
+              <p class="form-note">
+                Goes to Fred Munzenmaier. Mike Usry is cc'd. No marketing spam.
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq" id="faq">
+      <div class="faq-inner">
+        <h2 class="section-headline center">Straight answers</h2>
+        <div class="faq-grid">
+          <details>
+            <summary>Will this dry out our mats?</summary>
+            <p>
+              ZeroPoint is not alcohol and not ammonia. Mat-safe here means
+              materials compatibility — it will not dry a mat the way those do.
+              It is not a kill-rate claim.
+            </p>
+          </details>
+          <details>
+            <summary>We're on Ecolab.</summary>
+            <p>
+              Then the lock is the contract, not the price. When you're free of
+              it, talk to Fred. We do not lead with a cheaper bid into a locked
+              house.
+            </p>
+          </details>
+          <details>
+            <summary>Is JockShock a disinfectant?</summary>
+            <p>
+              No. JockShock is a deodorizer for the athlete and the gear.
+              ZeroPoint is the EPA-registered disinfectant for the facility.
+            </p>
+          </details>
+          <details>
+            <summary>Does ZeroPoint kill ringworm / MRSA?</summary>
+            <p>
+              The label covers <em>Staphylococcus aureus</em>,
+              <em>Pseudomonas aeruginosa</em>, and Human Coronavirus 229E, at a
+              10-minute wet dwell. We do not claim organisms that are not on
+              the label.
+            </p>
+          </details>
+          <details>
+            <summary>Is this safe around kids and skin?</summary>
+            <p>
+              JockShock: safe on skin contact, no fragrance, no bleach.
+              ZeroPoint: follow the facility label — it is a disinfectant, not
+              a body spray.
+            </p>
+          </details>
+          <details>
+            <summary>Do you have wipes?</summary>
+            <p>
+              Body wipes (soft-pack) and gear wipes (canister) are in the
+              works. Not for sale on this page.
+            </p>
+          </details>
+          <details>
+            <summary>Is there a contract?</summary>
+            <p>
+              No. Subscription is monthly or every other month. Pause or
+              cancel. About 10% off the facility program is there to cover
+              shipping.
+            </p>
+          </details>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<script>
+  import { setPersona } from "../utils/persona-stamp";
+  // Gym surface. Athlete checkout still works; the form is Carmen.
+  setPersona("carmen");
+
+  if (typeof window !== "undefined" && (window as any).pdPixel) {
+    (window as any).pdPixel.track("gyms_lander_view", {
+      sub_brand: "jockshock",
+      persona: "carmen",
+      surface: "gyms",
+    });
+  }
+
+  document.querySelectorAll<HTMLAnchorElement>("[data-gym-athlete-cta]").forEach((el) => {
+    el.addEventListener("click", () => {
+      if ((window as any).pdPixel) {
+        (window as any).pdPixel.track("gym_athlete_cta", {
+          sub_brand: "jockshock",
+          persona: "aaron",
+          surface: "gyms",
+        });
+      }
+    });
+  });
+
+  const form = document.querySelector<HTMLFormElement>("[data-quote-form]");
+  const successPanel = document.querySelector<HTMLElement>("[data-success]");
+  const submitBtn = form?.querySelector<HTMLButtonElement>(".cta-submit");
+
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!form || !submitBtn) return;
+
+    submitBtn.disabled = true;
+    const originalLabel = submitBtn.textContent;
+    submitBtn.textContent = "Sending…";
+
+    const fd = new FormData(form);
+    const payload = Object.fromEntries(fd.entries());
+
+    if ((window as any).pdPixel) {
+      (window as any).pdPixel.track("gym_owner_quote_requested", {
+        sub_brand: "jockshock",
+        persona: "carmen",
+        sport: payload.sport,
+        roster_size: payload.roster_size,
+        under_contract: payload.under_contract,
+        role: payload.role,
+        jockshock_lead_source: "jockshock-gyms",
+      });
+    }
+
+    try {
+      const r = await fetch("/api/teams-intake", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!r.ok) throw new Error(`Server returned ${r.status}`);
+      form.hidden = true;
+      if (successPanel) {
+        successPanel.hidden = false;
+        successPanel.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    } catch (err) {
+      console.error("[gyms-intake] submit failed", err);
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalLabel;
+      let errorEl = form.querySelector<HTMLElement>(".form-error");
+      if (!errorEl) {
+        errorEl = document.createElement("p");
+        errorEl.className = "form-error";
+        submitBtn.insertAdjacentElement("afterend", errorEl);
+      }
+      errorEl.textContent =
+        "Something went wrong sending that. Email Fred directly at fmunzjr@gmail.com and we'll handle it.";
+    }
+  });
+</script>
+
+<style>
+  .js-gyms {
+    --jockshock-black: #0a0a0a;
+    --jockshock-yellow: #FFE500;
+    --jockshock-text: #f3f4f6;
+    --jockshock-muted: #9ca3af;
+    background: var(--jockshock-black);
+    color: var(--jockshock-text);
+  }
+
+  .eyebrow, .section-eyebrow, .door-eyebrow, .split-card-eyebrow, .hero-split-eyebrow {
+    color: var(--jockshock-yellow);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 700;
+    font-size: 0.8125rem;
+    margin-bottom: 16px;
+  }
+  .section-headline {
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: #fff;
+    margin: 0 0 16px;
+    line-height: 1.15;
+  }
+  .section-headline.center { text-align: center; }
+  .section-sub {
+    font-size: 1.125rem;
+    color: var(--jockshock-muted);
+    line-height: 1.6;
+    margin-bottom: 24px;
+    max-width: 720px;
+  }
+
+  .hero {
+    background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+    padding: 100px 5% 80px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .hero-grid {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 64px;
+    align-items: center;
+  }
+  .hero-copy { max-width: 640px; }
+  .hero-headline {
+    font-size: clamp(2.25rem, 4.5vw, 3.5rem);
+    color: #fff;
+    line-height: 1.1;
+    margin: 0 0 16px;
+  }
+  .hero-sub {
+    font-size: clamp(1.25rem, 2vw, 1.75rem);
+    color: var(--jockshock-yellow);
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 24px;
+  }
+  .hero-promise {
+    font-size: 1.0625rem;
+    color: var(--jockshock-text);
+    line-height: 1.6;
+    margin-bottom: 32px;
+    padding: 16px 20px;
+    background: rgba(255, 229, 0, 0.06);
+    border-left: 3px solid var(--jockshock-yellow);
+  }
+  .hero-cta-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .cta-primary {
+    display: inline-block;
+    background: var(--jockshock-yellow);
+    color: var(--jockshock-black);
+    padding: 18px 36px;
+    text-decoration: none;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.9375rem;
+    border-radius: 2px;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition: transform 0.1s ease, box-shadow 0.15s ease;
+  }
+  .cta-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 229, 0, 0.35);
+  }
+  .cta-primary:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+  .cta-secondary {
+    display: inline-block;
+    color: #fff;
+    padding: 18px 24px;
+    text-decoration: none;
+    font-weight: 700;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+    transition: border-color 0.15s ease;
+  }
+  .cta-secondary:hover { border-color: var(--jockshock-yellow); }
+  .hero-trust {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 16px 24px;
+    flex-wrap: wrap;
+    color: #d1d5db;
+    font-size: 0.875rem;
+  }
+  .hero-trust li { display: flex; align-items: center; gap: 6px; }
+  .hero-trust li::before {
+    content: "✓";
+    color: var(--jockshock-yellow);
+    font-weight: 800;
+  }
+
+  .hero-split {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 16px;
+    align-items: stretch;
+  }
+  .hero-split-card {
+    background: #141414;
+    border-left: 3px solid var(--jockshock-yellow);
+    padding: 32px 24px;
+  }
+  .hero-split-card h2 {
+    color: #fff;
+    font-size: 2rem;
+    margin: 0 0 8px;
+    line-height: 1;
+  }
+  .hero-split-card p { color: var(--jockshock-muted); margin: 0; line-height: 1.5; }
+  .hero-split-plus {
+    align-self: center;
+    color: var(--jockshock-yellow);
+    font-size: 2.5rem;
+    font-weight: 800;
+  }
+
+  .video-section { padding: 100px 5%; background: #050505; }
+  .video-inner { max-width: 720px; margin: 0 auto; text-align: center; }
+  .video-section .section-eyebrow { text-align: center; }
+  .video-slot {
+    margin: 40px auto 0;
+    max-width: 420px;
+    min-height: 420px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px 32px;
+    background: #141414;
+    border: 1px dashed rgba(255, 229, 0, 0.35);
+    border-radius: 2px;
+  }
+  .video-slot-kicker {
+    color: var(--jockshock-yellow);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.75rem;
+    margin: 0 0 12px;
+  }
+  .video-slot-body {
+    color: var(--jockshock-text);
+    line-height: 1.6;
+    margin: 0;
+    font-size: 1.05rem;
+  }
+  .video-caption {
+    color: var(--jockshock-muted);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    margin: 24px auto 0;
+    max-width: 520px;
+    font-style: italic;
+  }
+
+  .split { padding: 100px 5%; background: var(--jockshock-black); }
+  .split-inner { max-width: 1100px; margin: 0 auto; }
+  .split-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .split-card {
+    background: #141414;
+    padding: 40px 32px;
+    border-left: 3px solid var(--jockshock-yellow);
+  }
+  .split-card h2 {
+    color: #fff;
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    margin: 0 0 16px;
+    line-height: 1.15;
+  }
+  .split-card p { color: var(--jockshock-text); line-height: 1.6; margin: 0; }
+
+  .problem { padding: 100px 5%; background: #050505; }
+  .problem-inner { max-width: 860px; margin: 0 auto; }
+  .pull {
+    margin: 8px 0 0;
+    padding: 32px 36px;
+    background: #141414;
+    border-left: 4px solid var(--jockshock-yellow);
+  }
+  .pull p {
+    font-size: clamp(1.25rem, 2.2vw, 1.6rem);
+    line-height: 1.4;
+    color: #fff;
+    font-weight: 700;
+    margin: 0 0 16px;
+  }
+  .pull cite {
+    color: var(--jockshock-yellow);
+    font-style: normal;
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+  }
+
+  .how { padding: 100px 5%; background: var(--jockshock-black); }
+  .how-inner { max-width: 860px; margin: 0 auto; }
+  .organism-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 32px;
+    display: grid;
+    gap: 12px;
+  }
+  .organism-list li {
+    background: #141414;
+    padding: 16px 20px;
+    color: #fff;
+    border-left: 3px solid var(--jockshock-yellow);
+  }
+
+  .athlete { padding: 100px 5%; background: #050505; }
+  .athlete-inner { max-width: 1100px; margin: 0 auto; }
+  .how-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+  }
+  .how-card {
+    background: #141414;
+    padding: 32px;
+    border-left: 3px solid var(--jockshock-yellow);
+  }
+  .how-card h3 { color: var(--jockshock-yellow); font-size: 1.25rem; margin: 0 0 12px; }
+  .how-card p { color: var(--jockshock-text); line-height: 1.6; margin: 0; font-size: 0.95rem; }
+
+  .routine { padding: 100px 5%; background: var(--jockshock-black); }
+  .routine-inner { max-width: 900px; margin: 0 auto; }
+  .steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+  }
+  .steps li { background: #141414; padding: 32px; text-align: center; }
+  .steps h3 { color: #fff; font-size: 1.15rem; margin: 0 0 8px; }
+  .steps p { color: var(--jockshock-muted); margin: 0; font-size: 0.95rem; line-height: 1.5; }
+  .step-num {
+    display: inline-flex;
+    width: 56px;
+    height: 56px;
+    background: var(--jockshock-yellow);
+    color: var(--jockshock-black);
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+
+  .fred { padding: 100px 5%; background: #050505; }
+  .fred-inner { max-width: 720px; margin: 0 auto; }
+  .fred-card {
+    background: #141414;
+    border-left: 4px solid var(--jockshock-yellow);
+    padding: 48px 40px;
+  }
+  .fred-name {
+    color: #fff;
+    font-size: 2rem;
+    margin: 0 0 12px;
+    line-height: 1;
+  }
+  .fred-creds {
+    color: var(--jockshock-yellow);
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin: 0 0 4px;
+  }
+  .fred-body {
+    color: #d1d5db;
+    font-size: 1rem;
+    line-height: 1.7;
+    margin: 24px 0 32px;
+  }
+
+  .doors { padding: 100px 5%; background: var(--jockshock-black); }
+  .doors-inner { max-width: 1200px; margin: 0 auto; }
+  .doors-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 64px;
+    margin-top: 16px;
+  }
+  .door-sub { color: var(--jockshock-muted); margin: 0 0 24px; }
+  .door h3 { color: #fff; font-size: 1.75rem; margin: 0 0 8px; }
+
+  .tier-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
+  .tier {
+    background: #141414;
+    padding: 32px 24px;
+    text-decoration: none;
+    color: var(--jockshock-text);
+    border: 2px solid transparent;
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    position: relative;
+  }
+  .tier:hover { border-color: var(--jockshock-yellow); }
+  .tier.featured {
+    border-color: var(--jockshock-yellow);
+    background: #1a1a1a;
+  }
+  .tier-badge {
+    position: absolute;
+    top: -12px;
+    right: 16px;
+    background: var(--jockshock-yellow);
+    color: var(--jockshock-black);
+    padding: 4px 10px;
+    font-size: 0.6875rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+  .tier-label { color: #fff; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
+  .tier-img {
+    width: 100%;
+    max-width: 160px;
+    height: auto;
+    margin: 0 auto 16px;
+    display: block;
+  }
+  .tier-detail { color: var(--jockshock-muted); font-size: 0.875rem; }
+  .tier-price { color: #fff; font-size: 1.75rem; font-weight: 900; margin-top: 8px; }
+  .tier-ship {
+    color: var(--jockshock-yellow);
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .tier-bottom {
+    margin-top: 12px;
+    color: var(--jockshock-yellow);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.8125rem;
+  }
+
+  .quote-form {
+    background: #141414;
+    padding: 32px;
+    border-left: 4px solid var(--jockshock-yellow);
+  }
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .form-fullwidth { display: block; margin-bottom: 20px; }
+  .quote-form label { display: flex; flex-direction: column; gap: 6px; }
+  .quote-form span {
+    color: var(--jockshock-muted);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .quote-form input,
+  .quote-form select,
+  .quote-form textarea {
+    background: #0a0a0a;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #fff;
+    padding: 14px 16px;
+    border-radius: 2px;
+    font-family: inherit;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+    min-width: 0;
+  }
+  .quote-form input:focus,
+  .quote-form select:focus,
+  .quote-form textarea:focus {
+    outline: none;
+    border-color: var(--jockshock-yellow);
+  }
+  .form-note { color: var(--jockshock-muted); font-size: 0.8125rem; margin: 16px 0 0; }
+  .form-error { color: #fca5a5; margin-top: 12px; }
+  .quote-success {
+    background: #141414;
+    border-left: 4px solid var(--jockshock-yellow);
+    padding: 32px;
+  }
+  .quote-success h3 { color: #fff; margin: 0 0 12px; }
+  .quote-success p { color: var(--jockshock-muted); margin: 0; line-height: 1.6; }
+  .quote-success a { color: var(--jockshock-yellow); }
+
+  .faq { padding: 100px 5%; background: #050505; }
+  .faq-inner { max-width: 800px; margin: 0 auto; }
+  .faq .section-headline { margin-bottom: 48px; }
+  .faq-grid { display: flex; flex-direction: column; gap: 4px; }
+  .faq details { background: #141414; border-left: 3px solid transparent; }
+  .faq details[open] { border-left-color: var(--jockshock-yellow); }
+  .faq summary {
+    padding: 24px 32px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: #fff;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after {
+    content: "+";
+    color: var(--jockshock-yellow);
+    font-size: 1.5rem;
+    font-weight: 400;
+  }
+  .faq details[open] summary::after { content: "−"; }
+  .faq details p {
+    padding: 0 32px 24px;
+    color: var(--jockshock-muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  @media (max-width: 900px) {
+    .hero-grid, .split-grid, .form-row { grid-template-columns: 1fr; }
+    .hero-split { grid-template-columns: 1fr; }
+    .hero-split-plus { display: none; }
+    .hero, .video-section, .split, .problem, .how, .athlete, .routine, .fred, .doors, .faq {
+      padding: 64px 5%;
+    }
+  }
+</style>
