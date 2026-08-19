@@ -9,11 +9,13 @@
  * an athlete buyer. This feed is served FROM jockshockspray.com, links TO
  * jockshockspray.com, and is what the new JockShock MC fetches.
  *
- * The 3 packs are VARIANTS of one Shopify product (handle "jockshock"); each
- * becomes its own offer (id = variant SKU) sharing an item_group_id so GMC
- * groups them. Titles and product_type come from Shopify Storefront
- * (product.title + pack suffix, product.productType) so Google Shopping and
- * ChatGPT Catalog cannot drift. Variant titles stay as PDP picker labels.
+ * The 3 packs are sellable variants of one Shopify product (handle "jockshock"),
+ * but they are different offers (price, weight, ship rate) — not apparel
+ * color/size. Each offer gets its own item_group_id (= SKU). Sharing one group
+ * made Meta treat all three as a single product, which blocks catalog ads
+ * ("collection ad needs at least 4 unique item groups"). Titles and
+ * product_type still come from Shopify Storefront so GMC and ChatGPT cannot
+ * drift. Variant titles stay as PDP picker labels.
  *
  * Claims-clean: deodorizer framing only. No kill-microbe/sanitize/disinfect/
  * antimicrobial/EPA/24-hour/staph/MRSA. "Kill the funk" (odor) is Mike-approved.
@@ -177,8 +179,6 @@ export const GET: APIRoute = async () => {
     return new Response("JockShock product not found", { status: 404 });
   }
 
-  // item_group_id ties the variant offers together (numeric Shopify product id)
-  const itemGroupId = product.id.split("/").pop() || "jockshock";
   const link = `${SITE}/products/${product.handle}/`;
   const productType =
     product.productType?.trim() || "Athletic Gear Deodorizer";
@@ -195,7 +195,7 @@ export const GET: APIRoute = async () => {
       return [
         `    <item>`,
         `      <g:id>${esc(sku)}</g:id>`,
-        `      <g:item_group_id>${esc(itemGroupId)}</g:item_group_id>`,
+        `      <g:item_group_id>${esc(sku)}</g:item_group_id>`,
         `      <g:title>${esc(title)}</g:title>`,
         `      <g:description>${esc(description)}</g:description>`,
         `      <g:link>${esc(link)}?variant=${esc(v.id.split("/").pop() || "")}</g:link>`,
