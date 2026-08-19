@@ -10,7 +10,7 @@
  * runs blind.
  *
  * THE FIX (mirrors southland-platform's working pattern):
- *   1. On landing, capture gclid/fbclid/utm_* from the URL into localStorage
+ *   1. On landing, capture gclid/fbclid/oppref/utm_* from the URL into localStorage
  *      (last-touch overwrite + first-touch set-once). See BaseLayout.astro.
  *   2. When the cart is created, stamp those values as Shopify CART ATTRIBUTES
  *      (`_pd_*`). Cart attributes persist onto the order as note_attributes,
@@ -26,6 +26,7 @@ const FIRST_TOUCH_KEY = "_pd_first_touch";
 const PARAMS = [
   "gclid",
   "fbclid",
+  "oppref",
   "wbraid",
   "gbraid",
   "msclid",
@@ -46,6 +47,7 @@ function readCookie(name: string): string {
 }
 
 let fbpRetryScheduled = false;
+let opprefRetryScheduled = false;
 
 type AttributionData = Record<string, string>;
 
@@ -87,6 +89,32 @@ export function captureAttribution(): void {
   if (found.fbclid && !found.utm_source) {
     found.utm_source = "facebook";
     found.utm_medium = found.utm_medium || "paid_social";
+    hasNew = true;
+  }
+  // OpenAI click id. Prefer the URL param; the oaiq SDK also sets __oppref.
+  // Cookie may be missing on first paint (pixel loads async) — retry once.
+  if (!found.oppref) {
+    const fromCookie = readCookie("__oppref");
+    if (fromCookie) {
+      found.oppref = fromCookie;
+      hasNew = true;
+    } else if (!opprefRetryScheduled) {
+      opprefRetryScheduled = true;
+      window.setTimeout(() => {
+        const later = readCookie("__oppref");
+        if (!later) return;
+        const mergedLater = { ...readStore(LAST_TOUCH_KEY), oppref: later };
+        try {
+          localStorage.setItem(LAST_TOUCH_KEY, JSON.stringify(mergedLater));
+        } catch {
+          /* non-fatal */
+        }
+      }, 1500);
+    }
+  }
+  if (found.oppref && !found.utm_source) {
+    found.utm_source = "chatgpt";
+    found.utm_medium = found.utm_medium || "ppc";
     hasNew = true;
   }
   // Meta's _fbp cookie — minted by fbq in BaseLayout. Highest-signal CAPI match

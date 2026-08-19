@@ -152,6 +152,16 @@ const pixelBrandId = import.meta.env.PUBLIC_PIXEL_BRAND_ID || "southland";
 const pixelEndpoint =
   import.meta.env.PUBLIC_PIXEL_ENDPOINT ||
   "https://pixel.southlandorganics.com/collect";
+
+// OpenAI Ads (ChatGPT Ads) — same pixel as southlandorganics.com. Public ID;
+// env override is only for a non-prod pixel. Paid js-chatgpt-ads lands here.
+const openaiAdsPixelId =
+  import.meta.env.PUBLIC_OPENAI_ADS_PIXEL_ID || "CffkPaU7dDnCJjtj4Fd47G";
+
+// Google tag for Southland Ads account 2306196805. Config-only (remarketing
+// cookie on this host). Purchase conversions are uploaded by Nexus, not fired
+// as a browser event on this origin — checkout is Shopify.
+const googleAdsTagId = "AW-961424449";
 ---
 
 <html lang="en">
@@ -244,6 +254,46 @@ const pixelEndpoint =
     <script is:inline src="https://cdn.point.dog/pixel/pd-pixel.min.js?v=2.4.1" async
     ></script>
 
+    <!-- Google tag (gtag.js) — AW-961424449, account 2306196805.
+         Config only. Do not add a conversion snippet here. -->
+    <script
+      is:inline
+      async
+      src={`https://www.googletagmanager.com/gtag/js?id=${googleAdsTagId}`}
+    ></script>
+    <script is:inline define:vars={{ googleAdsTagId }}>
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () {
+        window.dataLayer.push(arguments);
+      };
+      window.gtag("js", new Date());
+      window.gtag("config", googleAdsTagId);
+    </script>
+
+    <!-- OpenAI Ads Pixel (ChatGPT Ads). Server-side CAPI dedups on event_id + type. -->
+    <script is:inline define:vars={{ openaiAdsPixelId }}>
+      !(function (w, d, s, u) {
+        if (w.oaiq) return;
+        var q = function () {
+          q.q.push(arguments);
+        };
+        q.q = [];
+        w.oaiq = q;
+        var j = d.createElement(s);
+        j.async = 1;
+        j.src = u;
+        var f = d.getElementsByTagName(s)[0];
+        f.parentNode.insertBefore(j, f);
+      })(
+        window,
+        document,
+        "script",
+        "https://bzrcdn.openai.com/sdk/oaiq.min.js",
+      );
+      oaiq("init", { pixelId: openaiAdsPixelId });
+      oaiq("measure", "page_viewed", { type: "contents" });
+    </script>
+
     <!-- Meta Pixel — same ID as Southland checkout CAPI (2459921147627824).
          PageView only here. Purchase is NOT fired on this origin: checkout is
          Shopify, and Nexus + the Shopify web pixel already send it with the
@@ -293,10 +343,9 @@ const pixelEndpoint =
       />
     </noscript>
 
-    <!-- Cross-origin attribution capture: persist gclid/fbclid/utm/_fbp from the
-         landing URL so a Meta/Google click survives the Shopify checkout jump
-         and lands on the order (utils/attribution.ts). Without this the JS
-         Search campaign spends blind — same gap as D2's two-origin break. -->
+    <!-- Cross-origin attribution capture: persist gclid/fbclid/oppref/utm/_fbp
+         from the landing URL so a Meta/Google/ChatGPT click survives the
+         Shopify checkout jump (utils/attribution.ts). -->
     <script>
       import { captureAttribution } from "../utils/attribution";
       captureAttribution();
