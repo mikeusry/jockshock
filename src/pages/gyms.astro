@@ -1,150 +1,123 @@
 ---
 /**
- * /gyms — academies + wrestling rooms. Paid lander for Simplifi + [JS] Gyms Search.
+ * /gyms — gyms, academies, wrestling rooms, training floors. Paid lander. Simplifi only after this
+ * page is honest. Search is out of this plan.
  *
- * Spec: mothership/docs/advertising/campaigns/jockshock/gyms/landing-page.md
- *
- * Two products, two buyers, one URL.
- *   JockShock  = athlete + gear that goes home. Deodorizer. Kills odor.
- *   ZeroPoint  = facility / mats. EPA-registered disinfectant. Quote only.
+ * One program: spray ZeroPoint on the floor, sell JockShock to the roster,
+ * keep the margin. Quotes go to Mike, Philip, and Brad. Fred is off this page.
  *
  * 🛑 TWO CLAIMS REGISTERS. JockShock never "disinfects." ZeroPoint never
  *    "kills the funk." Do not merge the cards.
  *
- * 🛑 No invented testimonial. SPG is a bottle drop, not a close. Joseph is
- *    cutting a gym tape — the video slot stays empty until a Mux ID lands.
- *    Do not drop a stock mat or a talking-head placeholder that looks like
- *    proof.
+ * 🛑 No invented testimonial. SPG has samples, not a purchase. Do not use
+ *    Life Change Fitness as a named success story. gymLifeChange stays off
+ *    this page until a claims-safe transcript exists.
  *
- * 🛑 ZeroPoint add-to-cart does not exist on this site. Fred quotes.
+ * 🛑 ZeroPoint is quote-only. No add-to-cart.
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
+import MuxVideo from "../components/MuxVideo.astro";
+import { VIDEOS } from "../data/videos";
 
-const title = "JockShock for Gyms — Facility + Athlete";
+const title = "JockShock for Gyms — One Program";
 const description =
-  "ZeroPoint for the mats. JockShock for the athlete. Alcohol-free facility disinfectant and a pro-grade gear deodorizer. Protect your customer. Protect your mat.";
+  "Those mats are the most expensive thing you own. One program: spray ZeroPoint on the floor, sell JockShock to the roster, keep the margin.";
 
 const CLD = "https://res.cloudinary.com/southland-organics/image/upload";
 const BOTTLE_SINGLE = `${CLD}/c_fit,w_560,q_auto,f_auto,dpr_auto/JockShock/jockshock-32oz-single-2026.png`;
 const BOTTLE_3PACK = `${CLD}/c_fit,w_560,q_auto,f_auto,dpr_auto/JockShock/jockshock-3pack-athlete-2026.png`;
 const BOTTLE_6PACK = `${CLD}/c_fit,w_560,q_auto,f_auto,dpr_auto/JockShock/jockshock-6pack-team-2026.png`;
+const ZP_CASE = `${CLD}/c_fit,w_560,q_auto,f_auto,dpr_auto/Southland%20Website/products/zeropoint-industrial/ZeroPoint-2x2.5G-Case`;
 
 const PDP = "/products/jockshock/?utm_campaign=js-gyms";
+const BROLL = VIDEOS.gymBroll;
 ---
 
 <BaseLayout title={title} description={description}>
   <div class="js-gyms">
-    <!-- HERO — constraint, then the pair. No fake mat photo. -->
+    <!-- HERO — the job. Headline does the job. Subhead does the program. -->
     <section class="hero" id="top">
       <div class="hero-grid">
         <div class="hero-copy">
-          <p class="eyebrow">For academies, wrestling rooms, and the people who train in them</p>
+          <p class="eyebrow">For the person who runs the room</p>
           <h1 class="hero-headline">
-            Alcohol dries the mats. The athletes take the rest home.
+            Those mats are the most expensive thing you own.
           </h1>
-          <p class="hero-sub">Two jobs. Two labels. Same chemistry family.</p>
+          <p class="hero-sub">
+            One program. Spray ZeroPoint on the floor. Sell JockShock to the roster. Keep the margin.
+          </p>
           <p class="hero-promise">
-            ZeroPoint for the facility — EPA-registered disinfectant for the
-            mats and the shared surfaces. JockShock for the athlete — a
-            pro-grade equipment deodorizer that goes in the bag. Protect your
-            customer. Protect your mat.
+            You already spray something. Alcohol and ammonia dry the surface.
+            People trust this room. The job is keep it clean without wrecking
+            the floor — and stop buying random bottles that do one half of the work.
           </p>
           <div class="hero-cta-row">
-            <a href={PDP} class="cta-primary" data-gym-athlete-cta>Get JockShock — $24.99</a>
-            <a href="#doors" class="cta-secondary">Talk to Fred about the facility</a>
+            <a href="#program-ask" class="cta-primary">Get the program</a>
+            <a href="#show" class="cta-secondary">See it in a gym</a>
           </div>
           <ul class="hero-trust">
-            <li>No fragrance on the athlete spray</li>
-            <li>No bleach</li>
+            <li>You spray the room</li>
+            <li>You sell the bottle that goes home</li>
+            <li>No contract</li>
             <li>Made in USA</li>
-            <li>No contract on the facility program</li>
           </ul>
         </div>
-        <div class="hero-split" aria-hidden="false">
-          <div class="hero-split-card">
-            <p class="hero-split-eyebrow">Goes home</p>
-            <h2>JockShock</h2>
-            <p>Athlete. Gear bag. Gi, gloves, shoes.</p>
-          </div>
-          <div class="hero-split-plus">+</div>
-          <div class="hero-split-card">
-            <p class="hero-split-eyebrow">Stays here</p>
-            <h2>ZeroPoint</h2>
-            <p>Mats. Mop bucket. Shared surfaces.</p>
-          </div>
+        <div class="hero-bottles">
+          <figure class="hero-bottle">
+            <img src={ZP_CASE} alt="ZeroPoint 2.5-gallon case — the facility bottle" width="560" height="840" />
+            <figcaption>Stays in the closet</figcaption>
+          </figure>
+          <figure class="hero-bottle">
+            <img src={BOTTLE_SINGLE} alt="JockShock 32oz — the athlete bottle" width="560" height="840" />
+            <figcaption>Sells at the desk</figcaption>
+          </figure>
         </div>
       </div>
     </section>
 
-    <!-- JOSEPH'S TAPE — empty until Mux ID exists. Do not invent a speaker. -->
-    <section class="video-section" id="video">
-      <div class="video-inner">
-        <p class="section-eyebrow">From the academy</p>
-        <h2 class="section-headline center">The tape is being cut.</h2>
-        <div class="video-slot">
-          <p class="video-slot-kicker">Gym-owner interview</p>
-          <p class="video-slot-body">
-            Same job the fire-service page already does — a person who runs a
-            room, saying what the mats and the bags actually do. It is not
-            here yet. When it is, this slot plays it.
-          </p>
-        </div>
-        <p class="video-caption">
-          No stock mat. No borrowed testimonial. The page stays empty until
-          the interview exists.
-        </p>
-      </div>
-    </section>
-
-    <!-- THE SPLIT -->
-    <section class="split" id="split">
-      <div class="split-inner">
-        <p class="section-eyebrow">The pair</p>
-        <div class="split-grid">
-          <article class="split-card">
-            <p class="split-card-eyebrow">For the athlete and the athlete's gear</p>
-            <h2>JockShock goes home in the bag.</h2>
-            <p>
-              Gi, gloves, headgear, shoes, the bag itself. Kills the odor. No
-              fragrance, no bleach. Powered by EPA-registered ZeroPoint
-              Technology.
-            </p>
-          </article>
-          <article class="split-card">
-            <p class="split-card-eyebrow">For the facility</p>
-            <h2>ZeroPoint stays in the closet.</h2>
-            <p>
-              Mats, mop bucket, shared equipment, locker-room surfaces. Broad
-              spectrum disinfectant on the organisms on the label. Alcohol-free.
-              Ammonia-free.
-            </p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- THE PROBLEM -->
-    <section class="problem" id="problem">
-      <div class="problem-inner">
-        <p class="section-eyebrow">The problem</p>
-        <h2 class="section-headline">
-          The stuff that "works" is the stuff that wrecks the mat.
-        </h2>
+    <!-- ONE PROGRAM -->
+    <section class="program" id="program">
+      <div class="program-inner">
+        <p class="section-eyebrow">One program</p>
+        <h2 class="section-headline">You spray one. You sell the other.</h2>
         <p class="section-sub">
-          Most rooms are already spraying something. A lot of it is alcohol or
-          ammonia. It flashes off. It dries the surface. The mat is one of the
-          most expensive things you own.
-        </p>
-        <p class="section-sub">
-          Then class ends and the gi goes in a bag. That problem leaves with
-          the athlete. A mop bucket does not follow them home.
+          ZeroPoint stays in the closet — floors, mats, iron, shared surfaces.
+          JockShock sells at the desk — the bottle that goes home in the bag.
+          Same chemistry family. Two labels. One conversation.
         </p>
         <blockquote class="pull">
-          <p>
-            The most effective bottle is the one your people will actually use.
-          </p>
-          <cite>Easy. Won't corrode the mat. Money last.</cite>
+          <p>You keep the margin on the bottle the roster takes home.</p>
+          <cite>No fake wholesale sheet. We quote the room, then the desk.</cite>
         </blockquote>
+      </div>
+    </section>
+
+    <!-- SHOW IT — real gym B-roll + both bottles. Not an interview. -->
+    <section class="show" id="show">
+      <div class="show-inner">
+        <p class="section-eyebrow">In the room</p>
+        <h2 class="section-headline center">This is us spraying a gym.</h2>
+        <div class="show-video">
+          <MuxVideo
+            playbackId={BROLL.playbackId}
+            title={BROLL.title}
+            aspect={BROLL.aspect}
+            posterTime={BROLL.posterTime}
+          />
+        </div>
+        <p class="video-caption">
+          Handheld sprayer on iron and bags. No stock mat. No invented interview.
+        </p>
+        <div class="bottle-pair">
+          <figure>
+            <img src={ZP_CASE} alt="ZeroPoint case — facility disinfectant" width="560" height="840" loading="lazy" />
+            <figcaption>ZeroPoint — the room</figcaption>
+          </figure>
+          <figure>
+            <img src={BOTTLE_SINGLE} alt="JockShock 32oz — athlete deodorizer" width="560" height="840" loading="lazy" />
+            <figcaption>JockShock — the roster</figcaption>
+          </figure>
+        </div>
       </div>
     </section>
 
@@ -166,10 +139,10 @@ const PDP = "/products/jockshock/?utm_campaign=js-gyms";
         <p class="section-sub">
           No alcohol. No ammonia. No fragrance to cover a room that still
           isn't done. Cases, not a spray bottle from the front desk: 4×1-gallon
-          or 2×2.5-gallon, sized to the room. Fred quotes it. You don't fight
+          or 2×2.5-gallon, sized to the room. We quote it. You don't fight
           a cart.
         </p>
-        <a href="#doors" class="cta-secondary">Get a facility quote</a>
+        <a href="#program-ask" class="cta-secondary">Get a facility quote</a>
       </div>
     </section>
 
@@ -177,13 +150,14 @@ const PDP = "/products/jockshock/?utm_campaign=js-gyms";
     <section class="athlete" id="athlete">
       <div class="athlete-inner">
         <p class="section-eyebrow">The athlete</p>
-        <h2 class="section-headline">The gi does not live at the gym.</h2>
+        <h2 class="section-headline">They leave. The bag goes home.</h2>
         <p class="section-sub">
-          JockShock is a pro-grade equipment deodorizer for the gear that
-          leaves with them. Hypochlorous acid — the same molecule your immune
+          A mop bucket does not follow them home. JockShock is the bottle
+          you sell for that — a pro-grade equipment deodorizer for the gear
+          that leaves. Hypochlorous acid — the same molecule your immune
           system makes. Powered by EPA-registered ZeroPoint Technology. Kills
           the funk at the source. Not a perfume. Not a household cleaner
-          poured on a $200 gi.
+          poured on expensive gear.
         </p>
         <div class="how-grid">
           <div class="how-card">
@@ -209,17 +183,17 @@ const PDP = "/products/jockshock/?utm_campaign=js-gyms";
     <!-- PROTOCOL -->
     <section class="routine" id="protocol">
       <div class="routine-inner">
-        <p class="section-eyebrow">After class</p>
-        <h2 class="section-headline">Two sprays. After the same class.</h2>
+        <p class="section-eyebrow">After they leave</p>
+        <h2 class="section-headline">Two sprays. Same room.</h2>
         <ol class="steps">
           <li>
             <span class="step-num">1</span>
-            <h3>Mats and shared surfaces — ZeroPoint</h3>
+            <h3>Floors, mats, shared surfaces — ZeroPoint</h3>
             <p>Wet for 10 minutes. That's the label.</p>
           </li>
           <li>
             <span class="step-num">2</span>
-            <h3>Gi, gloves, shoes, bag — JockShock</h3>
+            <h3>Gloves, shoes, bag — JockShock</h3>
             <p>Spray. Dry. Goes home.</p>
           </li>
           <li>
@@ -231,76 +205,28 @@ const PDP = "/products/jockshock/?utm_campaign=js-gyms";
       </div>
     </section>
 
-    <!-- FRED — facts only. No invented quote. -->
-    <section class="fred" id="fred">
-      <div class="fred-inner">
-        <p class="section-eyebrow">Talk to Fred</p>
-        <h2 class="section-headline">
-          A gym owner runs this program. Because gym owners trust gym owners.
-        </h2>
-        <div class="fred-card">
-          <p class="fred-name">Fred Munzenmaier</p>
-          <p class="fred-creds">UGA Football, 2007–2009 · Running Back · #48</p>
-          <p class="fred-creds">Owner — D1 Training franchise</p>
-          <p class="fred-body">
-            Fred wakes up in his gym every morning. He runs the facility side
-            of this program. The quote comes from him, not a cart.
-          </p>
-          <a href="#doors" class="cta-primary">Get Fred your details</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- TWO DOORS -->
-    <section class="doors" id="doors">
+    <!-- ASK — program first. Athlete buy is the side door. -->
+    <section class="doors" id="program-ask">
       <div class="doors-inner">
-        <p class="section-eyebrow">Two doors</p>
-        <h2 class="section-headline">Buy for the bag, or quote the room.</h2>
+        <p class="section-eyebrow">The program</p>
+        <h2 class="section-headline">Tell us about the room.</h2>
+        <p class="section-sub">
+          We size ZeroPoint to the mats and put JockShock at the desk.
+          Goes to Mike, Philip, and Brad. One business day.
+        </p>
 
         <div class="doors-grid">
-          <div class="door">
-            <p class="door-eyebrow">Athlete</p>
-            <h3>JockShock — checkout</h3>
-            <p class="door-sub">Same ladder as the rest of the site. Free shipping on 3+.</p>
-            <div class="tier-grid">
-              <a href={PDP} class="tier" data-gym-athlete-cta>
-                <img class="tier-img" src={BOTTLE_SINGLE} alt="JockShock 32oz single bottle" loading="lazy" />
-                <div class="tier-label">One bag</div>
-                <div class="tier-detail">1 × 32oz</div>
-                <div class="tier-price">$24.99</div>
-                <div class="tier-bottom">Get it →</div>
-              </a>
-              <a href={PDP} class="tier featured" data-gym-athlete-cta>
-                <span class="tier-badge">Locker / car / home</span>
-                <img class="tier-img" src={BOTTLE_3PACK} alt="JockShock 3-pack" loading="lazy" />
-                <div class="tier-label">3-Pack</div>
-                <div class="tier-detail">3 × 32oz</div>
-                <div class="tier-price">$59.99</div>
-                <div class="tier-ship">Free shipping</div>
-                <div class="tier-bottom">Get it →</div>
-              </a>
-              <a href={PDP} class="tier" data-gym-athlete-cta>
-                <img class="tier-img" src={BOTTLE_6PACK} alt="JockShock 6-pack" loading="lazy" />
-                <div class="tier-label">Class shelf</div>
-                <div class="tier-detail">6 × 32oz — still checkout, not the facility quote</div>
-                <div class="tier-price">$99.99</div>
-                <div class="tier-ship">Free shipping</div>
-                <div class="tier-bottom">Get it →</div>
-              </a>
-            </div>
-          </div>
-
           <div class="door door-quote">
             <p class="door-eyebrow">Owner / coach</p>
-            <h3>ZeroPoint — talk to Fred</h3>
+            <h3>Get the program</h3>
             <p class="door-sub">Cases sized to the room. No cart. No contract.</p>
 
             <div class="quote-success" data-success hidden>
-              <h3>Got it. Fred's on it.</h3>
+              <h3>Got it. We'll email you.</h3>
               <p>
-                Fred or someone from the team will email you within one business
-                day. If you need to chat sooner, call
-                <a href="tel:8006083755">800-608-3755</a> and ask for Fred.
+                Someone from the team will reply within one business day. If
+                you need to chat sooner, call
+                <a href="tel:8006083755">800-608-3755</a>.
               </p>
             </div>
 
@@ -326,7 +252,7 @@ const PDP = "/products/jockshock/?utm_campaign=js-gyms";
 
               <div class="form-row">
                 <label>
-                  <span>Gym / academy</span>
+                  <span>Gym</span>
                   <input type="text" name="organization" required autocomplete="organization" />
                 </label>
                 <label>
@@ -348,18 +274,18 @@ const PDP = "/products/jockshock/?utm_campaign=js-gyms";
 
               <div class="form-row">
                 <label>
-                  <span>Sport</span>
+                  <span>What kind of gym</span>
                   <select name="sport" required>
                     <option value="">Select…</option>
-                    <option>Brazilian jiu-jitsu</option>
-                    <option>MMA / combat sports</option>
+                    <option>Fitness / training</option>
+                    <option>Combat / mats</option>
                     <option>Wrestling</option>
                     <option>Boxing</option>
                     <option>Multi-sport / other</option>
                   </select>
                 </label>
                 <label>
-                  <span>Roster size (athletes per week)</span>
+                  <span>People through the door per week</span>
                   <select name="roster_size" required>
                     <option value="">Select…</option>
                     <option>Under 25</option>
@@ -412,9 +338,41 @@ const PDP = "/products/jockshock/?utm_campaign=js-gyms";
 
               <button type="submit" class="cta-primary cta-submit">Send the request</button>
               <p class="form-note">
-                Goes to Fred Munzenmaier. Mike Usry is cc'd. No marketing spam.
+                Goes to Mike, Philip, and Brad. No marketing spam.
               </p>
             </form>
+          </div>
+
+          <div class="door door-side">
+            <p class="door-eyebrow">Already buying for one bag?</p>
+            <h3>JockShock — checkout</h3>
+            <p class="door-sub">Side door. Same ladder as the rest of the site. Free shipping on 3+.</p>
+            <div class="tier-grid">
+              <a href={PDP} class="tier" data-gym-athlete-cta>
+                <img class="tier-img" src={BOTTLE_SINGLE} alt="JockShock 32oz single bottle" loading="lazy" />
+                <div class="tier-label">One bag</div>
+                <div class="tier-detail">1 × 32oz</div>
+                <div class="tier-price">$24.99</div>
+                <div class="tier-bottom">Get it →</div>
+              </a>
+              <a href={PDP} class="tier featured" data-gym-athlete-cta>
+                <span class="tier-badge">Locker / car / home</span>
+                <img class="tier-img" src={BOTTLE_3PACK} alt="JockShock 3-pack" loading="lazy" />
+                <div class="tier-label">3-Pack</div>
+                <div class="tier-detail">3 × 32oz</div>
+                <div class="tier-price">$59.99</div>
+                <div class="tier-ship">Free shipping</div>
+                <div class="tier-bottom">Get it →</div>
+              </a>
+              <a href={PDP} class="tier" data-gym-athlete-cta>
+                <img class="tier-img" src={BOTTLE_6PACK} alt="JockShock 6-pack" loading="lazy" />
+                <div class="tier-label">Class shelf</div>
+                <div class="tier-detail">6 × 32oz — still checkout, not the facility quote</div>
+                <div class="tier-price">$99.99</div>
+                <div class="tier-ship">Free shipping</div>
+                <div class="tier-bottom">Get it →</div>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -437,7 +395,7 @@ const PDP = "/products/jockshock/?utm_campaign=js-gyms";
             <summary>We're on Ecolab.</summary>
             <p>
               Then the lock is the contract, not the price. When you're free of
-              it, talk to Fred. We do not lead with a cheaper bid into a locked
+              it, talk to us. We do not lead with a cheaper bid into a locked
               house.
             </p>
           </details>
@@ -561,7 +519,7 @@ const PDP = "/products/jockshock/?utm_campaign=js-gyms";
         submitBtn.insertAdjacentElement("afterend", errorEl);
       }
       errorEl.textContent =
-        "Something went wrong sending that. Email Fred directly at fmunzjr@gmail.com and we'll handle it.";
+        "Something went wrong sending that. Email mike@southlandorganics.com and we'll handle it.";
     }
   });
 </script>
@@ -574,6 +532,57 @@ const PDP = "/products/jockshock/?utm_campaign=js-gyms";
     --jockshock-muted: #9ca3af;
     background: var(--jockshock-black);
     color: var(--jockshock-text);
+  }
+
+  .hero-bottles {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    align-items: end;
+  }
+  .hero-bottle {
+    margin: 0;
+    background: #141414;
+    padding: 24px 16px 16px;
+    text-align: center;
+  }
+  .hero-bottle img {
+    width: 100%;
+    max-width: 240px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+  .hero-bottle figcaption,
+  .bottle-pair figcaption {
+    color: var(--jockshock-yellow);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-top: 12px;
+  }
+
+  .program { padding: 100px 5%; background: var(--jockshock-black); }
+  .program-inner { max-width: 860px; margin: 0 auto; }
+
+  .show { padding: 100px 5%; background: #050505; }
+  .show-inner { max-width: 960px; margin: 0 auto; }
+  .show .section-eyebrow { text-align: center; }
+  .show-video { margin: 40px 0 0; }
+  .bottle-pair {
+    margin-top: 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .bottle-pair figure { margin: 0; text-align: center; background: #141414; padding: 32px 16px 20px; }
+  .bottle-pair img {
+    width: 100%;
+    max-width: 280px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
   }
 
   .eyebrow, .section-eyebrow, .door-eyebrow, .split-card-eyebrow, .hero-split-eyebrow {
@@ -1044,10 +1053,10 @@ const PDP = "/products/jockshock/?utm_campaign=js-gyms";
   }
 
   @media (max-width: 900px) {
-    .hero-grid, .split-grid, .form-row { grid-template-columns: 1fr; }
+    .hero-grid, .split-grid, .form-row, .hero-bottles, .bottle-pair { grid-template-columns: 1fr; }
     .hero-split { grid-template-columns: 1fr; }
     .hero-split-plus { display: none; }
-    .hero, .video-section, .split, .problem, .how, .athlete, .routine, .fred, .doors, .faq {
+    .hero, .video-section, .show, .program, .split, .problem, .how, .athlete, .routine, .doors, .faq {
       padding: 64px 5%;
     }
   }

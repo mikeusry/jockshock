@@ -1,10 +1,8 @@
 /**
  * /api/teams-intake — gym + team B2B intake handler.
  *
- * Per the May 2026 gym-channel pivot (see project_gym_channel_program memory):
- * lead routes to Fred Munzenmaier first (UGA RB, owns a D1 Training franchise,
- * runs the JockShock gym channel). Mike is cc'd for visibility but Fred owns
- * the response.
+ * /gyms (source=jockshock-gyms-page) → Mike, Philip, Brad. Fred is off.
+ * /teams (everything else) → Fred primary, Mike cc. Unchanged.
  *
  * v2 follow-up (Nexus #652): wire HubSpot contact + deal creation, Klaviyo
  * gym-program flow, Slack notification.
@@ -13,10 +11,17 @@ import type { APIRoute } from "astro";
 
 const SENDGRID_API = "https://api.sendgrid.com/v3/mail/send";
 
-// Primary recipient is Fred. Mike is cc'd. If Fred's email becomes a placeholder
-// (env override below), make sure Mike still receives the lead.
-const PRIMARY_RECIPIENT = { email: "fmunzjr@gmail.com", name: "Fred Munzenmaier" };
-const CC_RECIPIENTS = [{ email: "mike@southlandorganics.com", name: "Mike Usry" }];
+const FRED = { email: "fmunzjr@gmail.com", name: "Fred Munzenmaier" };
+const MIKE = { email: "mike@southlandorganics.com", name: "Mike Usry" };
+const PHILIP = { email: "philip@southlandorganics.com", name: "Philip McWhirter" };
+const BRAD = { email: "brad@southlandorganics.com", name: "Brad" };
+
+function recipients(source?: string) {
+  if (source === "jockshock-gyms-page") {
+    return { to: [MIKE, PHILIP, BRAD], cc: [] as { email: string; name: string }[] };
+  }
+  return { to: [FRED], cc: [MIKE] };
+}
 
 interface TeamsIntakePayload {
   name: string;
@@ -94,7 +99,11 @@ function buildEmail(data: TeamsIntakePayload): string {
         <tr><td style="background:#141414;padding:32px;border-left:1px solid #1f2937;border-right:1px solid #1f2937;">
 
           <h2 style="margin:0 0 8px;font-size:22px;color:#fff;font-weight:800;letter-spacing:-0.01em;">New gym / team lead</h2>
-          <p style="margin:0 0 24px;color:#9ca3af;font-size:13px;">From the JockShock ${data.source === "jockshock-gyms-page" ? "/gyms" : "/teams"} page. Fred — please reply within one business day per the page's promise. Mike is cc'd for visibility.</p>
+          <p style="margin:0 0 24px;color:#9ca3af;font-size:13px;">${
+            data.source === "jockshock-gyms-page"
+              ? "From the JockShock /gyms page. Reply within one business day. Routed to Mike, Philip, and Brad."
+              : "From the JockShock /teams page. Fred — please reply within one business day per the page's promise. Mike is cc'd for visibility."
+          }</p>
 
           <table style="border-collapse:collapse;width:100%;">
             ${row("Name", escapeHtml(data.name))}
@@ -163,19 +172,18 @@ export const POST: APIRoute = async ({ request }) => {
   // Honeypot-free for now; if spam shows up, add a phone-shaped trap field
   // and reject submissions that fill it.
 
-  const subject = `[JockShock Gym Lead] ${data.organization} — ${data.sport}, ${data.roster_size}, ${data.timeline}`;
+  const isGyms = data.source === "jockshock-gyms-page";
+  const { to, cc } = recipients(data.source);
+  const subject = `${isGyms ? "[JockShock Gym Program]" : "[JockShock Gym Lead]"} ${data.organization} — ${data.sport}, ${data.roster_size}, ${data.timeline}`;
+
+  const personalization: Record<string, unknown> = { to, subject };
+  if (cc.length) personalization.cc = cc;
 
   const sendgridPayload = {
-    personalizations: [
-      {
-        to: [PRIMARY_RECIPIENT],
-        cc: CC_RECIPIENTS,
-        subject,
-      },
-    ],
+    personalizations: [personalization],
     from: {
       email: "noreply@southlandorganics.com",
-      name: "JockShock Teams",
+      name: isGyms ? "JockShock Gyms" : "JockShock Teams",
     },
     reply_to: { email: data.email, name: data.name },
     content: [{ type: "text/html", value: buildEmail(data) }],

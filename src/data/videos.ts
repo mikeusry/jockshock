@@ -42,6 +42,40 @@ export interface JockShockVideo {
   hook: string;
 }
 
+/**
+ * INDEX — every JockShock-relevant Mux asset in env sn2eoh (2026-08-25).
+ * Mike pasted asset IDs, not playback IDs. Always store playback IDs here.
+ *
+ * LIVE ON SITE
+ *   mechanism / identity / outcome / problem / routine / longform — 9:16 ads
+ *   firefighter — 72s 9:16, no passthrough, no captions
+ *
+ * GYMS (this page)
+ *   gymBroll        asset T5ptHjx1ynbtBts02UMp8GwJ0229skqybWm4KHYIgKCZI
+ *                   playback XvQ5HSCBsbOVOZWPyGpaxk9q3eGaIbTKhWezB5mRJeM
+ *                   23s 16:9 · titled "ZeroPoint Website Gym BRoll"
+ *                   Pure spray: barbell, speed bag, kettlebells. No talking head.
+ *   gymLifeChange   asset 02aQhAImS3o2B7kcV801cEJstQBJSuEH5wOTrD22coQHU
+ *                   playback 8rVRybeNd301xALm02jZ2OXvF5QX7STbMUt1e6wM76GQc
+ *                   45s 16:9 · empty passthrough
+ *                   Life Change Fitness. Owner interview + staff fogging
+ *                   treadmills / dumbbells / a tanning bed. ZP watermark.
+ *                   Do NOT place as testimony until a claims-safe transcript
+ *                   exists. B-roll frames only, or keep it off the page.
+ *
+ * UNCAPTIONED 16:9 ADS (June 2026) — listed below. Do not put where captions matter.
+ *
+ * UNLABELED (empty passthrough — do not lose these)
+ *   8rVRybe… is gymLifeChange (above).
+ *   HqTb7qXS… is firefighter (above).
+ *   wSLNfHyB… 23s 9:16 — gym-bag / locker lifestyle, JOCKSHOCK lower-third
+ *   wlHN3qSt… / jwtpvJgj… / YwDS5NXv… / SAEt02sO… — 9:16 woman-to-camera
+ *     with JS bottle overlays. One overlay reads "STADIUM SURFACE /
+ *     DISINFECTANT & CLEANER". Claims-unsafe. Do not place.
+ *   OUaZXLaR… 30s 16:9 poultry + ZP watermark. Not gyms.
+ *   slDWrC37… 35min 16:9 untitled source. Not a cut.
+ */
+
 export const VIDEOS = {
   /** Mechanism-first. Names HOCl and the immune-system parallel outright. */
   mechanism: {
@@ -134,6 +168,36 @@ export const VIDEOS = {
     aspect: '9/16',
     hook: "You've tried every spray out there. So have we. No results.",
   },
+
+  /**
+   * ZeroPoint gym B-roll. Spraying real gym iron — no interview, no VO.
+   * Asset ID (what Mike pasted): T5ptHjx1ynbtBts02UMp8GwJ0229skqybWm4KHYIgKCZI
+   * Mux title: "ZeroPoint Website Gym BRoll"
+   * 🛑 No caption track. Ambient only — do not treat as a written surface.
+   */
+  gymBroll: {
+    playbackId: 'XvQ5HSCBsbOVOZWPyGpaxk9q3eGaIbTKhWezB5mRJeM',
+    title: 'ZeroPoint — spraying a gym',
+    durationSeconds: 23,
+    posterTime: 5,
+    aspect: '16/9',
+    hook: 'Handheld sprayer on a barbell, an Everlast speed bag, then kettlebells.',
+  },
+
+  /**
+   * Life Change Fitness — owner on camera + fogging B-roll.
+   * Asset ID (what Mike pasted): 02aQhAImS3o2B7kcV801cEJstQBJSuEH5wOTrD22coQHU
+   * Empty passthrough. Not Fred. Not D1.
+   * 🛑 Keep off /gyms as testimony until captions exist and pass claims.
+   */
+  gymLifeChange: {
+    playbackId: '8rVRybeNd301xALm02jZ2OXvF5QX7STbMUt1e6wM76GQc',
+    title: 'ZeroPoint at Life Change Fitness',
+    durationSeconds: 45,
+    posterTime: 5,
+    aspect: '16/9',
+    hook: 'Gym-owner interview cut with staff fogging treadmills and iron.',
+  },
 } as const satisfies Record<string, JockShockVideo>;
 
 /**
@@ -147,4 +211,42 @@ export const UNCAPTIONED = [
   { playbackId: 'XPYYIMs8eSuhFXb101lMQf6vSIfJbCZCgaa01VDv302fSs', title: 'JockShock Extended with Native' },
   { playbackId: 'ZDUBR4xKgnMbkwwfyZL02NEvaOkEH00Zw00Q7t4VKi8fPA', title: 'JockShock 15 Sec 6 sec replace 1' },
   { playbackId: 'ORdFfsd3aiUDd5FAOEvgWqOvayBwvHQYLcsIE5vveRk', title: 'JockShock 15 Sec 6 sec replace 2' },
+] as const;
+
+/**
+ * Recent uploads with empty passthrough. Indexed so the next agent does not
+ * treat them as missing. Do not place the woman-to-camera set — bottle
+ * overlays say "disinfectant" on a JockShock bottle.
+ */
+export const UNLABELED = [
+  {
+    playbackId: 'wSLNfHyBQ2F1MwSzun2FFVi25iR0000zw6qdgT8O1fTBI',
+    durationSeconds: 23,
+    aspect: '9/16' as const,
+    note: 'Gym-bag / locker lifestyle. JOCKSHOCK lower-third. No title.',
+  },
+  {
+    playbackId: 'wlHN3qStTi00mknvY9kqUwS01Oq600u6ldfnj5CgGIkE5M',
+    durationSeconds: 30,
+    aspect: '9/16' as const,
+    note: 'Woman to camera, JS bottles in corners. Claims-unsafe overlays. Do not place.',
+  },
+  {
+    playbackId: 'jwtpvJgjM026A6rLBiAlXgBbDTJpJOLdnPehIbbGVNhs',
+    durationSeconds: 26,
+    aspect: '9/16' as const,
+    note: 'Same speaker / overlay family as wlHN3qSt. Do not place.',
+  },
+  {
+    playbackId: 'YwDS5NXvhsMRemCXUNFToWsw1MIH2ppHvC02PBz5gRzQ',
+    durationSeconds: 24,
+    aspect: '9/16' as const,
+    note: 'Same speaker / overlay family as wlHN3qSt. Do not place.',
+  },
+  {
+    playbackId: 'SAEt02sO4pHylXtaaGbYgXtMgz9V01K3m201IDM2DWwgQ00',
+    durationSeconds: 34,
+    aspect: '9/16' as const,
+    note: 'Same speaker. Overlay reads Stadium Surface / Disinfectant. Do not place.',
+  },
 ] as const;
