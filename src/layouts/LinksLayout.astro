@@ -1,0 +1,62 @@
+---
+/**
+ * Bare layout for /links — fonts + pixel, no announcement/header/footer/cart.
+ * Do not use for indexed pages.
+ */
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+const SITE_URL = "https://www.jockshockspray.com";
+const canonicalUrl = `${SITE_URL}${Astro.url.pathname}`;
+const ogImage =
+  "https://res.cloudinary.com/southland-organics/image/upload/f_jpg,q_auto/v1778164127/JockShock/jockshock-og-2026.png";
+const pixelBrandId = import.meta.env.PUBLIC_PIXEL_BRAND_ID || "southland";
+const pixelEndpoint =
+  import.meta.env.PUBLIC_PIXEL_ENDPOINT ||
+  "https://pixel.southlandorganics.com/collect";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <meta name="theme-color" content="#0a0a0a" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImage} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;700;900&display=swap"
+    />
+    <script is:inline define:vars={{ pixelBrandId, pixelEndpoint }}>
+      window.pdPixelConfig = {
+        brandId: pixelBrandId,
+        endpoint: pixelEndpoint,
+        defaultProperties: { sub_brand: "jockshock" },
+      };
+    </script>
+    <script
+      is:inline
+      src="https://cdn.point.dog/pixel/pd-pixel.min.js?v=2.4.2"
+      async></script>
+    <style is:global>
+      @import "../styles/global.css";
+    </style>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

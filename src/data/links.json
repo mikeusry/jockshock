@@ -1,0 +1,36 @@
+{
+  "name": "JockShock",
+  "handle": "@jockshockspray",
+  "tagline": "Pro-grade equipment deodorizer. Built for gear, not the kitchen.",
+  "logoAlt": "JockShock",
+  "links": [
+    {
+      "label": "Shop JockShock",
+      "href": "/products/jockshock/",
+      "primary": true
+    },
+    {
+      "label": "For Parents",
+      "href": "/parents/"
+    },
+    {
+      "label": "Learn",
+      "href": "/learn/"
+    },
+    {
+      "label": "Teams",
+      "href": "/teams/"
+    },
+    {
+      "label": "Gyms",
+      "href": "/gyms/"
+    }
+  ],
+  "social": [
+    {
+      "platform": "instagram",
+      "label": "Instagram",
+      "href": "https://instagram.com/jockshockspray"
+    }
+  ]
+}

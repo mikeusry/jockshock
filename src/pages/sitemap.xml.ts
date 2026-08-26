@@ -37,6 +37,7 @@ const EXCLUDE = [
   /(^|\/)api(\/|$)/,
   /\[/, // dynamic routes, e.g. products/[...handle]
   /(^|\/)label$/,
+  /(^|\/)links$/,
 ];
 
 // changefreq + priority by route. Anything not listed falls back to DEFAULT.
