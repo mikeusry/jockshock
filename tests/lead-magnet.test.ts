@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { POST } from "./lead-magnet";
+import { POST } from "../src/pages/api/lead-magnet";
 
 const CIO_HOST = "https://track.customer.io/api/v1/customers";
 const SHOPIFY_HOST = "https://test-shop.myshopify.com/admin/api/2025-04";
@@ -99,6 +99,15 @@ describe("POST /api/lead-magnet", () => {
       expect.stringContaining("api.sendgrid.com"),
       expect.anything(),
     );
+
+    const identifyCall = fetchCalls.find((c) => {
+      if (c.url !== `${CIO_HOST}/test%40example.com` || c.init?.method !== "PUT") {
+        return false;
+      }
+      const body = JSON.parse(String(c.init.body));
+      return "email" in body && !("jockshock_discount_code" in body);
+    });
+    expect(identifyCall).toBeDefined();
 
     const trackCall = fetchCalls.find(
       (c) => c.url.endsWith("/events") && c.init?.method === "POST",

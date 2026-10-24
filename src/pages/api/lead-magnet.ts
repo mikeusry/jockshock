@@ -30,8 +30,8 @@
  *
  * This endpoint used to write to Klaviyo list `XWVKzw` ("JockShock — Field
  * Guide Subscribers"). That list ran for 3 months with no flow behind it: at
- * cutover it held 6 profiles — 4 test accounts and 2 real people who got the
- * a plain confirmation email and nothing else, ever.
+ * cutover it held 6 profiles — 4 test accounts and 2 real people who got a
+ * plain confirmation email and nothing else, ever.
  *
  * JockShock shares the SOUTHLAND Customer.io workspace — it is a sub-brand, not
  * a separate account, so there is one set of credentials and one profile per
